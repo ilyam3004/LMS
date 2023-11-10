@@ -1,0 +1,12 @@
+﻿.idea/
+logs/
+.vscode/
+obj/
+bin/
+ToDo.sln.DotSettings.user
+.vs/
+logs/
+
+*.user
+
+Backup/

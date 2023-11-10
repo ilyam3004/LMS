@@ -1,0 +1,12 @@
+﻿POST http://localhost:5137/api/users/lecturers/register
+Content-Type: application/json
+
+{
+  "Email": "email@gmail.c.com",
+  "Password": "Password",
+  "FirstName": "FirstName",
+  "LastName": "LastName",
+  "Address": "",
+  "Birthday": "2023-11-10",
+  "Degree": "Degree"
+}
