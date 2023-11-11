@@ -6,17 +6,17 @@ using Domain.Entities;
 using ErrorOr;
 using MediatR;
 
-namespace Application.Authentication.Commands;
+namespace Application.Authentication.Commands.RegisterLecturer;
 
-public class RegisterLecturerCommandHandler(IJwtTokenGenerator _jwtTokenGenerator,
-        IUnitOfWork _unitOfWork)
+public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator,
+        IUnitOfWork unitOfWork)
     : IRequestHandler<RegisterLecturerCommand, ErrorOr<AuthenticationResult>>
 {
     public async Task<ErrorOr<AuthenticationResult>> Handle(
         RegisterLecturerCommand command, 
         CancellationToken cancellationToken)
     {
-        if (await _unitOfWork.Users.UserExistsByEmail(command.Email))
+        if (await unitOfWork.Users.UserExistsByEmail(command.Email))
         {
             return Errors.User.DuplicateEmail;
         }
@@ -28,7 +28,7 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator _jwtTokenGenerato
             Password = command.Password
         };
 
-        await _unitOfWork.Users.AddAsync(user);
+        await unitOfWork.Users.AddAsync(user);
 
         var lecturer = new Lecturer
         {
@@ -40,10 +40,10 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator _jwtTokenGenerato
             UserId = user.UserId
         };
 
-        await _unitOfWork.Lecturers.AddAsync(lecturer);
-        await _unitOfWork.SaveChangesAsync();
+        await unitOfWork.Lecturers.AddAsync(lecturer);
+        await unitOfWork.SaveChangesAsync();
 
-        var token = _jwtTokenGenerator.GenerateToken(
+        var token = jwtTokenGenerator.GenerateToken(
             user.UserId,
             command.FirstName,
             command.LastName,
@@ -57,4 +57,3 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator _jwtTokenGenerato
             token);
     }
 }
-

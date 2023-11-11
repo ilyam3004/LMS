@@ -1,4 +1,5 @@
-﻿POST http://localhost:5137/api/users/lecturers/register
+﻿### Register Lecturer
+POST http://localhost:5137/api/users/lecturers/register
 Content-Type: application/json
 
 {
@@ -9,4 +10,19 @@ Content-Type: application/json
   "Address": "",
   "Birthday": "2023-11-10",
   "Degree": "Degree"
+}
+
+### Register Student
+POST http://localhost:5137/api/users/students/register
+Content-Type: application/json
+
+{
+  "Email": "email1111@gmail.c.com",
+  "Password": "Password",
+  "FirstName": "FirstName",
+  "LastName": "LastName",
+  "Address": "Address",
+  "Course": 1,
+  "Birthday": "2023-11-10",
+  "GroupName": "Group A"
 }

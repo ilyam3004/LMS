@@ -1,4 +1,5 @@
-﻿using Application.Authentication.Commands;
+﻿using Application.Authentication.Commands.RegisterLecturer;
+using Application.Authentication.Commands.RegisterStudent;
 using Microsoft.AspNetCore.Mvc;
 using Contracts.Requests;
 using Contracts.Responses;
@@ -14,18 +15,24 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
     [HttpPost("lecturers/register")]
     public async Task<IActionResult> Register(RegisterLecturerRequest request)
     {
-        var command = new RegisterLecturerCommand(
-            request.Email,
-            request.Password,
-            request.FirstName,
-            request.LastName,
-            request.Degree,
-            request.Birthday,
-            request.Address);
+        var command = mapper.Map<RegisterLecturerCommand>(request);
 
         var result = await sender.Send(command);
 
-        return result.Match<IActionResult>(
+        return result.Match(
+            value => Ok(mapper.Map<AuthenticationResponse>(value)),
+            Problem);
+    }
+
+    [HttpPost("students/register")]
+    public async Task<IActionResult> RegisterStudent(RegisterStudentRequest request)
+    {
+        var command = mapper.Map<RegisterStudentCommand>(request);
+
+        var result = await sender.Send(command);
+
+
+        return result.Match(
             value => Ok(mapper.Map<AuthenticationResponse>(value)),
             Problem);
     }

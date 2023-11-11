@@ -1,9 +1,8 @@
 using Application.Models;
 using ErrorOr;
-
 using MediatR;
 
-namespace Application.Authentication.Commands;
+namespace Application.Authentication.Commands.RegisterLecturer;
 
 public record RegisterLecturerCommand(
     string Email,

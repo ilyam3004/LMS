@@ -4,12 +4,9 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class UserRepository : Repository<User>, IUserRepository 
+public class UserRepository(LmsDbContext context) 
+    : Repository<User>(context), IUserRepository 
 {
-    public UserRepository(LmsDbContext context) : base(context)
-    {
-        
-    }
     public async Task<bool> UserExistsByEmail(string email)
     {
         return await DbContext.Users

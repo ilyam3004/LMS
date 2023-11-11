@@ -8,7 +8,7 @@ namespace Api.Controllers;
 public class TaskController : ApiController
 {
     [HttpGet]
-    [Authorize(Roles = "Lecturer")]
+    [Authorize(Roles = "Lecturer,Student")]
     public IActionResult GetAllTasks()
     {
         return Ok("Successfully Authorized");
