@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using Domain.Common;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
@@ -8,7 +9,7 @@ namespace Api.Controllers;
 public class TaskController : ApiController
 {
     [HttpGet]
-    [Authorize(Roles = "Lecturer,Student")]
+    [Authorize(Roles = Roles.Student)]
     public IActionResult GetAllTasks()
     {
         return Ok("Successfully Authorized");

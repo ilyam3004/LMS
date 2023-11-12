@@ -1,18 +1,18 @@
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Domain.Abstractions.Results;
 using Application.Models;
-using Domain.Common;
 using Domain.Entities;
-using ErrorOr;
+using Domain.Common;
 using MediatR;
 
 namespace Application.Authentication.Commands.RegisterLecturer;
 
 public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator,
         IUnitOfWork unitOfWork)
-    : IRequestHandler<RegisterLecturerCommand, ErrorOr<AuthenticationResult>>
+    : IRequestHandler<RegisterLecturerCommand, Result<AuthenticationResult>>
 {
-    public async Task<ErrorOr<AuthenticationResult>> Handle(
+    public async Task<Result<AuthenticationResult>> Handle(
         RegisterLecturerCommand command, 
         CancellationToken cancellationToken)
     {
@@ -25,7 +25,7 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator
         {
             UserId = Guid.NewGuid(),
             Email = command.Email,
-            Password = command.Password
+            Password = BCrypt.Net.BCrypt.HashPassword(command.Password) 
         };
 
         await unitOfWork.Users.AddAsync(user);
@@ -45,10 +45,9 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator
 
         var token = jwtTokenGenerator.GenerateToken(
             user.UserId,
-            command.FirstName,
-            command.LastName,
-            command.Email,
-            "Lecturer");
+            lecturer.FullName,
+            user.Email,
+            Roles.Lecturer);
 
         return new AuthenticationResult(
             user.UserId, 

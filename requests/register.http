@@ -3,11 +3,11 @@ POST http://localhost:5137/api/users/lecturers/register
 Content-Type: application/json
 
 {
-  "Email": "email@gmail.c.com",
+  "Email": "email@gmail.com",
   "Password": "Password",
   "FirstName": "FirstName",
   "LastName": "LastName",
-  "Address": "",
+  "Address": "Some address",
   "Birthday": "2023-11-10",
   "Degree": "Degree"
 }
@@ -17,7 +17,7 @@ POST http://localhost:5137/api/users/students/register
 Content-Type: application/json
 
 {
-  "Email": "email1111@gmail.c.com",
+  "Email": "emails@gmail.com",
   "Password": "Password",
   "FirstName": "FirstName",
   "LastName": "LastName",

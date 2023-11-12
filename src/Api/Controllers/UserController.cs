@@ -1,5 +1,6 @@
 ﻿using Application.Authentication.Commands.RegisterLecturer;
 using Application.Authentication.Commands.RegisterStudent;
+using Application.Authentication.Queries.Login;
 using Microsoft.AspNetCore.Mvc;
 using Contracts.Requests;
 using Contracts.Responses;
@@ -31,6 +32,17 @@ public class UserController(ISender sender, IMapper mapper) : ApiController
 
         var result = await sender.Send(command);
 
+        return result.Match(
+            value => Ok(mapper.Map<AuthenticationResponse>(value)),
+            Problem);
+    }
+
+    [HttpPost("login")]
+    public async Task<IActionResult> Login(LoginRequest request)
+    {
+        var query = mapper.Map<LoginQuery>(request);
+
+        var result = await sender.Send(query);
 
         return result.Match(
             value => Ok(mapper.Map<AuthenticationResponse>(value)),

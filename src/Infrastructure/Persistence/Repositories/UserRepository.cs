@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
-using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Domain.Entities;
 
 namespace Infrastructure.Persistence.Repositories;
 
@@ -22,6 +22,8 @@ public class UserRepository(LmsDbContext context)
     public async Task<User?> GetUserByEmail(string email)
     {
         return await DbContext.Users
+            .Include(u => u.Student)
+            .Include(u => u.Lecturer)
             .FirstOrDefaultAsync(u => u.Email == email);
     }
 }

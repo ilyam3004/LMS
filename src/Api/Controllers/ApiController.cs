@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc.ModelBinding;
 using Microsoft.AspNetCore.Mvc;
-using ErrorOr;
+using Domain.Abstractions.Errors;
 
 namespace Api.Controllers;
 

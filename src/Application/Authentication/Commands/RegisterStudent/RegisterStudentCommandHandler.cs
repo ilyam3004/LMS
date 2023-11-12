@@ -1,18 +1,18 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Domain.Abstractions.Results;
 using Application.Models;
 using Domain.Common;
 using Domain.Entities;
 using MediatR;
-using ErrorOr;
 
 namespace Application.Authentication.Commands.RegisterStudent;
 
 public class RegisterStudentCommandHandler(
         IJwtTokenGenerator jwtTokenGenerator, IUnitOfWork unitOfWork)
-    : IRequestHandler<RegisterStudentCommand, ErrorOr<AuthenticationResult>>
+    : IRequestHandler<RegisterStudentCommand, Result<AuthenticationResult>>
 {
-    public async Task<ErrorOr<AuthenticationResult>> Handle(
+    public async Task<Result<AuthenticationResult>> Handle(
         RegisterStudentCommand command, CancellationToken cancellationToken)
     {
         if (await unitOfWork.Users.UserExistsByEmail(command.Email))
@@ -31,7 +31,7 @@ public class RegisterStudentCommandHandler(
         {
             UserId = Guid.NewGuid(),
             Email = command.Email,
-            Password = command.Password
+            Password = BCrypt.Net.BCrypt.HashPassword(command.Password)
         };
 
         await unitOfWork.Users.AddAsync(user);
@@ -51,10 +51,9 @@ public class RegisterStudentCommandHandler(
 
         var token = jwtTokenGenerator.GenerateToken(
             user.UserId,
-            command.FirstName,
-            command.LastName,
+            student.FullName,
             command.Email,
-            "Student");
+            Roles.Student);
 
         return new AuthenticationResult(
             user.UserId,

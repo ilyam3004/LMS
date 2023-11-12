@@ -1,6 +1,6 @@
 ﻿using Application.Models;
+using Domain.Abstractions.Results;
 using MediatR;
-using ErrorOr;
 
 namespace Application.Authentication.Commands.RegisterStudent;
 
@@ -12,4 +12,4 @@ public record RegisterStudentCommand(
     string GroupName,
     int Course,
     DateTime Birthday,
-    string Address) : IRequest<ErrorOr<AuthenticationResult>>;
+    string Address) : IRequest<Result<AuthenticationResult>>;

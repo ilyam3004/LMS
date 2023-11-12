@@ -1,5 +1,5 @@
+using Domain.Abstractions.Results;
 using Application.Models;
-using ErrorOr;
 using MediatR;
 
 namespace Application.Authentication.Commands.RegisterLecturer;
@@ -11,4 +11,4 @@ public record RegisterLecturerCommand(
     string LastName,
     string? Degree,
     DateTime Birthday,
-    string Address) : IRequest<ErrorOr<AuthenticationResult>>; 
+    string Address) : IRequest<Result<AuthenticationResult>>; 

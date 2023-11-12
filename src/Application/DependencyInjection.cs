@@ -1,8 +1,8 @@
-﻿using System.Reflection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Application.Common.Behaviours;
+using System.Reflection;
 using FluentValidation;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Http;
-using Microsoft.Extensions.DependencyInjection;
+using MediatR;
 
 namespace Application;
 
@@ -13,6 +13,9 @@ public static class DependencyInjection
         services.AddMediatR(cfg =>
             cfg.RegisterServicesFromAssemblies(AppDomain.CurrentDomain.GetAssemblies()));
         
+        services.AddScoped(
+            typeof(IPipelineBehavior<,>), 
+            typeof(ValidationBehavior<,>));
         services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
         
         return services;

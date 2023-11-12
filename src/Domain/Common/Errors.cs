@@ -1,4 +1,4 @@
-﻿using ErrorOr;
+﻿using Domain.Abstractions.Errors;
 
 namespace Domain.Common;
 
@@ -6,6 +6,9 @@ public static class Errors
 {
     public static class User
     {
+        public static Error InvalidPassword => Error.Unauthorized("User.InvalidPassword",
+            description: "Invalid email or password");
+        
         public static Error DuplicateEmail => Error.Conflict("User.DuplicateEmail",
             "User with the same email already exists");
 

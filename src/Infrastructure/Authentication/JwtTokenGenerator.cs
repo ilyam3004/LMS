@@ -12,9 +12,11 @@ public class JwtTokenGenerator(IDateTimeProvider dateTimeProvider,
     IOptions<JwtSettings> options) : IJwtTokenGenerator
 {
     private readonly JwtSettings _jwtSettings = options.Value;
-    public string GenerateToken(Guid id, string firstName, string surname,
+    public string GenerateToken(Guid id, string fullName,
         string email, string role)
-    {
+    { 
+        var (firstName, surname) = SplitFullName(fullName);
+        
         var claims = new List<Claim>
         {
             new(JwtRegisteredClaimNames.UniqueName, id.ToString()),
@@ -36,5 +38,12 @@ public class JwtTokenGenerator(IDateTimeProvider dateTimeProvider,
             signingCredentials: signinCredentials);
         
        return new JwtSecurityTokenHandler().WriteToken(securityToken);
+    }
+    
+    private static (string, string) SplitFullName(string fullName)
+    {
+        string[] nameParts = fullName.Split(' ');
+
+        return (nameParts[0], nameParts[1]);
     }
 }
