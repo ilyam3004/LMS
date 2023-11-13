@@ -4,9 +4,6 @@ namespace Infrastructure.Persistence.Repositories;
 
 public class UnitOfWork(LmsDbContext context) : IUnitOfWork
 {
-
-    public ILecturerRepository Lecturers { get; } = new LecturerRepository(context);
-    public IStudentRepository Students { get; } = new StudentRepository(context);
     public IGroupRepository Groups { get; } = new GroupRepository(context);
     public IUserRepository Users { get; } = new UserRepository(context);
     public ITaskRepository Tasks { get; } = new TaskRepository(context);

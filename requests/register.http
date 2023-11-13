@@ -3,8 +3,8 @@ POST http://localhost:5137/api/users/lecturers/register
 Content-Type: application/json
 
 {
-  "Email": "email@gmail.com",
-  "Password": "Password",
+  "Email": "validemail@gmail.com",
+  "Password": "Password1234",
   "FirstName": "FirstName",
   "LastName": "LastName",
   "Address": "Some address",
@@ -17,12 +17,12 @@ POST http://localhost:5137/api/users/students/register
 Content-Type: application/json
 
 {
-  "Email": "emails@gmail.com",
-  "Password": "Password",
+  "Email": "validasememail1111@gmail.com",
+  "Password": "Password1234",
   "FirstName": "FirstName",
   "LastName": "LastName",
   "Address": "Address",
-  "Course": 1,
+  "Course": 6,
   "Birthday": "2023-11-10",
   "GroupName": "Group A"
 }

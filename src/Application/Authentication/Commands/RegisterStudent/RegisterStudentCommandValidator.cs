@@ -1,11 +1,12 @@
+using Application.Authentication.Commands.RegisterStudent;
 using FluentValidation;
 
-namespace Application.Authentication.Commands.RegisterLecturer;
+namespace Aoolication.Authentication.Commands.RegisterStudent;
 
-public class RegisterLecturerCommandValidator
-    : AbstractValidator<RegisterLecturerCommand>
+public class RegisterStudentCommandValidator
+: AbstractValidator<RegisterStudentCommand>
 {
-    public RegisterLecturerCommandValidator()
+    public RegisterStudentCommandValidator()
     {
         RuleFor(x => x.Email)
             .NotEmpty()
@@ -33,5 +34,13 @@ public class RegisterLecturerCommandValidator
         RuleFor(x => x.Address)
             .NotEmpty()
             .MaximumLength(200);
+
+        RuleFor(x => x.GroupName)
+            .NotEmpty();
+
+        RuleFor(x => x.Course)
+            .NotEmpty()
+            .InclusiveBetween(1, 6)
+            .WithMessage("Course must be between 1 and 6.");
     }
 }

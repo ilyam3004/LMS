@@ -40,7 +40,7 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator
             UserId = user.UserId
         };
 
-        await unitOfWork.Lecturers.AddAsync(lecturer);
+        await unitOfWork.GetRepository<Lecturer>().AddAsync(lecturer);
         await unitOfWork.SaveChangesAsync();
 
         var token = jwtTokenGenerator.GenerateToken(
@@ -50,9 +50,7 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator
             Roles.Lecturer);
 
         return new AuthenticationResult(
-            user.UserId, 
-            lecturer.FullName,
-            user.Email,
+            user, 
             token);
     }
 }

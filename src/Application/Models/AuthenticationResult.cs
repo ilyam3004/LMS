@@ -1,7 +1,7 @@
+using Domain.Entities;
+
 namespace Application.Models;
 
 public record AuthenticationResult(
-    Guid UserId,
-    string FullName, 
-    string Email,
+    User User, 
     string Token);

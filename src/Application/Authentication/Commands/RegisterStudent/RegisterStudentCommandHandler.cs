@@ -2,8 +2,8 @@
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
 using Application.Models;
-using Domain.Common;
 using Domain.Entities;
+using Domain.Common;
 using MediatR;
 
 namespace Application.Authentication.Commands.RegisterStudent;
@@ -56,9 +56,7 @@ public class RegisterStudentCommandHandler(
             Roles.Student);
 
         return new AuthenticationResult(
-            user.UserId,
-            student.FullName,
-            user.Email,
+            user,
             token);
     }
 }

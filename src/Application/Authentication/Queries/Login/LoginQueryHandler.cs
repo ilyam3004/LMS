@@ -37,9 +37,7 @@ public class LoginQueryHandler(
                 Roles.Student);
 
             return new AuthenticationResult(
-                user.UserId,
-                user.Student!.FullName,
-                user.Email,
+                user,
                 studentToken);
         }
         
@@ -50,9 +48,7 @@ public class LoginQueryHandler(
             Roles.Lecturer);
 
         return new AuthenticationResult(
-            user.UserId,
-            user.Lecturer!.FullName,
-            user.Email,
+            user,
             lecturerToken);
     }
 }
