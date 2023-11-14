@@ -10,16 +10,11 @@ public class JwtTokenReader : IJwtTokenReader
         var handler = new JwtSecurityTokenHandler();
         var jwtToken = handler.ReadToken(token) as JwtSecurityToken;
 
-        if (jwtToken != null)
-        {
-            var userId = jwtToken.Claims
-                .First(claim => 
-                    claim.Type == JwtRegisteredClaimNames.UniqueName)
-                    .Value;
+        var userId = jwtToken?.Claims
+            .First(claim => 
+                claim.Type == JwtRegisteredClaimNames.UniqueName).Value;
 
-            return userId;
-        }
+        return userId;
 
-        return null;
     }
 }

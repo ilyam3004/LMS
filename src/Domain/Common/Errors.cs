@@ -21,4 +21,10 @@ public static class Errors
         public static Error NotFound => Error.NotFound("Group.NotFound",
             description: "Group not found");
     }
+
+    public static class Subject
+    {
+        public static Error SubjectAlreadyExists => Error.Conflict("Subject.SubjectAlreadyExists",
+            description: "Subject with the same name already exists");
+    }
 }

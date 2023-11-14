@@ -7,6 +7,8 @@ public class UnitOfWork(LmsDbContext context) : IUnitOfWork
     public IGroupRepository Groups { get; } = new GroupRepository(context);
     public IUserRepository Users { get; } = new UserRepository(context);
     public ITaskRepository Tasks { get; } = new TaskRepository(context);
+    public ISubjectRepository Subjects => new SubjectRepository(context);
+
     private bool _disposed;
 
     public IRepository<T> GetRepository<T>() where T : class
