@@ -11,11 +11,9 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
         builder.HasKey(s => s.StudentId);
 
         builder.Property(s => s.Address)
-            .IsRequired()
             .HasMaxLength(200);
         
         builder.Property(s => s.FullName)
-            .IsRequired()
             .HasMaxLength(100);
         
         builder.HasOne(s => s.User);

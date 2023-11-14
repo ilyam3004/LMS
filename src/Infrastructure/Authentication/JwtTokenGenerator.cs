@@ -12,6 +12,7 @@ public class JwtTokenGenerator(IDateTimeProvider dateTimeProvider,
     IOptions<JwtSettings> options) : IJwtTokenGenerator
 {
     private readonly JwtSettings _jwtSettings = options.Value;
+
     public string GenerateToken(Guid id, string fullName,
         string email, string role)
     { 
@@ -40,7 +41,7 @@ public class JwtTokenGenerator(IDateTimeProvider dateTimeProvider,
        return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }
     
-    private static (string, string) SplitFullName(string fullName)
+    private (string, string) SplitFullName(string fullName)
     {
         string[] nameParts = fullName.Split(' ');
 

@@ -9,6 +9,7 @@ public class LmsDbContext(DbContextOptions<LmsDbContext> options) : DbContext(op
     public DbSet<Lecturer> Lecturers { get; set; }
     public DbSet<Student> Students { get; set; }
     public DbSet<Group> Groups { get; set; }
+    public DbSet<GroupSubject> GroupSubjects { get; set; }
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

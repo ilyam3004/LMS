@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(LmsDbContext))]
-    partial class LmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114165140_AddSubjects")]
+    partial class AddSubjects
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,67 +48,67 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            GroupId = new Guid("5c774716-7b07-448b-bbc0-ee81f15309a2"),
+                            GroupId = new Guid("55e24f9c-18f4-4b94-b946-35ac8f71831c"),
                             Department = "Computer Science",
                             Name = "Group A"
                         },
                         new
                         {
-                            GroupId = new Guid("848ab340-54e2-4a17-9dad-2674b251a550"),
+                            GroupId = new Guid("f8c489f2-30ba-4c87-a2b1-9e746fa445cc"),
                             Department = "Electrical Engineering",
                             Name = "Group B"
                         },
                         new
                         {
-                            GroupId = new Guid("65bec600-7e73-4bf7-8a47-1f7df1018fc6"),
+                            GroupId = new Guid("1ee68487-561c-413a-bd9e-eb1b47b308d0"),
                             Department = "Mechanical Engineering",
                             Name = "Group C"
                         },
                         new
                         {
-                            GroupId = new Guid("a3e8d6bd-75f8-42df-9b9d-b0ad5cdd8b49"),
+                            GroupId = new Guid("a4204827-10cc-4104-99d0-bd0cdcaf14ff"),
                             Department = "Physics",
                             Name = "Group D"
                         },
                         new
                         {
-                            GroupId = new Guid("c9cae1d7-0a77-49fc-8840-f78fbc5051af"),
+                            GroupId = new Guid("34df5e16-707d-4c48-8d79-c72634547ecc"),
                             Department = "Mathematics",
                             Name = "Group E"
                         },
                         new
                         {
-                            GroupId = new Guid("3d3f1176-41f0-41e2-9c1d-d703e82b6fc3"),
+                            GroupId = new Guid("bcf40c82-e978-4337-91e4-8e889a045180"),
                             Department = "Chemistry",
                             Name = "Group F"
                         },
                         new
                         {
-                            GroupId = new Guid("f3772db5-f34a-41cd-abfc-22b05d3675e1"),
+                            GroupId = new Guid("b02f971c-0604-48bd-8a5e-8e6b9c983437"),
                             Department = "Biology",
                             Name = "Group G"
                         },
                         new
                         {
-                            GroupId = new Guid("2e539179-3ad1-439d-80d3-9b87ba4ee992"),
+                            GroupId = new Guid("70e1f044-98a1-4557-a964-f049773f79b8"),
                             Department = "Civil Engineering",
                             Name = "Group H"
                         },
                         new
                         {
-                            GroupId = new Guid("37e160fa-a4ad-4071-9718-e8dbc41a2f09"),
+                            GroupId = new Guid("2c866674-5c28-49e6-9894-9c43ad33ef81"),
                             Department = "Environmental Science",
                             Name = "Group I"
                         },
                         new
                         {
-                            GroupId = new Guid("5c07bb8f-cdf5-4ec0-93c0-2498cafec5e3"),
+                            GroupId = new Guid("ac86f4cd-f829-4fd6-a6f3-b33c3236776b"),
                             Department = "Information Technology",
                             Name = "Group J"
                         },
                         new
                         {
-                            GroupId = new Guid("2ba13130-eb68-439e-9659-fd849011e1dd"),
+                            GroupId = new Guid("53399b0d-6e71-4e56-a0e4-65224877880f"),
                             Department = "Aerospace Engineering",
                             Name = "Group K"
                         });
@@ -159,6 +162,21 @@ namespace Infrastructure.Migrations
                     b.ToTable("Lecturers");
                 });
 
+            modelBuilder.Entity("Domain.Entities.LecturerSubject", b =>
+                {
+                    b.Property<Guid>("SubjectId")
+                        .HasColumnType("uuid");
+
+                    b.Property<Guid>("LecturerId")
+                        .HasColumnType("uuid");
+
+                    b.HasKey("SubjectId", "LecturerId");
+
+                    b.HasIndex("LecturerId");
+
+                    b.ToTable("LecturerSubjects");
+                });
+
             modelBuilder.Entity("Domain.Entities.Student", b =>
                 {
                     b.Property<Guid>("StudentId")
@@ -202,20 +220,13 @@ namespace Infrastructure.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(400)
-                        .HasColumnType("character varying(400)");
-
-                    b.Property<Guid>("LecturerId")
-                        .HasColumnType("uuid");
+                        .HasColumnType("text");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.HasKey("SubjectId");
-
-                    b.HasIndex("LecturerId");
 
                     b.ToTable("Subject");
                 });
@@ -271,6 +282,25 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("Domain.Entities.LecturerSubject", b =>
+                {
+                    b.HasOne("Domain.Entities.Lecturer", "Lecturer")
+                        .WithMany("LecturerSubjects")
+                        .HasForeignKey("LecturerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Domain.Entities.Subject", "Subject")
+                        .WithMany("LecturerSubjects")
+                        .HasForeignKey("SubjectId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Lecturer");
+
+                    b.Navigation("Subject");
+                });
+
             modelBuilder.Entity("Domain.Entities.Student", b =>
                 {
                     b.HasOne("Domain.Entities.Group", "Group")
@@ -290,17 +320,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Domain.Entities.Subject", b =>
-                {
-                    b.HasOne("Domain.Entities.Lecturer", "Lecturer")
-                        .WithMany("Subjects")
-                        .HasForeignKey("LecturerId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Lecturer");
-                });
-
             modelBuilder.Entity("Domain.Entities.Group", b =>
                 {
                     b.Navigation("GroupSubjects");
@@ -310,12 +329,14 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Lecturer", b =>
                 {
-                    b.Navigation("Subjects");
+                    b.Navigation("LecturerSubjects");
                 });
 
             modelBuilder.Entity("Domain.Entities.Subject", b =>
                 {
                     b.Navigation("GroupSubjects");
+
+                    b.Navigation("LecturerSubjects");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

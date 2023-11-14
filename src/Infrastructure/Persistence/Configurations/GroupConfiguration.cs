@@ -1,6 +1,6 @@
-﻿using Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Domain.Entities;
 
 namespace Infrastructure.Persistence.Configurations;
 
@@ -13,11 +13,9 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
         builder.HasMany(g => g.Students);
 
         builder.Property(g => g.Name)
-            .IsRequired()
             .HasMaxLength(100);
 
         builder.Property(g => g.Department)
-            .IsRequired()
             .HasMaxLength(100);
 
 

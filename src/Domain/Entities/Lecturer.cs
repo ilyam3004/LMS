@@ -9,4 +9,5 @@ public class Lecturer
     public DateTime Birthday { get; set; }
     public string Address { get; set; } = null!;
     public User User { get; set; } = null!;
+    public List<Subject> Subjects { get; set; } = null!;
 }

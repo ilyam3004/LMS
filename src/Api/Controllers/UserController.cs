@@ -1,15 +1,14 @@
 ﻿using Application.Authentication.Commands.RegisterLecturer;
 using Application.Authentication.Commands.RegisterStudent;
 using Application.Authentication.Queries.Login;
+using Contracts.Requests.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Contracts.Requests;
 using Contracts.Responses;
 using MapsterMapper;
 using MediatR;
 
 namespace Api.Controllers;
 
-[ApiController]
 [Route("api/users")]
 public class UserController(ISender sender, IMapper mapper) : ApiController
 {

@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(LmsDbContext))]
-    partial class LmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231114172105_ChangeUserSubjectRelationthisps")]
+    partial class ChangeUserSubjectRelationthisps
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,67 +48,67 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            GroupId = new Guid("5c774716-7b07-448b-bbc0-ee81f15309a2"),
+                            GroupId = new Guid("31daa61e-ba85-44c8-b3db-495b55472015"),
                             Department = "Computer Science",
                             Name = "Group A"
                         },
                         new
                         {
-                            GroupId = new Guid("848ab340-54e2-4a17-9dad-2674b251a550"),
+                            GroupId = new Guid("63f2d370-22d3-4a41-beee-520b645e6f45"),
                             Department = "Electrical Engineering",
                             Name = "Group B"
                         },
                         new
                         {
-                            GroupId = new Guid("65bec600-7e73-4bf7-8a47-1f7df1018fc6"),
+                            GroupId = new Guid("e5c2f458-2a37-4b34-804a-ef4a46799560"),
                             Department = "Mechanical Engineering",
                             Name = "Group C"
                         },
                         new
                         {
-                            GroupId = new Guid("a3e8d6bd-75f8-42df-9b9d-b0ad5cdd8b49"),
+                            GroupId = new Guid("f7902cb2-b999-4d45-aa26-ab574b40a339"),
                             Department = "Physics",
                             Name = "Group D"
                         },
                         new
                         {
-                            GroupId = new Guid("c9cae1d7-0a77-49fc-8840-f78fbc5051af"),
+                            GroupId = new Guid("d37c38f3-56d5-41e1-aa5b-2838fb8549da"),
                             Department = "Mathematics",
                             Name = "Group E"
                         },
                         new
                         {
-                            GroupId = new Guid("3d3f1176-41f0-41e2-9c1d-d703e82b6fc3"),
+                            GroupId = new Guid("e8129daa-e023-46bd-ab6e-188caaf004b7"),
                             Department = "Chemistry",
                             Name = "Group F"
                         },
                         new
                         {
-                            GroupId = new Guid("f3772db5-f34a-41cd-abfc-22b05d3675e1"),
+                            GroupId = new Guid("feb2b70a-578b-415a-80f4-a0fffa8e0e0a"),
                             Department = "Biology",
                             Name = "Group G"
                         },
                         new
                         {
-                            GroupId = new Guid("2e539179-3ad1-439d-80d3-9b87ba4ee992"),
+                            GroupId = new Guid("e18411c4-e0e2-4c77-8794-33548acbad8a"),
                             Department = "Civil Engineering",
                             Name = "Group H"
                         },
                         new
                         {
-                            GroupId = new Guid("37e160fa-a4ad-4071-9718-e8dbc41a2f09"),
+                            GroupId = new Guid("5499b1e9-4b32-478e-96de-60bb2ef864a1"),
                             Department = "Environmental Science",
                             Name = "Group I"
                         },
                         new
                         {
-                            GroupId = new Guid("5c07bb8f-cdf5-4ec0-93c0-2498cafec5e3"),
+                            GroupId = new Guid("a229deb6-c52e-4e2c-b523-76b5354df2a1"),
                             Department = "Information Technology",
                             Name = "Group J"
                         },
                         new
                         {
-                            GroupId = new Guid("2ba13130-eb68-439e-9659-fd849011e1dd"),
+                            GroupId = new Guid("28455a1d-41fc-4ad4-9721-a4e3ffb604cd"),
                             Department = "Aerospace Engineering",
                             Name = "Group K"
                         });
