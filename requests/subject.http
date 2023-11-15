@@ -1,0 +1,23 @@
+@host = http://localhost:5137/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMxZTA3NWZjLTFhYTctNGMyYi04NjAwLWZlNzJmNDViNDUxNiIsImdpdmVuX25hbWUiOiJGaXJzdE5hbWUiLCJmYW1pbHlfbmFtZSI6Ikxhc3ROYW1lIiwiZW1haWwiOiJsZWN0dXJlcmVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJMZWN0dXJlciIsImV4cCI6MTcwMDA3OTUxNiwiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.syHexXl6Dyc5Fs_p_9a9UHkpiVzwKHalFXdixiS8UUc
+@subjectId = 4fdcd308-f10e-45e6-b7b1-808e2ae22bb7
+
+### Create a new subject
+POST {host}/subjects
+Content-Type: application/json
+Authorization: Bearer {{token}}} 
+
+{
+  "Name": "Subject A",
+  "Description": "Description about the subject",
+  "GroupName": "Group B"
+}
+
+### Remove a subject
+DELETE {{host}}/subjects/{{subjectId}}
+Authorization: Bearer {{token}}
+
+### Get all subjects
+GET {{host}}/subjects
+Authorization: Bearer {{token}}
+

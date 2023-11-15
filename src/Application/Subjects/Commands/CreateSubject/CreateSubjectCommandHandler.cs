@@ -8,7 +8,7 @@ using MediatR;
 
 namespace Application.Subjects.Commands.CreateSubject;
 
-public class CreateSubjectCommandHandler(IUnitOfWork unitOfWork,
+public class CreateSubjectCommandHandler(IUnitOfWork unitOfWork, 
     IJwtTokenReader jwtTokenReader)
     : IRequestHandler<CreateSubjectCommand, Result<List<SubjectResult>>>
 {
@@ -22,7 +22,6 @@ public class CreateSubjectCommandHandler(IUnitOfWork unitOfWork,
 
         if (SubjectExistsInGroup(command.Name, group))
             return Errors.Subject.SubjectAlreadyExists;
-
 
         var userId = jwtTokenReader.ReadUserIdFromToken(command.Token);
         if (userId is null)
@@ -52,16 +51,17 @@ public class CreateSubjectCommandHandler(IUnitOfWork unitOfWork,
 
         await unitOfWork.SaveChangesAsync();
 
-        return await GetLecturerSubjects(user.Lecturer.LecturerId, group.Name);
+        return await GetLecturerSubjects(user.Lecturer.LecturerId);
     }
 
-    private async Task<List<SubjectResult>> GetLecturerSubjects(Guid lecturerId, string groupName)
+    private async Task<List<SubjectResult>> GetLecturerSubjects(Guid lecturerId)
     {
         var lecturerSubjects = await unitOfWork.Subjects
             .GetLecturerSubjects(lecturerId);
 
         return lecturerSubjects.Select(subject =>
-            new SubjectResult(subject, groupName)).ToList();
+            new SubjectResult(subject,
+                subject.GroupSubjects.FirstOrDefault()!.Group.Name)).ToList();
     }
 
     private bool SubjectExistsInGroup(string subjectName, Group group)

@@ -28,5 +28,8 @@ public static class Errors
     {
         public static Error SubjectAlreadyExists => Error.Conflict("Subject.SubjectAlreadyExists",
             description: "Subject with the same name already exists in this group");
+        
+        public static Error SubjectNotFound => Error.NotFound("Subject.SubjectNotFound",
+            description: "Subject not found");
     }
 }
