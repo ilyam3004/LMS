@@ -7,4 +7,4 @@ namespace Application.Subjects.Commands.RemoveSubject;
 public record RemoveSubjectCommand(
         Guid SubjectId,
         string Token)
-    : IRequest<Result<List<SubjectResult>>>;
+    : IRequest<Result<List<LecturerSubjectResult>>>;

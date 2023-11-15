@@ -4,7 +4,7 @@ using Domain.Entities;
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class SubjectRepository(LmsDbContext context) : 
+public class SubjectRepository(LmsDbContext context) :
     Repository<Subject>(context), ISubjectRepository
 {
     public async Task<List<Subject>> GetLecturerSubjects(Guid lecturerId)
@@ -12,7 +12,13 @@ public class SubjectRepository(LmsDbContext context) :
             .Include(s => s.GroupSubjects)
             .ThenInclude(gs => gs.Group)
             .ToListAsync();
-    
+
+    public async Task<List<Subject>> GetStudentSubjects(Guid groupId)
+        => await DbContext.GroupSubjects
+            .Where(gs => gs.GroupId == groupId)
+            .Select(gs => gs.Subject)
+            .ToListAsync();
+
     public async Task<bool> SubjectExists(Guid subjectId)
         => await DbContext.Subjects.AnyAsync(s => s.SubjectId == subjectId);
 }

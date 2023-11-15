@@ -10,9 +10,9 @@ namespace Application.Subjects.Commands.CreateSubject;
 
 public class CreateSubjectCommandHandler(IUnitOfWork unitOfWork, 
     IJwtTokenReader jwtTokenReader)
-    : IRequestHandler<CreateSubjectCommand, Result<List<SubjectResult>>>
+    : IRequestHandler<CreateSubjectCommand, Result<List<LecturerSubjectResult>>>
 {
-    public async Task<Result<List<SubjectResult>>> Handle(
+    public async Task<Result<List<LecturerSubjectResult>>> Handle(
         CreateSubjectCommand command,
         CancellationToken cancellationToken)
     {
@@ -54,13 +54,13 @@ public class CreateSubjectCommandHandler(IUnitOfWork unitOfWork,
         return await GetLecturerSubjects(user.Lecturer.LecturerId);
     }
 
-    private async Task<List<SubjectResult>> GetLecturerSubjects(Guid lecturerId)
+    private async Task<List<LecturerSubjectResult>> GetLecturerSubjects(Guid lecturerId)
     {
         var lecturerSubjects = await unitOfWork.Subjects
             .GetLecturerSubjects(lecturerId);
 
         return lecturerSubjects.Select(subject =>
-            new SubjectResult(subject,
+            new LecturerSubjectResult(subject,
                 subject.GroupSubjects.FirstOrDefault()!.Group.Name)).ToList();
     }
 

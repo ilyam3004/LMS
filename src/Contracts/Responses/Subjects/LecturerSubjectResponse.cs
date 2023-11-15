@@ -1,6 +1,6 @@
 namespace Contracts.Responses.Subjects;
 
-public record SubjectResponse(
+public record LecturerSubjectResponse(
     Guid Id,
     string Name,
     string Description,

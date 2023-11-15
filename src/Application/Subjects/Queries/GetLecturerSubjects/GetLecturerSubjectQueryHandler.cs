@@ -1,21 +1,21 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Domain.Abstractions.Results;
 using Application.Models;
+using Domain.Abstractions.Results;
 using Domain.Common;
 using MediatR;
 
-namespace Application.Subjects.Commands.GetLecturerSubjects;
+namespace Application.Subjects.Queries.GetLecturerSubjects;
 
-public class GetLecturerSubjectCommandHandler(IUnitOfWork unitOfWork,
+public class GetLecturerSubjectQueryHandler(IUnitOfWork unitOfWork,
         IJwtTokenReader jwtTokenReader)
-    : IRequestHandler<GetLecturerSubjectsCommand, Result<List<SubjectResult>>>
+    : IRequestHandler<GetLecturerSubjectsQuery, Result<List<LecturerSubjectResult>>>
 {
-    public async Task<Result<List<SubjectResult>>> Handle(
-        GetLecturerSubjectsCommand command,
+    public async Task<Result<List<LecturerSubjectResult>>> Handle(
+        GetLecturerSubjectsQuery query,
         CancellationToken cancellationToken)
     {
-        var userId = jwtTokenReader.ReadUserIdFromToken(command.Token);
+        var userId = jwtTokenReader.ReadUserIdFromToken(query.Token);
         if (userId is null)
             return Errors.User.InvalidToken;
 
@@ -28,7 +28,7 @@ public class GetLecturerSubjectCommandHandler(IUnitOfWork unitOfWork,
             .GetLecturerSubjects(user.Lecturer!.LecturerId);
 
         return lecturerSubjects.Select(subject =>
-            new SubjectResult(subject,
+            new LecturerSubjectResult(subject,
                 subject.GroupSubjects.FirstOrDefault()!.Group.Name)).ToList();
     }
 }

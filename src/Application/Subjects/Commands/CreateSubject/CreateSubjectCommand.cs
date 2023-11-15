@@ -8,4 +8,4 @@ public record CreateSubjectCommand(
     string Name,
     string Description,
     string GroupName,
-    string Token) : IRequest<Result<List<SubjectResult>>>;
+    string Token) : IRequest<Result<List<LecturerSubjectResult>>>;
