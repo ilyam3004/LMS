@@ -1,11 +1,10 @@
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models;
 using Domain.Abstractions.Results;
-using Domain.Common;
+using Application.Models;
 using Domain.Entities;
+using Domain.Common;
 using MediatR;
-using Microsoft.Extensions.Configuration.UserSecrets;
 
 namespace Application.Subjects.Commands.CreateSubject;
 
@@ -14,31 +13,34 @@ public class CreateSubjectCommandHandler(IUnitOfWork unitOfWork,
     : IRequestHandler<CreateSubjectCommand, Result<List<SubjectResult>>>
 {
     public async Task<Result<List<SubjectResult>>> Handle(
-        CreateSubjectCommand command, 
+        CreateSubjectCommand command,
         CancellationToken cancellationToken)
     {
-        if(await unitOfWork.Subjects.ExistsByName(command.Name))
-        {
-            return Errors.Subject.SubjectAlreadyExists;
-        }
-
         var group = await unitOfWork.Groups.GetGroupByName(command.GroupName);
-        if(group is null)
-        {
+        if (group is null)
             return Errors.Group.NotFound;
-        }
+
+        if (SubjectExistsInGroup(command.Name, group))
+            return Errors.Subject.SubjectAlreadyExists;
+
 
         var userId = jwtTokenReader.ReadUserIdFromToken(command.Token);
+        if (userId is null)
+            return Errors.User.InvalidToken;
 
-        var user = await unitOfWork.Users.GetByIdAsync(Guid.Parse(userId));
+        var user = await unitOfWork.Users
+        .GetUserByIdWithRelations(Guid.Parse(userId));
+        if (user is null)
+            return Errors.User.UserNotFound;
+
         var subject = new Subject
         {
             SubjectId = Guid.NewGuid(),
             Name = command.Name,
             Description = command.Description,
-            LecturerId = user.Lecturer.LecturerId
+            LecturerId = user.Lecturer!.LecturerId
         };
-        
+
         var groupSubject = new GroupSubject
         {
             GroupId = group.GroupId,
@@ -50,13 +52,18 @@ public class CreateSubjectCommandHandler(IUnitOfWork unitOfWork,
 
         await unitOfWork.SaveChangesAsync();
 
-        return await GetLecturerSubjects(user.Lecturer.LecturerId);
+        return await GetLecturerSubjects(user.Lecturer.LecturerId, group.Name);
     }
 
-    private async Task<List<SubjectResult>> GetLecturerSubjects(Guid lecturerId)
+    private async Task<List<SubjectResult>> GetLecturerSubjects(Guid lecturerId, string groupName)
     {
-        var lecturerSubjects = await unitOfWork.Subjects.GetLecturerSubjects(lecturerId);
+        var lecturerSubjects = await unitOfWork.Subjects
+            .GetLecturerSubjects(lecturerId);
 
-        return lecturerSubjects.Select(s => new SubjectResult(s)).ToList();
+        return lecturerSubjects.Select(subject =>
+            new SubjectResult(subject, groupName)).ToList();
     }
+
+    private bool SubjectExistsInGroup(string subjectName, Group group)
+        => group.GroupSubjects.Any(gs => gs.Subject.Name == subjectName);
 }

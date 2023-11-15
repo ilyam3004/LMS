@@ -3,7 +3,7 @@ using Application.Authentication.Commands.RegisterStudent;
 using Application.Authentication.Queries.Login;
 using Contracts.Requests.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Contracts.Responses;
+using Contracts.Responses.Authentication;
 using MapsterMapper;
 using MediatR;
 

@@ -6,6 +6,8 @@ public static class Errors
 {
     public static class User
     {
+        public static Error InvalidToken => Error.Unauthorized("User.InvalidToken",
+            description: "Invalid token");
         public static Error InvalidPassword => Error.Unauthorized("User.InvalidPassword",
             description: "Invalid email or password");
         
@@ -25,6 +27,6 @@ public static class Errors
     public static class Subject
     {
         public static Error SubjectAlreadyExists => Error.Conflict("Subject.SubjectAlreadyExists",
-            description: "Subject with the same name already exists");
+            description: "Subject with the same name already exists in this group");
     }
 }

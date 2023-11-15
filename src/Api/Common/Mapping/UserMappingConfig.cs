@@ -1,5 +1,5 @@
-﻿using Application.Models;
-using Contracts.Responses;
+﻿using Contracts.Responses.Authentication;
+using Application.Models;
 using Mapster;
 
 namespace Api.Common.Mapping;

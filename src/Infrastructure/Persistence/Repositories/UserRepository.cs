@@ -4,8 +4,8 @@ using Domain.Entities;
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class UserRepository(LmsDbContext context) 
-    : Repository<User>(context), IUserRepository 
+public class UserRepository(LmsDbContext context)
+    : Repository<User>(context), IUserRepository
 {
     public async Task<bool> UserExistsByEmail(string email)
     {
@@ -14,16 +14,18 @@ public class UserRepository(LmsDbContext context)
     }
 
     public async Task<bool> UserExistsById(Guid userId)
-    {
-        return await DbContext.Users
+        => await DbContext.Users
             .AnyAsync(u => u.UserId == userId);
-    }
 
     public async Task<User?> GetUserByEmail(string email)
-    {
-        return await DbContext.Users
+        => await DbContext.Users
             .Include(u => u.Student)
             .Include(u => u.Lecturer)
             .FirstOrDefaultAsync(u => u.Email == email);
-    }
+
+    public async Task<User?> GetUserByIdWithRelations(Guid userId)
+        => await DbContext.Users
+            .Include(u => u.Student)
+            .Include(u => u.Lecturer)
+            .FirstOrDefaultAsync(u => u.UserId == userId);
 }

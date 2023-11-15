@@ -1,5 +1,4 @@
 ﻿using Application.Subjects.Commands.CreateSubject;
-using Application.Subjects.RemoveSubject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Contracts.Requests.Subjects;
@@ -11,10 +10,10 @@ using MediatR;
 namespace Api.Controllers;
 
 [Route("api/subjects")]
+[Authorize(Roles = Roles.Lecturer)]
 public class SubjectController(ISender sender, IMapper mapper) : ApiController
 {
     [HttpPost]
-    [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> CreateSubject(CreateSubjectRequest request)
     {
         string token = Request.Headers["Authorization"].ToString().Split(" ")[1];
@@ -23,34 +22,32 @@ public class SubjectController(ISender sender, IMapper mapper) : ApiController
         var result = await sender.Send(command);
 
         return result.Match(
-            value => Ok(mapper.Map<SubjectResponse>(value)),
+            value => Ok(mapper.Map<List<SubjectResponse>>(value)),
             Problem);
     }
 
-    [HttpDelete("{subjectId}")]
-    [Authorize(Roles = Roles.Lecturer)]
-    public async Task<IActionResult> RemoveSubject(Guid subjectId)
-    {
-        var command = new RemoveSubjectCommand(subjectId);
+    // [HttpDelete("{subjectId}")]
+    // public async Task<IActionResult> RemoveSubject(Guid subjectId)
+    // {
+    //     var command = new RemoveSubjectCommand(subjectId);
 
-        var result = await sender.Send(command);
+    //     var result = await sender.Send(command);
 
-        return result.Match(
-            value => Ok(mapper.Map<>(value)),
-            Problem);
-    }
+    //     return result.Match(
+    //         value => Ok(mapper.Map<>(value)),
+    //         Problem);
+    // }
 
-    [HttpGet]
-    [Authorize(Roles = Roles.Lecturer)]
-    public async Task<IActionResult> GetLecturerSubjects()
-    {
-        string token = Request.Headers["Authorization"].ToString().Split(" ")[1];
-        var command = new GetLecturerSubjectsCommand(token);
+    // [HttpGet]
+    // public async Task<IActionResult> GetLecturerSubjects()
+    // {
+    //     string token = Request.Headers["Authorization"].ToString().Split(" ")[1];
+    //     var command = new GetLecturerSubjectsCommand(token);
 
-        var result = await sender.Send(command);
+    //     var result = await sender.Send(command);
 
-        return result.Match(
-            value => Ok(mapper.Map<>(value)),
-            Problem);
-    }
+    //     return result.Match(
+    //         value => Ok(mapper.Map<>(value)),
+    //         Problem);
+    // }
 }

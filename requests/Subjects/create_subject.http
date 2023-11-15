@@ -1,8 +1,9 @@
 POST http://localhost:5137/api/subjects
 Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjMxZTA3NWZjLTFhYTctNGMyYi04NjAwLWZlNzJmNDViNDUxNiIsImdpdmVuX25hbWUiOiJGaXJzdE5hbWUiLCJmYW1pbHlfbmFtZSI6Ikxhc3ROYW1lIiwiZW1haWwiOiJsZWN0dXJlcmVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJMZWN0dXJlciIsImV4cCI6MTcwMDA0NDY1MSwiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.tauGBMQYTvNpo5Ct6ylWeJz6Lwn6Cy0iHHLAvZhNnK8
 
 {
   "Name": "SubjectName",
   "Description": "Description about the subject",
-  "GroupName": "Group A"
+  "GroupName": "Group B"
 }

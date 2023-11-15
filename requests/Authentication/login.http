@@ -1,8 +1,8 @@
-﻿### Register Lecturer
+﻿### Login user
 POST http://localhost:5137/api/users/login
 Content-Type: application/json
 
 {
-  "Email": "emails@gmail.com",
-  "Password": "Password"
+  "Email": "lectureremail@gmail.com",
+  "Password": "password1234"
 }

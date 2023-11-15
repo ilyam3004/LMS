@@ -45,67 +45,67 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            GroupId = new Guid("5c774716-7b07-448b-bbc0-ee81f15309a2"),
+                            GroupId = new Guid("5c0530b5-ac03-4cdd-a836-481a53581a83"),
                             Department = "Computer Science",
                             Name = "Group A"
                         },
                         new
                         {
-                            GroupId = new Guid("848ab340-54e2-4a17-9dad-2674b251a550"),
+                            GroupId = new Guid("d4cc04b4-075d-4fe1-a767-fbdf2c447049"),
                             Department = "Electrical Engineering",
                             Name = "Group B"
                         },
                         new
                         {
-                            GroupId = new Guid("65bec600-7e73-4bf7-8a47-1f7df1018fc6"),
+                            GroupId = new Guid("e3bdf84f-e23f-485a-888c-e1e0f6fa9fb2"),
                             Department = "Mechanical Engineering",
                             Name = "Group C"
                         },
                         new
                         {
-                            GroupId = new Guid("a3e8d6bd-75f8-42df-9b9d-b0ad5cdd8b49"),
+                            GroupId = new Guid("fc7c4af8-2962-4c64-a9bf-0233a1fdca77"),
                             Department = "Physics",
                             Name = "Group D"
                         },
                         new
                         {
-                            GroupId = new Guid("c9cae1d7-0a77-49fc-8840-f78fbc5051af"),
+                            GroupId = new Guid("3bc56854-0d2e-455d-823e-7324f0fdba77"),
                             Department = "Mathematics",
                             Name = "Group E"
                         },
                         new
                         {
-                            GroupId = new Guid("3d3f1176-41f0-41e2-9c1d-d703e82b6fc3"),
+                            GroupId = new Guid("8d54f894-5ef8-47ef-b954-597e6d9c5fe1"),
                             Department = "Chemistry",
                             Name = "Group F"
                         },
                         new
                         {
-                            GroupId = new Guid("f3772db5-f34a-41cd-abfc-22b05d3675e1"),
+                            GroupId = new Guid("56f84755-a70c-4fbc-8e7b-7c1b1002d5c4"),
                             Department = "Biology",
                             Name = "Group G"
                         },
                         new
                         {
-                            GroupId = new Guid("2e539179-3ad1-439d-80d3-9b87ba4ee992"),
+                            GroupId = new Guid("b4edc1e0-fb0e-43a7-92fa-9a074a84e2af"),
                             Department = "Civil Engineering",
                             Name = "Group H"
                         },
                         new
                         {
-                            GroupId = new Guid("37e160fa-a4ad-4071-9718-e8dbc41a2f09"),
+                            GroupId = new Guid("81d8614e-4495-4323-bfd6-ab419ee70b80"),
                             Department = "Environmental Science",
                             Name = "Group I"
                         },
                         new
                         {
-                            GroupId = new Guid("5c07bb8f-cdf5-4ec0-93c0-2498cafec5e3"),
+                            GroupId = new Guid("f1d75f6d-d20c-455a-a586-c3436c5f8a48"),
                             Department = "Information Technology",
                             Name = "Group J"
                         },
                         new
                         {
-                            GroupId = new Guid("2ba13130-eb68-439e-9659-fd849011e1dd"),
+                            GroupId = new Guid("233beaf6-5b1d-4a5b-9f36-6103399fbfe5"),
                             Department = "Aerospace Engineering",
                             Name = "Group K"
                         });
@@ -217,7 +217,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("LecturerId");
 
-                    b.ToTable("Subject");
+                    b.ToTable("Subjects");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>
