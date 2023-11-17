@@ -49,8 +49,6 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator
             user.Email,
             Roles.Lecturer);
 
-        return new AuthenticationResult(
-            user, 
-            token);
+        return new AuthenticationResult(user, token);
     }
 }

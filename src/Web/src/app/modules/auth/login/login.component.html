@@ -1,25 +1,37 @@
 <div class="card">
   <h4 class="card-header">Login</h4>
   <div class="card-body">
-    <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label class="form-label">Email</label>
+        <input type="text" formControlName="email" class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && loginFormControl['email'].errors }"/>
+        @if (submitted && loginFormControl['email'].errors) {
+          <div class="invalid-feedback">
+            @if (loginFormControl['email'].errors['required']) {
+              Email is required
+            }
+<!--            @else if (loginFormControl['email'].hasError('email')) {-->
+<!--              This is not valid email-->
+<!--            }-->
+          </div>
+        }
+      </div>
       <div class="mb-3">
         <label class="form-label">Password</label>
-        <input
-          type="password"
-          formControlName="password"
-          class="form-control"
-          [ngClass]="{ 'is-invalid': submitted && f['password'].errors }"
-        />
-        <div *ngIf="submitted && f['password'].errors" class="invalid-feedback">
-          <div *ngIf="f['password'].errors['required']">Password is required</div>
-        </div>
-      </div>
-      <div>
+        <input type="text" formControlName="password" class="form-control"
+               [ngClass]="{ 'is-invalid': submitted && loginFormControl['password'].errors }"/>
+        @if (submitted && loginFormControl['password'].errors) {
+          <div class="invalid-feedback">
+            @if (loginFormControl['password'].errors['required']) {
+            }
+<!--            @else if (loginFormControl['password'].hasError('minLength')) {-->
+<!--              Password length should be more than 8 characters-->
+<!--            }-->
+          </div>
+        }
         <button [disabled]="loading" class="btn btn-primary">
-          <span
-            *ngIf="loading"
-            class="spinner-border spinner-border-sm me-1"
-          ></span>
+          <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
           Login
         </button>
         <a routerLink="../register" class="btn btn-link">Register</a>

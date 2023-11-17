@@ -4,6 +4,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 import {AlertService} from "../../../core/services/alert.service";
 import {AuthenticationService} from "../../../core/services/authentication.service";
 import {first} from "rxjs";
+import {User} from "../../../core/models/user";
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ import {first} from "rxjs";
   styleUrl: './login.component.scss'
 })
 export class LoginComponent implements OnInit {
-  form!: FormGroup;
+  loginForm!: FormGroup;
   loading = false;
   submitted = false;
 
@@ -21,18 +22,17 @@ export class LoginComponent implements OnInit {
     private router: Router,
     private authenticationService: AuthenticationService,
     private alertService: AlertService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
-    this.form = this.formBuilder.group({
-      username: ['', Validators.required],
+    this.loginForm = this.formBuilder.group({
+      email: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
 
-  get f() {
-    return this.form.controls;
+  get loginFormControl() {
+    return this.loginForm.controls;
   }
 
   onSubmit() {
@@ -40,17 +40,23 @@ export class LoginComponent implements OnInit {
 
     this.alertService.clear();
 
-    if (this.form.invalid) {
+    if (this.loginForm.invalid) {
       return;
     }
 
     this.loading = true;
-    this.authenticationService.login(this.f['username'].value, this.f['password'].value)
+    console.log(this.loginFormControl['email'].value)
+    this.authenticationService.login(this.loginFormControl['email'].value,
+      this.loginFormControl['password'].value)
       .pipe(first())
       .subscribe({
-        next: () => {
-          const returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/';
-          this.router.navigateByUrl(returnUrl);
+        next: (user: User) => {
+          const role = this.authenticationService.getUserRole(user.token!);
+          if(role == 'Lecturer') {
+            this.router.navigate(['/lecturer'], { relativeTo: this.route });
+          } else if (role == 'Student') {
+            this.router.navigate(['/student'], { relativeTo: this.route });
+          }
         },
         error: error => {
           this.alertService.error(error);

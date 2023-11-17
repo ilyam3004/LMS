@@ -10,7 +10,7 @@ export interface RegisterLecturerRequest {
     firstName: string,
     lastName: string,
     degree?: string,
-    birdthay: Date,
+    birthday: string,
     address: string
 }
 
@@ -21,5 +21,5 @@ export interface RegisterStudentRequest {
     lastName: string,
     groupName: string,
     course: number,
-    birdthay: Date,
+    birthday: string,
 }

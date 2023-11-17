@@ -6,13 +6,11 @@ import {HTTP_INTERCEPTORS, HttpClientModule} from "@angular/common/http";
 import {JwtInterceptor} from "./helpers/jwt.interceptor";
 import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {ReactiveFormsModule} from "@angular/forms";
-import { HomeComponent } from './modules/lecturer/home/home.component';
 import { AlertComponent } from './shared/components/alert/alert.component';
 
 @NgModule({
   declarations: [
     AppComponent,
-    HomeComponent,
     AlertComponent
   ],
   imports: [

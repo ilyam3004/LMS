@@ -2,12 +2,12 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 
 import { LecturerRoutingModule } from './lecturer-routing.module';
-import { HomeComponent } from './home/home.component';
+import { LecturerDashboardComponent } from './home/lecturer-dashboard.component';
 
 
 @NgModule({
   declarations: [
-    HomeComponent
+    LecturerDashboardComponent
   ],
   imports: [
     CommonModule,

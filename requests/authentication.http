@@ -1,4 +1,4 @@
-﻿@host = localhost:5137/api
+﻿@host = http://localhost:5137/api
 
 ### Register Lecturer
 POST {{host}}/users/lecturers/register
@@ -19,14 +19,14 @@ POST {{host}}/users/students/register
 Content-Type: application/json
 
 {
-  "Email": "validasememail1111@gmail.com",
+  "Email": "studentmail@gmail.com",
   "Password": "Password1234",
   "FirstName": "FirstName",
   "LastName": "LastName",
   "Address": "Address",
   "Course": 6,
   "Birthday": "2023-11-10",
-  "GroupName": "Group A"
+  "GroupName": "Group B"
 }
 
 ### Login user

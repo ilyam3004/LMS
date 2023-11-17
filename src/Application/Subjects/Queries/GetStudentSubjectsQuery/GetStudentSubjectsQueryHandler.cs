@@ -28,7 +28,7 @@ public class GetStudentSubjectsQueryHandler(IUnitOfWork unitOfWork,
             .GetStudentSubjects(user.Student!.GroupId);
 
         return studentSubjects.Select(subject =>
-            new StudentSubjectResult(subject, "test lecturer name"))
+            new StudentSubjectResult(subject, subject.Lecturer.FullName))
             .ToList();
     }
 }

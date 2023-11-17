@@ -4,6 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AuthenticationService } from '../../../core/services/authentication.service';
 import { AlertService } from '../../../core/services/alert.service';
 import { first } from 'rxjs';
+import {RegisterLecturerRequest, RegisterStudentRequest} from "../../../core/models/user";
 
 @Component({
   selector: 'app-register',
@@ -29,27 +30,27 @@ export class RegisterComponent implements OnInit {
     this.initializeForms();
   }
 
-
-
   get studentFormControl() { return this.studentForm.controls; }
-  get lectuerFormControl() { return this.lecturerForm.controls; }
+  get lecturerFormControl() { return this.lecturerForm.controls; }
 
   onStudentFormSubmit() {
     this.submitted = true;
-
     this.alertService.clear();
 
     if (this.studentForm.invalid) {
       return;
     }
 
+    const request: RegisterStudentRequest = this.studentForm.value;
     this.loading = true;
-    this.authenticationService.registerLecturer(this.studentForm.value)
+    request.birthday = new Date(request.birthday).toISOString();
+
+    this.authenticationService.registerStudent(this.studentForm.value)
       .pipe(first())
       .subscribe({
         next: () => {
           this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-          this.router.navigate(['../home'], { relativeTo: this.route });
+          this.router.navigate(['/student'], {relativeTo: this.route});
         },
         error: error => {
           this.alertService.error(error);
@@ -59,21 +60,25 @@ export class RegisterComponent implements OnInit {
   }
 
   onLecturerFormSubmit() {
+
     this.submitted = true;
 
     this.alertService.clear();
 
-    if (this.studentForm.invalid) {
+    if (this.lecturerForm.invalid) {
       return;
     }
 
+    const request: RegisterLecturerRequest = this.lecturerForm.value;
     this.loading = true;
-    this.authenticationService.registerLecturer(this.studentForm.value)
+    request.birthday = new Date(request.birthday).toISOString();
+
+    this.authenticationService.registerLecturer(request)
       .pipe(first())
       .subscribe({
         next: () => {
           this.alertService.success('Registration successful', { keepAfterRouteChange: true });
-          this.router.navigate(['../home'], { relativeTo: this.route });
+          this.router.navigate(['/lecturer'], { relativeTo: this.route });
         },
         error: error => {
           this.alertService.error(error);
@@ -89,7 +94,7 @@ export class RegisterComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       address: ['', Validators.required],
-      course: ['1', Validators.required],
+      course: [1, Validators.required],
       birthday: ['', Validators.required],
       groupName: ['', Validators.required]
     });
@@ -100,7 +105,7 @@ export class RegisterComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       degree: [''],
-      birthDay: ['', Validators.required],
+      birthday: ['', Validators.required],
       address: ['', Validators.required]
     });
   }

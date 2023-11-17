@@ -1,0 +1,6 @@
+@host = http://localhost:5137/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjlkNGM2OWY4LWJmYzctNDQzOC04ZjQ3LTdiM2Y3ODA3NzQxOSIsImdpdmVuX25hbWUiOiJGaXJzdE5hbWUiLCJmYW1pbHlfbmFtZSI6Ikxhc3ROYW1lIiwiZW1haWwiOiJzdHVkZW50bWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiU3R1ZGVudCIsImV4cCI6MTcwMDEzNDM4NiwiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.JrpOXHAuxZxYPrDX1FX7GhkpmGc31FsiBHkycQa_ep8
+
+### Get student subjects
+GET {{host}}/subjects/student
+Authorization: Bearer {{token}}

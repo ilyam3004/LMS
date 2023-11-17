@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrl: './home.component.scss'
+  templateUrl: './lecturer-dashboard.component.html',
+  styleUrl: './lecturer-dashboard.component.scss'
 })
-export class HomeComponent {
+export class LecturerDashboardComponent {
 
 }

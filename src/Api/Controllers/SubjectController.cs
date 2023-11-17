@@ -57,7 +57,7 @@ public class SubjectController(ISender sender, IMapper mapper) : ApiController
             Problem);
     }
 
-    [HttpGet]
+    [HttpGet("student")]
     [Authorize(Roles = Roles.Student)]
     public async Task<IActionResult> GetStudentSubjects()
     {
