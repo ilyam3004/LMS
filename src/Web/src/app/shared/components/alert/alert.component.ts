@@ -37,7 +37,6 @@ export class AlertComponent {
         }
       });
 
-    // clear alerts on location change
     this.routeSubscription = this.router.events.subscribe(event => {
       if (event instanceof NavigationStart) {
         this.alertService.clear(this.id);

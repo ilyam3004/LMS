@@ -1,212 +1,231 @@
-<div class="card">
-  <h4 class="card-header">Register</h4>
-  <div class="card-body">
-    <div class="mb-3">
-      <label class="form-label">Role</label>
-      <select [(ngModel)]="role" class="form-control">
-        <option value="student">Student</option>
-        <option value="lecturer">Lecturer</option>
-      </select>
+@if (groupLoading) {
+  <div class="d-flex justify-content-center align-items-center" style="height: 85vh;">
+    <div class="spinner-border" role="status">
     </div>
-    @if (role == 'student') {
-      <form [formGroup]="studentForm" (ngSubmit)="onStudentFormSubmit()">
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input type="text" formControlName="email" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && studentFormControl['email'].errors }"/>
-          @if (submitted && studentFormControl['email'].errors) {
-            <div class="invalid-feedback">
-              @if (studentFormControl['email'].errors['required']) {
-                Email is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="text" formControlName="password" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && studentFormControl['password'].errors }"/>
-          @if (submitted && studentFormControl['password'].errors) {
-            <div class="invalid-feedback">
-              @if (studentFormControl['password'].errors['required']) {
-                Password is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">First Name</label>
-          <input type="text" formControlName="firstName" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && studentFormControl['firstName'].errors }"/>
-          @if (submitted && studentFormControl['firstName'].errors) {
-            <div class="invalid-feedback">
-              @if (studentFormControl['firstName'].errors['required']) {
-                First Name is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Last Name</label>
-          <input type="text" formControlName="lastName" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && studentFormControl['lastName'].errors }"/>
-          @if (submitted && studentFormControl['lastName'].errors) {
-            <div class="invalid-feedback">
-              @if (studentFormControl['lastName'].errors['required']) {
-                Last Name is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Group</label>
-          <input type="text" formControlName="groupName" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && studentFormControl['groupName'].errors }"/>
-          @if (submitted && studentFormControl['groupName'].errors) {
-            <div class="invalid-feedback">
-              @if (studentFormControl['groupName'].errors['required']) {
-                Group is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Course</label>
-          <select class="form-control" formControlName="course">
-            <option value="1">1</option>
-            <option value="2">2</option>
-            <option value="3">3</option>
-            <option value="4">4</option>
-            <option value="5">5</option>
-            <option value="6">6</option>
-          </select>
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Birthday</label>
-          <input type="text" formControlName="birthday" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && studentFormControl['birthday'].errors }"/>
-          @if (submitted && studentFormControl['birthday'].errors) {
-            <div class="invalid-feedback">
-              @if (studentFormControl['birthday'].errors['required']) {
-                Birthday is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Address</label>
-          <input type="text" formControlName="address" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && studentFormControl['address'].errors }"/>
-          @if (submitted && studentFormControl['address'].errors) {
-            <div class="invalid-feedback">
-              @if (studentFormControl['address'].errors['required']) {
-                Address is required
-              }
-            </div>
-          }
-        </div>
-        <div>
-          <button [disabled]="loading" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
-            Register
-          </button>
-          <a routerLink="../login" class="btn btn-link">Login</a>
-        </div>
-      </form>
-    } @else if (role == 'lecturer') {
-      <form [formGroup]="lecturerForm" (ngSubmit)="onLecturerFormSubmit()">
-        <div class="mb-3">
-          <label class="form-label">Email</label>
-          <input type="text" formControlName="email" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['email'].errors }"/>
-          @if (submitted && lecturerFormControl['email'].errors) {
-            <div class="invalid-feedback">
-              @if (lecturerFormControl['email'].errors['required']) {
-                Email is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Password</label>
-          <input type="text" formControlName="password" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['password'].errors }"/>
-          @if (submitted && lecturerFormControl['password'].errors) {
-            <div class="invalid-feedback">
-              @if (lecturerFormControl['password'].errors['required']) {
-                Password is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">First Name</label>
-          <input type="text" formControlName="firstName" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['firstName'].errors }"/>
-          @if (submitted && lecturerFormControl['firstName'].errors) {
-            <div class="invalid-feedback">
-              @if (lecturerFormControl['firstName'].errors['required']) {
-                First Name is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Last Name</label>
-          <input type="text" formControlName="lastName" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['lastName'].errors }"/>
-          @if (submitted && lecturerFormControl['lastName'].errors) {
-            <div class="invalid-feedback">
-              @if (lecturerFormControl['lastName'].errors['required']) {
-                Last Name is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Degree</label>
-          <input type="text" formControlName="degree" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['degree'].errors }"/>
-          @if (submitted && lecturerFormControl['degree'].errors) {
-            <div class="invalid-feedback">
-              @if (lecturerFormControl['degree'].errors['required']) {
-                Last Name is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Birthday</label>
-          <input type="text" formControlName="birthday" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['birthday'].errors }"/>
-          @if (submitted && lecturerFormControl['birthday'].errors) {
-            <div class="invalid-feedback">
-              @if (lecturerFormControl['birthday'].errors['required']) {
-                Birthday is required
-              }
-            </div>
-          }
-        </div>
-        <div class="mb-3">
-          <label class="form-label">Address</label>
-          <input type="text" formControlName="address" class="form-control"
-                 [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['address'].errors }"/>
-          @if (submitted && lecturerFormControl['address'].errors) {
-            <div class="invalid-feedback">
-              @if (lecturerFormControl['address'].errors['required']) {
-                Address is required
-              }
-            </div>
-          }
-        </div>
-        <div>
-          <button [disabled]="loading" class="btn btn-primary">
-            <span *ngIf="loading" class="spinner-border spinner-border-sm me-1"></span>
-            Register
-          </button>
-          <a routerLink="../login" class="btn btn-link">Login</a>
-        </div>
-      </form>
-    }
   </div>
-</div>
+} @else {
+  <div class="card">
+    <h4 class="card-header">Register</h4>
+    <div class="card-body">
+      <div class="mb-3">
+        <label class="form-label">Role</label>
+        <select [(ngModel)]="role" class="form-control">
+          <option value="student">Student</option>
+          <option value="lecturer">Lecturer</option>
+        </select>
+      </div>
+      @if (role == 'student') {
+        <form [formGroup]="studentForm" (ngSubmit)="onStudentFormSubmit()">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" formControlName="email" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && studentFormControl['email'].errors }"/>
+            @if (submitted && studentFormControl['email'].errors) {
+              <div class="invalid-feedback">
+                @if (studentFormControl['email'].errors['required']) {
+                  Email is required
+                } @else if (studentFormControl['email'].hasError('email')) {
+                  This is not valid email
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="text" formControlName="password" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && studentFormControl['password'].errors }"/>
+            @if (submitted && studentFormControl['password'].errors) {
+              <div class="invalid-feedback">
+                @if (studentFormControl['password'].hasError('required')) {
+                  Password is required
+                } @else if (studentFormControl['password'].hasError('minlength')) {
+                  Password length should be more than 8 characters
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" formControlName="firstName" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && studentFormControl['firstName'].errors }"/>
+            @if (submitted && studentFormControl['firstName'].errors) {
+              <div class="invalid-feedback">
+                @if (studentFormControl['firstName'].errors['required']) {
+                  First Name is required
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && studentFormControl['lastName'].errors }"/>
+            @if (submitted && studentFormControl['lastName'].errors) {
+              <div class="invalid-feedback">
+                @if (studentFormControl['lastName'].errors['required']) {
+                  Last Name is required
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Group</label>
+            <select class="form-control" formControlName="groupName"
+                    [ngClass]="{ 'is-invalid': submitted && studentFormControl['groupName'].errors }">
+              @for (group of groups;track group.groupId) {
+                <option ngValue="{{group.name}}">{{ group.name }}</option>
+              }
+            </select>
+            @if (submitted && studentFormControl['groupName'].errors) {
+              <div class="invalid-feedback">
+                Group is required
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Birthday</label>
+            <div class="input-group">
+              <input class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && studentFormControl['birthday'].errors }"
+                     placeholder="yyyy-mm-dd" name="birthday" formControlName="birthday"
+                     ngbDatepicker #d="ngbDatepicker" [positionTarget]="buttonEl" required/>
+              <button #buttonEl class="btn btn-outline-secondary bi bi-calendar3"
+                      (click)="d.toggle()" type="button"></button>
+              @if (submitted && studentFormControl['birthday'].errors) {
+                <div class="invalid-feedback">
+                  Birthday is required
+                </div>
+              }
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" formControlName="address" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && studentFormControl['address'].errors }"/>
+            @if (submitted && studentFormControl['address'].errors) {
+              <div class="invalid-feedback">
+                @if (studentFormControl['address'].errors['required']) {
+                  Address is required
+                }
+              </div>
+            }
+          </div>
+          <div>
+            <button [disabled]="registerLoading" class="btn btn-primary">
+              <span *ngIf="registerLoading" class="spinner-border spinner-border-sm me-1"></span>
+              Register
+            </button>
+            <a routerLink="../login" class="btn btn-link">Login</a>
+          </div>
+        </form>
+      } @else if (role == 'lecturer') {
+        <form [formGroup]="lecturerForm" (ngSubmit)="onLecturerFormSubmit()">
+          <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input type="text" formControlName="email" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['email'].errors }"/>
+            @if (submitted && lecturerFormControl['email'].errors) {
+              <div class="invalid-feedback">
+                @if (lecturerFormControl['email'].errors['required']) {
+                  Email is required
+                } @else if (lecturerFormControl['email'].hasError('email')) {
+                  This is not valid email
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Password</label>
+            <input type="text" formControlName="password" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['password'].errors }"/>
+            @if (submitted && lecturerFormControl['password'].errors) {
+              <div class="invalid-feedback">
+                @if (lecturerFormControl['password'].errors['required']) {
+                  Password is required
+                } @else if (lecturerFormControl['password'].hasError('minlength')) {
+                  Password length should be more than 8 characters
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">First Name</label>
+            <input type="text" formControlName="firstName" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['firstName'].errors }"/>
+            @if (submitted && lecturerFormControl['firstName'].errors) {
+              <div class="invalid-feedback">
+                @if (lecturerFormControl['firstName'].errors['required']) {
+                  First Name is required
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" formControlName="lastName" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['lastName'].errors }"/>
+            @if (submitted && lecturerFormControl['lastName'].errors) {
+              <div class="invalid-feedback">
+                @if (lecturerFormControl['lastName'].errors['required']) {
+                  Last Name is required
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Degree</label>
+            <input type="text" formControlName="degree" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['degree'].errors }"/>
+            @if (submitted && lecturerFormControl['degree'].errors) {
+              <div class="invalid-feedback">
+                @if (lecturerFormControl['degree'].errors['required']) {
+                  Last Name is required
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Birthday</label>
+            <div class="input-group">
+              <input class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['birthday'].errors }"
+                     placeholder="yyyy-mm-dd"
+                     name="birthday"
+                     formControlName="birthday"
+                     ngbDatepicker
+                     #d="ngbDatepicker"
+                     [positionTarget]="buttonEl"
+                     required/>
+              <button #buttonEl class="btn btn-outline-secondary bi bi-calendar3" (click)="d.toggle()"
+                      type="button"></button>
+              @if (submitted && lecturerFormControl['birthday'].errors) {
+                <div class="invalid-feedback">
+                  Birthday is required
+                </div>
+              }
+            </div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Address</label>
+            <input type="text" formControlName="address" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['address'].errors }"/>
+            @if (submitted && lecturerFormControl['address'].errors) {
+              <div class="invalid-feedback">
+                @if (lecturerFormControl['address'].errors['required']) {
+                  Address is required
+                }
+              </div>
+            }
+          </div>
+          <div>
+            <button [disabled]="registerLoading" class="btn btn-primary">
+              <span *ngIf="registerLoading" class="spinner-border spinner-border-sm me-1"></span>
+              Register
+            </button>
+            <a routerLink="../login" class="btn btn-link">Login</a>
+          </div>
+        </form>
+      }
+    </div>
+  </div>
+}

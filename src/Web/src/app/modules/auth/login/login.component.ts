@@ -26,8 +26,8 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      email: ['', Validators.required],
-      password: ['', Validators.required]
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
@@ -36,6 +36,7 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
+    console.log(this.loginForm.errors)
     this.submitted = true;
 
     this.alertService.clear();
@@ -45,7 +46,6 @@ export class LoginComponent implements OnInit {
     }
 
     this.loading = true;
-    console.log(this.loginFormControl['email'].value)
     this.authenticationService.login(this.loginFormControl['email'].value,
       this.loginFormControl['password'].value)
       .pipe(first())
@@ -53,9 +53,9 @@ export class LoginComponent implements OnInit {
         next: (user: User) => {
           const role = this.authenticationService.getUserRole(user.token!);
           if(role == 'Lecturer') {
-            this.router.navigate(['/lecturer'], { relativeTo: this.route });
+            this.router.navigate(['/lecturer/subjects'], { relativeTo: this.route });
           } else if (role == 'Student') {
-            this.router.navigate(['/student'], { relativeTo: this.route });
+            this.router.navigate(['/student/subjects'], { relativeTo: this.route });
           }
         },
         error: error => {

@@ -1,12 +1,15 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LecturerDashboardComponent } from './home/lecturer-dashboard.component';
+import { LayoutComponent } from './layout/layout.component';
+import {SubjectComponent} from "./subject/subject.component";
+import {TaskComponent} from "./task/task.component";
 
 const routes: Routes = [
   {
-    path: 'home', component: LecturerDashboardComponent,
+    path: '', component:  LayoutComponent,
     children: [
-      //{ path: '', component:  },
+      { path: 'subjects', component: SubjectComponent },
+      { path: 'tasks', component: TaskComponent },
     ]
   }
 ];
