@@ -1,1 +1,41 @@
-<p>subject works!</p>
+@if (loading) {
+  <div class="d-flex justify-content-center align-items-center" style="height: 85vh;">
+    <div class="spinner-border" role="status">
+    </div>
+  </div>
+} @else {
+  <div class="container-fluid flex-column subject-page-container">
+    <div class="create-subject-container">
+      <h2>
+        Subjects
+      </h2>
+
+    </div>
+    <div class="subject-container">
+      @for (subject of subjects;track subject.subjectId;) {
+        <div class="card w-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ subject.name }}</h5>
+            <p class="card-text">{{ subject.description }}</p>
+            <div ngbAccordion #accordion="ngbAccordion">
+              <div ngbAccordionItem="first">
+                <h2 ngbAccordionHeader>
+                  <button ngbAccordionButton>Students</button>
+                </h2>
+                <div ngbAccordionCollapse>
+                  <div ngbAccordionBody>
+                    <ng-template>
+                    </ng-template>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="remove-button-container">
+              <button type="button" class="btn btn-outline-danger">Remove</button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  </div>
+}

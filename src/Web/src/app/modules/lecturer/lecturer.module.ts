@@ -6,6 +6,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SubjectComponent } from './subject/subject.component';
 import { TaskComponent } from './task/task.component';
+import {NgbAccordionDirective, NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { TaskComponent } from './task/task.component';
   ],
   imports: [
     CommonModule,
-    LecturerRoutingModule
+    LecturerRoutingModule,
+    NgbAccordionModule
   ]
 })
 export class LecturerModule { }

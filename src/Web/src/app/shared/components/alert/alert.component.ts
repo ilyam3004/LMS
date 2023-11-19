@@ -1,5 +1,4 @@
 import { Component, Input } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { Subscription } from 'rxjs';
 import { NavigationStart, Router } from '@angular/router';
 import { Alert, AlertType } from '../../../core/models/alert';

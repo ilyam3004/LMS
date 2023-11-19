@@ -1,0 +1,21 @@
+.subject-page-container {
+  width: 60%;
+
+  .create-subject-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 3% 0 3% 0;
+  }
+
+  .subject-container {
+    display: flex;
+    justify-content: center;
+
+    .remove-button-container {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 2%;
+    }
+  }
+}
