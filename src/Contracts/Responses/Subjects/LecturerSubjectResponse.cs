@@ -1,7 +1,9 @@
+using Contracts.Responses.Groups;
+
 namespace Contracts.Responses.Subjects;
 
 public record LecturerSubjectResponse(
-    Guid Id,
+    Guid SubjectId,
     string Name,
     string Description,
-    string GroupName);
+    List<GroupResponse> Groups);

@@ -11,6 +11,7 @@ public class SubjectRepository(LmsDbContext context) :
         => await DbContext.Subjects.Where(s => s.LecturerId == lecturerId)
             .Include(s => s.GroupSubjects)
             .ThenInclude(gs => gs.Group)
+            .ThenInclude(g => g.Students)
             .ToListAsync();
 
     public async Task<List<Subject>> GetStudentSubjects(Guid groupId)

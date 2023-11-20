@@ -1,6 +1,5 @@
-﻿namespace Application.Models;
+﻿using Domain.Entities;
 
-public class StudentResult
-{
-    
-}
+namespace Application.Models;
+
+public record StudentResult(Student Student);

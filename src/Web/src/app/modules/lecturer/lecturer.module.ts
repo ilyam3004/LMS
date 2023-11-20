@@ -6,7 +6,9 @@ import { LayoutComponent } from './layout/layout.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SubjectComponent } from './subject/subject.component';
 import { TaskComponent } from './task/task.component';
-import {NgbAccordionDirective, NgbAccordionModule} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionDirective, NgbAccordionModule, NgbDatepicker, NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap";
+import {FormsModule, ReactiveFormsModule} from "@angular/forms";
+import {AuthRoutingModule} from "../auth/auth-routing.module";
 
 
 @NgModule({
@@ -18,8 +20,11 @@ import {NgbAccordionDirective, NgbAccordionModule} from "@ng-bootstrap/ng-bootst
   ],
   imports: [
     CommonModule,
+    FormsModule,
     LecturerRoutingModule,
-    NgbAccordionModule
+    NgbAccordionModule,
+    NgbInputDatepicker,
+    ReactiveFormsModule
   ]
 })
 export class LecturerModule { }

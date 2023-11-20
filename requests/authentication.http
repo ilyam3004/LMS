@@ -19,14 +19,14 @@ POST {{host}}/users/students/register
 Content-Type: application/json
 
 {
-  "Email": "studentmail@gmail.com",
+  "Email": "studentmail6@gmail.com",
   "Password": "Password1234",
   "FirstName": "FirstName",
   "LastName": "LastName",
   "Address": "Address",
   "Course": 6,
   "Birthday": "2023-11-10",
-  "GroupName": "Group B"
+  "GroupName": "Group A"
 }
 
 ### Login user
@@ -34,6 +34,6 @@ POST {{host}}/users/login
 Content-Type: application/json
 
 {
-  "Email": "lectureremail@gmail.com",
+  "Email": "email@gmail.com",
   "Password": "password1234"
 }

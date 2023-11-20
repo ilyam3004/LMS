@@ -1,14 +1,15 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models;
 using Domain.Abstractions.Results;
+using Application.Models;
 using Domain.Common;
 using MediatR;
 
 namespace Application.Subjects.Queries.GetLecturerSubjects;
 
-public class GetLecturerSubjectQueryHandler(IUnitOfWork unitOfWork,
-        IJwtTokenReader jwtTokenReader)
+public class GetLecturerSubjectQueryHandler(
+    IUnitOfWork unitOfWork,
+    IJwtTokenReader jwtTokenReader)
     : IRequestHandler<GetLecturerSubjectsQuery, Result<List<LecturerSubjectResult>>>
 {
     public async Task<Result<List<LecturerSubjectResult>>> Handle(
@@ -26,9 +27,18 @@ public class GetLecturerSubjectQueryHandler(IUnitOfWork unitOfWork,
 
         var lecturerSubjects = await unitOfWork.Subjects
             .GetLecturerSubjects(user.Lecturer!.LecturerId);
-
+       
         return lecturerSubjects.Select(subject =>
-            new LecturerSubjectResult(subject,
-                subject.GroupSubjects.FirstOrDefault()!.Group.Name)).ToList();
+        {
+            var groupResults = subject.GroupSubjects.Select(gs =>
+            {
+                var studentResults = gs.Group.Students.Select(s => 
+                    new StudentResult(s)).ToList();
+                
+                return new GroupResult(gs.Group, studentResults);
+            }).ToList();
+
+            return new LecturerSubjectResult(subject, groupResults);
+        }).ToList();
     }
 }

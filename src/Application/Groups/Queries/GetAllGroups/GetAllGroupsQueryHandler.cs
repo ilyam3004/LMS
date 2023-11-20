@@ -12,8 +12,11 @@ public class GetAllGroupsQueryHandler(IUnitOfWork unitOfWork)
         GetAllGroupsQuery request, 
         CancellationToken cancellationToken)
     {
-        var groups = await unitOfWork.Groups.GetAll();
+        var groups = await unitOfWork.Groups.GetAllGroupsWithStudents();
         
-        return groups.Select(g => new GroupResult(g)).ToList();
+        return groups.Select(g => 
+            new GroupResult(g, g.Students.Select(s => 
+                new StudentResult(s)).ToList()))
+            .ToList();
     }
 }

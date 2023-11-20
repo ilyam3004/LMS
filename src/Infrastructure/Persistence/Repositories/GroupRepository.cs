@@ -11,4 +11,9 @@ public class GroupRepository(LmsDbContext context) :
         => await DbContext.Groups.Include(g => g.GroupSubjects)
             .ThenInclude(gs => gs.Subject)
             .FirstOrDefaultAsync(g => g.Name == name);
+
+    public async Task<List<Group>> GetAllGroupsWithStudents()
+        => await DbContext.Groups.
+            Include(g => g.Students)
+            .ToListAsync();
 }

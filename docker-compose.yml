@@ -1,6 +1,20 @@
 ﻿version: '3.8'
 
 services:
+  api:
+    image: ilya3004/lms:api
+    build:
+      context: .
+      dockerfile: src/Api/Dockerfile
+    ports:
+      - "8181:80"
+    environment:
+      - ConnectionStrings__DefaultConnection=Host=postgres;Port=5432;Database=LMS;User Id=postgres;Password=password;
+    depends_on:
+      - postgres
+    networks:
+      - dev
+
   postgres:
     container_name: postgres
     image: postgres
@@ -12,8 +26,25 @@ services:
       - "5432:5432"
     volumes:
       - postgres_data:/var/lib/postgresql/data
-#    networks:
-#      - dev
+    networks:
+      - dev
+
+  web:
+    container_name: web
+    image: ilya3004/lms:web
+    build:
+      context: src/Web
+      dockerfile: Dockerfile
+    depends_on:
+      - api
+    ports:
+      - "4200:80"
+    networks:
+      - dev
+  
+networks:
+  dev:
+    driver: bridge
 
 volumes:
   postgres_data:

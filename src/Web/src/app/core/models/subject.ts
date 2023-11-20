@@ -6,3 +6,9 @@ export interface Subject {
   description: string;
   groups: Group[];
 }
+
+export interface CreateSubjectRequest {
+  name: string;
+  description: string;
+  group: string;
+}

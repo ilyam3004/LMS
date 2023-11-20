@@ -2,4 +2,4 @@
 
 namespace Application.Models;
 
-public record GroupResult(Group group);
+public record GroupResult(Group group, List<StudentResult> Students);

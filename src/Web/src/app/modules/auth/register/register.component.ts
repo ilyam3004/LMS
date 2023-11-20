@@ -7,7 +7,6 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {Group} from "../../../core/models/group";
 import {Component, OnInit} from '@angular/core';
 import {first} from 'rxjs';
-import {NgbDateStruct} from "@ng-bootstrap/ng-bootstrap";
 
 @Component({
   selector: 'app-register',

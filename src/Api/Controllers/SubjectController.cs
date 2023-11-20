@@ -43,11 +43,11 @@ public class SubjectController(ISender sender, IMapper mapper) : ApiController
             Problem);
     }
 
-    [HttpGet]
+    [HttpGet("lecturer")]
     [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> GetLecturerSubjects()
     {
-        string token = Request.Headers["Authorization"].ToString().Split(" ")[1];
+        var token = Request.Headers["Authorization"].ToString().Split(" ")[1];
         var command = new GetLecturerSubjectsQuery(token);
 
         var result = await sender.Send(command);
@@ -61,7 +61,7 @@ public class SubjectController(ISender sender, IMapper mapper) : ApiController
     [Authorize(Roles = Roles.Student)]
     public async Task<IActionResult> GetStudentSubjects()
     {
-        string token = Request.Headers["Authorization"].ToString().Split(" ")[1];
+        var token = Request.Headers["Authorization"].ToString().Split(" ")[1];
         var command = new GetStudentSubjectsQuery(token);
 
         var result = await sender.Send(command);

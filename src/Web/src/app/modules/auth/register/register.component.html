@@ -22,7 +22,7 @@
                    [ngClass]="{ 'is-invalid': submitted && studentFormControl['email'].errors }"/>
             @if (submitted && studentFormControl['email'].errors) {
               <div class="invalid-feedback">
-                @if (studentFormControl['email'].errors['required']) {
+                @if (studentFormControl['email'].hasError('required')) {
                   Email is required
                 } @else if (studentFormControl['email'].hasError('email')) {
                   This is not valid email

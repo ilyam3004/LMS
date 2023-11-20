@@ -37,9 +37,18 @@ public class RemoveSubjectCommandHandler(IUnitOfWork unitOfWork,
     {
         var lecturerSubjects = await unitOfWork.Subjects
             .GetLecturerSubjects(lecturerId);
-
+        
         return lecturerSubjects.Select(subject =>
-            new LecturerSubjectResult(subject,
-                subject.GroupSubjects.FirstOrDefault()!.Group.Name)).ToList();
+        {
+            var groupResults = subject.GroupSubjects.Select(gs =>
+            {
+                var studentResults = gs.Group.Students.Select(s => 
+                    new StudentResult(s)).ToList();
+                
+                return new GroupResult(gs.Group, studentResults);
+            }).ToList();
+
+            return new LecturerSubjectResult(subject, groupResults);
+        }).ToList();
     }
 }

@@ -55,36 +55,6 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
                 GroupId = Guid.NewGuid(), 
                 Name = "Group F", 
                 Department = "Chemistry"
-            },
-            new Group
-            {
-                GroupId = Guid.NewGuid(), 
-                Name = "Group G", 
-                Department = "Biology"
-            },
-            new Group
-            {
-                GroupId = Guid.NewGuid(), 
-                Name = "Group H", 
-                Department = "Civil Engineering"
-            },
-            new Group
-            {
-                GroupId = Guid.NewGuid(), 
-                Name = "Group I", 
-                Department = "Environmental Science"
-            },
-            new Group
-            {
-                GroupId = Guid.NewGuid(), 
-                Name = "Group J", 
-                Department = "Information Technology"
-            },
-            new Group
-            {
-                GroupId = Guid.NewGuid(), 
-                Name = "Group K", 
-                Department = "Aerospace Engineering"
             }
         );
     }

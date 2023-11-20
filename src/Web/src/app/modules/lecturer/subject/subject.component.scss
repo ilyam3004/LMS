@@ -1,6 +1,10 @@
 .subject-page-container {
   width: 60%;
 
+  .subject-loading-container {
+    height: 60vh;
+  }
+
   .create-subject-container {
     display: flex;
     justify-content: space-between;
@@ -9,7 +13,12 @@
 
   .subject-container {
     display: flex;
+    margin-top: 5%;
     justify-content: center;
+
+    .subject-card {
+      margin-bottom: 2%;
+    }
 
     .remove-button-container {
       width: 100%;
