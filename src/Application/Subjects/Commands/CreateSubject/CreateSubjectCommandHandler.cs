@@ -8,27 +8,34 @@ using MediatR;
 
 namespace Application.Subjects.Commands.CreateSubject;
 
-public class CreateSubjectCommandHandler(
-    IUnitOfWork unitOfWork,
-    IJwtTokenReader jwtTokenReader)
+public class CreateSubjectCommandHandler
     : IRequestHandler<CreateSubjectCommand, Result<List<LecturerSubjectResult>>>
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IJwtTokenReader _jwtTokenReader;
+
+    public CreateSubjectCommandHandler(IUnitOfWork unitOfWork, IJwtTokenReader jwtTokenReader)
+    {
+        _unitOfWork = unitOfWork;
+        _jwtTokenReader = jwtTokenReader;
+    }
+    
     public async Task<Result<List<LecturerSubjectResult>>> Handle(
         CreateSubjectCommand command,
         CancellationToken cancellationToken)
     {
-        var group = await unitOfWork.Groups.GetGroupByName(command.GroupName);
+        var group = await _unitOfWork.Groups.GetGroupByName(command.GroupName);
         if (group is null)
             return Errors.Group.NotFound;
 
         if (SubjectExistsInGroup(command.Name, group))
             return Errors.Subject.SubjectAlreadyExists;
 
-        var userId = jwtTokenReader.ReadUserIdFromToken(command.Token);
+        var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
         if (userId is null)
             return Errors.User.InvalidToken;
 
-        var user = await unitOfWork.Users
+        var user = await _unitOfWork.Users
             .GetUserByIdWithRelations(Guid.Parse(userId));
         if (user is null)
             return Errors.User.UserNotFound;
@@ -47,17 +54,17 @@ public class CreateSubjectCommandHandler(
             SubjectId = subject.SubjectId
         };
 
-        await unitOfWork.Subjects.AddAsync(subject);
-        await unitOfWork.GetRepository<GroupSubject>().AddAsync(groupSubject);
+        await _unitOfWork.Subjects.AddAsync(subject);
+        await _unitOfWork.GetRepository<GroupSubject>().AddAsync(groupSubject);
 
-        await unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
 
         return await GetLecturerSubjects(user.Lecturer.LecturerId);
     }
 
     private async Task<List<LecturerSubjectResult>> GetLecturerSubjects(Guid lecturerId)
     {
-        var lecturerSubjects = await unitOfWork.Subjects
+        var lecturerSubjects = await _unitOfWork.Subjects
             .GetLecturerSubjects(lecturerId);
         
         return lecturerSubjects.Select(subject =>

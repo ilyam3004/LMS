@@ -2,21 +2,31 @@
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class UnitOfWork(LmsDbContext context) : IUnitOfWork
+public class UnitOfWork : IUnitOfWork
 {
-    public IGroupRepository Groups { get; } = new GroupRepository(context);
-    public IUserRepository Users { get; } = new UserRepository(context);
-    public ITaskRepository Tasks { get; } = new TaskRepository(context);
-    public ISubjectRepository Subjects => new SubjectRepository(context);
-
+    private readonly LmsDbContext _context;
     private bool _disposed;
 
+    public UnitOfWork(LmsDbContext context)
+    {
+        _context = context;
+        Groups = new GroupRepository(_context);
+        Users = new UserRepository(_context);
+        Tasks = new TaskRepository(_context);
+        Subjects = new SubjectRepository(_context);
+    }
+
+    public IUserRepository Users { get; }
+    public ITaskRepository Tasks { get; }
+    public ISubjectRepository Subjects { get; }
+    public IGroupRepository Groups { get; }
+
     public IRepository<T> GetRepository<T>() where T : class
-        => new Repository<T>(context);
+        => new Repository<T>(_context);
 
     public async Task<int> SaveChangesAsync()
     {
-        return await context.SaveChangesAsync();
+        return await _context.SaveChangesAsync();
     }
 
     public void Dispose()
@@ -30,7 +40,7 @@ public class UnitOfWork(LmsDbContext context) : IUnitOfWork
         if (_disposed) return;
         if (disposing)
         {
-            context.Dispose();
+            _context.Dispose();
         }
 
         _disposed = true;

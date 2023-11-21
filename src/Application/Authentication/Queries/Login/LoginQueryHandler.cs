@@ -7,14 +7,21 @@ using MediatR;
 
 namespace Application.Authentication.Queries.Login;
 
-public class LoginQueryHandler(
-        IJwtTokenGenerator jwtTokenGenerator, IUnitOfWork unitOfWork) 
-    : IRequestHandler<LoginQuery, Result<AuthenticationResult>>
+public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<AuthenticationResult>>
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IJwtTokenGenerator _jwtTokenGenerator;
+
+    public LoginQueryHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jwtTokenGenerator)
+    {
+        _unitOfWork = unitOfWork;
+        _jwtTokenGenerator = jwtTokenGenerator;
+    }
+    
     public async Task<Result<AuthenticationResult>> Handle(
         LoginQuery query, CancellationToken cancellationToken)
     {
-        var user = await unitOfWork.Users.GetUserByEmail(query.Email);
+        var user = await _unitOfWork.Users.GetUserByEmail(query.Email);
 
         if (user is null) 
         {
@@ -30,7 +37,7 @@ public class LoginQueryHandler(
 
         if (isStudent)
         {
-            var studentToken = jwtTokenGenerator.GenerateToken(
+            var studentToken = _jwtTokenGenerator.GenerateToken(
                 user.UserId,
                 user.Student!.FullName,
                 user.Email,
@@ -41,7 +48,7 @@ public class LoginQueryHandler(
                 studentToken);
         }
         
-        var lecturerToken = jwtTokenGenerator.GenerateToken(
+        var lecturerToken = _jwtTokenGenerator.GenerateToken(
             user.UserId,
             user.Lecturer!.FullName,
             user.Email,

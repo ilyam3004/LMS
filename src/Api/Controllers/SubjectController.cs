@@ -13,19 +13,28 @@ using MediatR;
 namespace Api.Controllers;
 
 [Route("api/subjects")]
-public class SubjectController(ISender sender, IMapper mapper) : ApiController
+public class SubjectController : ApiController
 {
+    private readonly ISender _sender;
+    private readonly IMapper _mapper;
+
+    public SubjectController(ISender sender, IMapper mapper)
+    {
+        _sender = sender;
+        _mapper = mapper;
+    }
+    
     [HttpPost]
     [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> CreateSubject(CreateSubjectRequest request)
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
-        var command = mapper.Map<CreateSubjectCommand>((request, token));
+        var command = _mapper.Map<CreateSubjectCommand>((request, token));
 
-        var result = await sender.Send(command);
+        var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(mapper.Map<List<LecturerSubjectResponse>>(value)),
+            value => Ok(_mapper.Map<List<LecturerSubjectResponse>>(value)),
             Problem);
     }
 
@@ -36,10 +45,10 @@ public class SubjectController(ISender sender, IMapper mapper) : ApiController
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
         var command = new RemoveSubjectCommand(subjectId, token);
 
-        var result = await sender.Send(command);
+        var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(mapper.Map<List<LecturerSubjectResponse>>(value)),
+            value => Ok(_mapper.Map<List<LecturerSubjectResponse>>(value)),
             Problem);
     }
 
@@ -50,10 +59,10 @@ public class SubjectController(ISender sender, IMapper mapper) : ApiController
         var token = Request.Headers["Authorization"].ToString().Split(" ")[1];
         var command = new GetLecturerSubjectsQuery(token);
 
-        var result = await sender.Send(command);
+        var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(mapper.Map<List<LecturerSubjectResponse>>(value)),
+            value => Ok(_mapper.Map<List<LecturerSubjectResponse>>(value)),
             Problem);
     }
 
@@ -64,10 +73,10 @@ public class SubjectController(ISender sender, IMapper mapper) : ApiController
         var token = Request.Headers["Authorization"].ToString().Split(" ")[1];
         var command = new GetStudentSubjectsQuery(token);
 
-        var result = await sender.Send(command);
+        var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(mapper.Map<List<StudentSubjectResponse>>(value)),
+            value => Ok(_mapper.Map<List<StudentSubjectResponse>>(value)),
             Problem);
     }
 }

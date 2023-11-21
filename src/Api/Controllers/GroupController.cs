@@ -7,17 +7,26 @@ using MediatR;
 namespace Api.Controllers;
 
 [Route("api/groups")]
-public class GroupController(ISender sender, IMapper mapper): ApiController
+public class GroupController : ApiController
 {
+    private readonly ISender _sender;
+    private readonly IMapper _mapper;
+
+    public GroupController(ISender sender, IMapper mapper)
+    {
+        _sender = sender;
+        _mapper = mapper;
+    }
+    
     [HttpGet]
     public async Task<IActionResult> GetAllGroups()
     {
         var query = new GetAllGroupsQuery();
 
-        var result = await sender.Send(query);
+        var result = await _sender.Send(query);
 
         return result.Match(
-            value => Ok(mapper.Map<List<GroupResponse>>(value)),
+            value => Ok(_mapper.Map<List<GroupResponse>>(value)),
             Problem);
     }
 }

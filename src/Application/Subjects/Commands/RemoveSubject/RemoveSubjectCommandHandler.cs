@@ -7,35 +7,44 @@ using MediatR;
 
 namespace Application.Subjects.Commands.RemoveSubject;
 
-public class RemoveSubjectCommandHandler(IUnitOfWork unitOfWork,
-        IJwtTokenReader jwtTokenReader)
+public class RemoveSubjectCommandHandler
     : IRequestHandler<RemoveSubjectCommand, Result<List<LecturerSubjectResult>>>
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IJwtTokenReader _jwtTokenReader;
+
+    public RemoveSubjectCommandHandler(IUnitOfWork unitOfWork, 
+        IJwtTokenReader jwtTokenGenerator)
+    {
+        _unitOfWork = unitOfWork;
+        _jwtTokenReader = jwtTokenGenerator;
+    }
+    
     public async Task<Result<List<LecturerSubjectResult>>> Handle(
         RemoveSubjectCommand command,
         CancellationToken cancellationToken)
     {
-        if (!await unitOfWork.Subjects.SubjectExists(command.SubjectId))
+        if (!await _unitOfWork.Subjects.SubjectExists(command.SubjectId))
             return Errors.Subject.SubjectNotFound;
 
-        var userId = jwtTokenReader.ReadUserIdFromToken(command.Token);
+        var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
         if (userId is null)
             return Errors.User.InvalidToken;
         
-        var user = await unitOfWork.Users
+        var user = await _unitOfWork.Users
             .GetUserByIdWithRelations(Guid.Parse(userId));
         if (user is null)
             return Errors.User.UserNotFound;
 
-        unitOfWork.Subjects.Remove(command.SubjectId);
-        await unitOfWork.SaveChangesAsync();
+        _unitOfWork.Subjects.Remove(command.SubjectId);
+        await _unitOfWork.SaveChangesAsync();
 
         return await GetLecturerSubjects(user.Lecturer!.LecturerId);
     }
 
     private async Task<List<LecturerSubjectResult>> GetLecturerSubjects(Guid lecturerId)
     {
-        var lecturerSubjects = await unitOfWork.Subjects
+        var lecturerSubjects = await _unitOfWork.Subjects
             .GetLecturerSubjects(lecturerId);
         
         return lecturerSubjects.Select(subject =>

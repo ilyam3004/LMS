@@ -15,6 +15,5 @@ public class JwtTokenReader : IJwtTokenReader
                 claim.Type == JwtRegisteredClaimNames.UniqueName).Value;
 
         return userId;
-
     }
 }

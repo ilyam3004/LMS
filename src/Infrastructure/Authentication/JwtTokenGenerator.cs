@@ -8,10 +8,17 @@ using System.Text;
 
 namespace Infrastructure.Authentication;
 
-public class JwtTokenGenerator(IDateTimeProvider dateTimeProvider, 
-    IOptions<JwtSettings> options) : IJwtTokenGenerator
+public class JwtTokenGenerator : IJwtTokenGenerator
 {
-    private readonly JwtSettings _jwtSettings = options.Value;
+    private readonly IDateTimeProvider _dateTimeProvider;
+    private readonly JwtSettings _jwtSettings;
+
+    public JwtTokenGenerator(IDateTimeProvider dateTimeProvider, 
+        IOptions<JwtSettings> options)
+    {
+        _dateTimeProvider = dateTimeProvider;
+        _jwtSettings = options.Value;
+    }
 
     public string GenerateToken(Guid id, string fullName,
         string email, string role)
@@ -35,7 +42,7 @@ public class JwtTokenGenerator(IDateTimeProvider dateTimeProvider,
             issuer: _jwtSettings.Issuer,
             audience: _jwtSettings.Audience,
             claims: claims,
-            expires: dateTimeProvider.UtcNow.AddHours(4),
+            expires: _dateTimeProvider.UtcNow.AddHours(4),
             signingCredentials: signinCredentials);
         
        return new JwtSecurityTokenHandler().WriteToken(securityToken);

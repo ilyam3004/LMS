@@ -10,41 +10,50 @@ using MediatR;
 namespace Api.Controllers;
 
 [Route("api/users")]
-public class UserController(ISender sender, IMapper mapper) : ApiController
+public class UserController : ApiController
 {
+    private readonly ISender _sender;
+    private readonly IMapper _mapper;
+
+    public UserController(ISender sender, IMapper mapper)
+    {
+        _sender = sender;
+        _mapper = mapper;
+    }
+    
     [HttpPost("lecturers/register")]
     public async Task<IActionResult> Register(RegisterLecturerRequest request)
     {
-        var command = mapper.Map<RegisterLecturerCommand>(request);
+        var command = _mapper.Map<RegisterLecturerCommand>(request);
 
-        var result = await sender.Send(command);
+        var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(mapper.Map<AuthenticationResponse>(value)),
+            value => Ok(_mapper.Map<AuthenticationResponse>(value)),
             Problem);
     }
 
     [HttpPost("students/register")]
     public async Task<IActionResult> RegisterStudent(RegisterStudentRequest request)
     {
-        var command = mapper.Map<RegisterStudentCommand>(request);
+        var command = _mapper.Map<RegisterStudentCommand>(request);
 
-        var result = await sender.Send(command);
+        var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(mapper.Map<AuthenticationResponse>(value)),
+            value => Ok(_mapper.Map<AuthenticationResponse>(value)),
             Problem);
     }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login(LoginRequest request)
     {
-        var query = mapper.Map<LoginQuery>(request);
+        var query = _mapper.Map<LoginQuery>(request);
 
-        var result = await sender.Send(query);
+        var result = await _sender.Send(query);
 
         return result.Match(
-            value => Ok(mapper.Map<AuthenticationResponse>(value)),
+            value => Ok(_mapper.Map<AuthenticationResponse>(value)),
             Problem);
     }
 }

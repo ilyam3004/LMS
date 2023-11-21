@@ -8,15 +8,24 @@ using MediatR;
 
 namespace Application.Authentication.Commands.RegisterLecturer;
 
-public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator,
-        IUnitOfWork unitOfWork)
+public class RegisterLecturerCommandHandler
     : IRequestHandler<RegisterLecturerCommand, Result<AuthenticationResult>>
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    
+    public RegisterLecturerCommandHandler(IUnitOfWork unitOfWork, 
+        IJwtTokenGenerator jwtTokenGenerator)
+    {
+        _unitOfWork = unitOfWork;
+        _jwtTokenGenerator = jwtTokenGenerator;
+    }
+    
     public async Task<Result<AuthenticationResult>> Handle(
         RegisterLecturerCommand command, 
         CancellationToken cancellationToken)
     {
-        if (await unitOfWork.Users.UserExistsByEmail(command.Email))
+        if (await _unitOfWork.Users.UserExistsByEmail(command.Email))
         {
             return Errors.User.DuplicateEmail;
         }
@@ -28,7 +37,7 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator
             Password = BCrypt.Net.BCrypt.HashPassword(command.Password) 
         };
 
-        await unitOfWork.Users.AddAsync(user);
+        await _unitOfWork.Users.AddAsync(user);
 
         var lecturer = new Lecturer
         {
@@ -40,10 +49,10 @@ public class RegisterLecturerCommandHandler(IJwtTokenGenerator jwtTokenGenerator
             UserId = user.UserId
         };
 
-        await unitOfWork.GetRepository<Lecturer>().AddAsync(lecturer);
-        await unitOfWork.SaveChangesAsync();
+        await _unitOfWork.GetRepository<Lecturer>().AddAsync(lecturer);
+        await _unitOfWork.SaveChangesAsync();
 
-        var token = jwtTokenGenerator.GenerateToken(
+        var token = _jwtTokenGenerator.GenerateToken(
             user.UserId,
             lecturer.FullName,
             user.Email,

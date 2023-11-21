@@ -3,14 +3,17 @@ using Domain.Entities;
 
 namespace Infrastructure.Persistence;
 
-public class LmsDbContext(DbContextOptions<LmsDbContext> options) : DbContext(options)
+public class LmsDbContext : DbContext
 {
-    public DbSet<User> Users { get; set; }
-    public DbSet<Lecturer> Lecturers { get; set; }
-    public DbSet<Student> Students { get; set; }
-    public DbSet<Group> Groups { get; set; }
-    public DbSet<Subject> Subjects { get; set; }
-    public DbSet<GroupSubject> GroupSubjects { get; set; }
+    public LmsDbContext(DbContextOptions<LmsDbContext> options) : base(options)
+    { }
+    
+    public DbSet<User> Users { get; set; } = null!;
+    public DbSet<Lecturer> Lecturers { get; set; } = null!;
+    public DbSet<Student> Students { get; set; } = null!;
+    public DbSet<Group> Groups { get; set; } = null!;
+    public DbSet<Subject> Subjects { get; set; } = null!;
+    public DbSet<GroupSubject> GroupSubjects { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

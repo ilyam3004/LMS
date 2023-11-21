@@ -7,24 +7,33 @@ using MediatR;
 
 namespace Application.Subjects.Queries.GetStudentSubjectsQuery;
 
-public class GetStudentSubjectsQueryHandler(IUnitOfWork unitOfWork,
-        IJwtTokenReader jwtTokenReader)
+public class GetStudentSubjectsQueryHandler
     : IRequestHandler<GetStudentSubjectsQuery, Result<List<StudentSubjectResult>>>
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IJwtTokenReader _jwtTokenReader;
+    
+    public GetStudentSubjectsQueryHandler(IUnitOfWork unitOfWork, 
+        IJwtTokenReader jwtTokenGenerator)
+    {
+        _unitOfWork = unitOfWork;
+        _jwtTokenReader = jwtTokenGenerator;
+    }
+    
     public async Task<Result<List<StudentSubjectResult>>> Handle(
         GetStudentSubjectsQuery query,
         CancellationToken cancellationToken)
     {
-        var userId = jwtTokenReader.ReadUserIdFromToken(query.Token);
+        var userId = _jwtTokenReader.ReadUserIdFromToken(query.Token);
         if (userId is null)
             return Errors.User.InvalidToken;
 
-        var user = await unitOfWork.Users
+        var user = await _unitOfWork.Users
             .GetUserByIdWithRelations(Guid.Parse(userId));
         if (user is null)
             return Errors.User.UserNotFound;
 
-        var studentSubjects = await unitOfWork.Subjects
+        var studentSubjects = await _unitOfWork.Subjects
             .GetStudentSubjects(user.Student!.GroupId);
 
         return studentSubjects.Select(subject =>

@@ -3,10 +3,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Persistence.Repositories;
 
-public class Repository<TEntity>(LmsDbContext context) : IRepository<TEntity>
+public class Repository<TEntity> : IRepository<TEntity>
     where TEntity : class
 {
-    protected readonly LmsDbContext DbContext = context;
+    protected readonly LmsDbContext DbContext;
+
+    public Repository(LmsDbContext context)
+    {
+        DbContext = context;
+    }
 
     public async Task AddAsync(TEntity entity)
     {
