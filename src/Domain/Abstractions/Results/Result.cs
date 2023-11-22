@@ -7,7 +7,7 @@ public class Result<TValue> : IResult
     private readonly List<Error> _errors;
     private readonly TValue _value;
     
-    public List<Error> Errors => !IsSuccess ? _errors : new List<Error>();
+    public List<Error> Errors => !IsSuccess ? _errors : [];
     public bool IsSuccess { get; }
 
     private Result(TValue value)

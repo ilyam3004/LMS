@@ -1,1 +1,23 @@
-<p>task works!</p>
+<div class="container-fluid flex-column task-page-container">
+  <div class="create-task-container">
+    <h2>
+      Tasks
+    </h2>
+  </div>
+  <hr>
+  @if (fetchLoading) {
+    <div class="d-flex justify-content-center align-items-center task-loading-container">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+  } @else if (!fetchLoading && subjects.length == 0) {
+    <p class="d-flex justify-content-center align-items-center task-loading-container">
+      You dont have any subjects yet😧 To create new one navigate&nbsp;
+      <a routerLink="../subjects"> here</a>
+    </p>
+  } @else {
+    <div class="task-container flex-column">
+
+    </div>
+  }
+</div>

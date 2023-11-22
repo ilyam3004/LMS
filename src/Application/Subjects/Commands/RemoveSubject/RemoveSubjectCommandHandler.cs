@@ -35,7 +35,7 @@ public class RemoveSubjectCommandHandler
             .GetUserByIdWithRelations(Guid.Parse(userId));
         if (user is null)
             return Errors.User.UserNotFound;
-
+        
         _unitOfWork.Subjects.Remove(command.SubjectId);
         await _unitOfWork.SaveChangesAsync();
 

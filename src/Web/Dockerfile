@@ -1,17 +1,9 @@
-﻿FROM node:18 AS build
-
+﻿FROM node:latest as node
 WORKDIR /app
-
-COPY package*.json .
-RUN npm install
-
 COPY . .
+RUN npm install
 RUN npm run build
 
-FROM nginx
-
-RUN rm /etc/nginx/conf.d/default.conf
+FROM nginx:latest
 COPY nginx.conf /etc/nginx/conf.d
-COPY --from=build /app/dist/web /usr/share/nginx/html
-
-EXPOSE 80
+COPY --from=node /app/dist /usr/share/nginx/html

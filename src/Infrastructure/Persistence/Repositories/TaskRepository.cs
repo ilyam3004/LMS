@@ -1,4 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistence;
+using Task = Domain.Entities.Task;
 
 namespace Infrastructure.Persistence.Repositories;
 

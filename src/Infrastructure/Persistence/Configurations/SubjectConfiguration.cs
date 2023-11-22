@@ -1,7 +1,6 @@
-using Domain.Entities;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using Microsoft.EntityFrameworkCore;
+using Domain.Entities;
 
 namespace Infrastructure.Persistence.Configurations;
 
@@ -20,5 +19,8 @@ public class SubjectConfigurations : IEntityTypeConfiguration<Subject>
         builder.HasOne(s => s.Lecturer)
             .WithMany(l => l.Subjects)
             .HasForeignKey(s => s.LecturerId);
+
+        builder.HasMany(s => s.Tasks)
+            .WithOne(t => t.Subject);
     }
 }

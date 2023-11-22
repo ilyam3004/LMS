@@ -1,4 +1,4 @@
-﻿@host = http://localhost:5137/api
+﻿@host = http://localhost:8181/api
 
 ### Register Lecturer
 POST {{host}}/users/lecturers/register

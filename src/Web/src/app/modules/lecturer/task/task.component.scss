@@ -1,0 +1,30 @@
+.task-page-container {
+  width: 60%;
+
+  .task-loading-container {
+    height: 60vh;
+  }
+
+  .create-task-container {
+    display: flex;
+    justify-content: space-between;
+    margin: 3% 0 3% 0;
+  }
+
+  .task-container {
+    display: flex;
+    margin-top: 5%;
+    justify-content: center;
+
+    .task-card {
+      margin-bottom: 2%;
+    }
+
+    .remove-button-container {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 2%;
+    }
+  }
+}
