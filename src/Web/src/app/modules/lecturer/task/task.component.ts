@@ -13,11 +13,13 @@ import {DatePipe} from "@angular/common";
 export class TaskComponent implements OnInit {
   fetchLoading: boolean = false;
   subjects: Subject[] = [];
+  removeLoading: boolean = false;
 
   constructor(private taskService: TaskService,
               private subjectService: SubjectService,
               private alertService: AlertService,
-              private datePipe: DatePipe) { }
+              private datePipe: DatePipe) {
+  }
 
   ngOnInit() {
     this.fetchSubjectsWithTasks();
@@ -38,6 +40,33 @@ export class TaskComponent implements OnInit {
             this.fetchLoading = false;
           }
         });
+  }
+
+  removeTask(taskId: string): void {
+    this.alertService.clear();
+    this.removeLoading = true;
+
+    this.taskService.removeTask(taskId)
+      .subscribe({
+        next: subject => {
+          this.updateSubject(subject);
+          this.alertService.success("Task removed successfully");
+          this.removeLoading = false;
+        },
+        error: err => {
+          this.alertService.error(err);
+          this.removeLoading = false;
+        }
+      });
+  }
+
+  updateSubject(updatedSubject: Subject): void {
+    const index = this.subjects.findIndex(s =>
+      s.subjectId === updatedSubject.subjectId);
+
+    if (index !== -1) {
+      this.subjects[index] = updatedSubject;
+    }
   }
 
   convertDateToReadableFormat(isoDate: Date): string {

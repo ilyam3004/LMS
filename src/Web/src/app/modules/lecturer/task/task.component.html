@@ -34,10 +34,17 @@
                   <div class="card-body text-secondary">
                     <p class="card-text">{{ task.description }}</p>
                     <div class="d-flex justify-content-between">
-                      <a routerLink="">
-                        <button type="button" class="btn btn-outline-primary btn-sm">Details</button>
+                      <a [routerLink]="['../task']" [queryParams]="{taskId: task.taskId}">
+                        <button type="button" class="btn btn-outline-primary btn-sm">
+                          Details
+                        </button>
                       </a>
-                      <button type="button" class="btn btn-outline-danger btn-sm">Remove</button>
+                      <button type="button" class="btn btn-outline-danger btn-sm"
+                              (click)="removeTask(task.taskId)"
+                              [disabled]="removeLoading">
+                        <span *ngIf="removeLoading" class="spinner-border spinner-border-sm me-1"></span>
+                        Remove
+                      </button>
                     </div>
                   </div>
                   <div class="card-footer">

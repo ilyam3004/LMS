@@ -6,9 +6,9 @@ import { LayoutComponent } from './layout/layout.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SubjectComponent } from './subject/subject.component';
 import { TaskComponent } from './task/task.component';
-import {NgbAccordionDirective, NgbAccordionModule, NgbDatepicker, NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {AuthRoutingModule} from "../auth/auth-routing.module";
+import { TaskDetailsComponent } from './task-details/task-details.component';
 
 
 @NgModule({
@@ -16,7 +16,8 @@ import {AuthRoutingModule} from "../auth/auth-routing.module";
     LayoutComponent,
     NavbarComponent,
     SubjectComponent,
-    TaskComponent
+    TaskComponent,
+    TaskDetailsComponent
   ],
   imports: [
     CommonModule,
