@@ -1,5 +1,5 @@
-@host = http://localhost:5137/api
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjNhN2JjNzczLTUwMWItNGZiOC04NjExLTdhMjA3MWM2Mzk3NSIsImdpdmVuX25hbWUiOiJQZXRybyIsImZhbWlseV9uYW1lIjoiUGV0cm92IiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiTGVjdHVyZXIiLCJleHAiOjE3MDA0MzYyNDAsImlzcyI6IkxNUyIsImF1ZCI6IkxNUyJ9.G1R1-hoaTzqcEesga8Zw372c10rkGE-KTeOdFjY9WC0
+@host = http://localhost:8181/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjNhN2JjNzczLTUwMWItNGZiOC04NjExLTdhMjA3MWM2Mzk3NSIsImdpdmVuX25hbWUiOiJQZXRybyIsImZhbWlseV9uYW1lIjoiUGV0cm92IiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiTGVjdHVyZXIiLCJleHAiOjE3MTEyMjUwOTIsImlzcyI6IkxNUyIsImF1ZCI6IkxNUyJ9.vFNAyae6EPs-amCdFft-Li5vtnBb8GTA7ynYYSmktww
 @subjectId = 4fdcd308-f10e-45e6-b7b1-808e2ae22bb7
 
 ### Create a new subject
@@ -18,5 +18,5 @@ DELETE {{host}}/subjects/{{subjectId}}
 Authorization: Bearer {{token}}
 
 ### Get all subjects
-GET {{host}}/subjects
+GET {{host}}/subjects/lecturer
 Authorization: Bearer {{token}}

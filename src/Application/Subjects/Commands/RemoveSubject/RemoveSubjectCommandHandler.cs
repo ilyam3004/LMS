@@ -24,7 +24,10 @@ public class RemoveSubjectCommandHandler
         RemoveSubjectCommand command,
         CancellationToken cancellationToken)
     {
-        if (!await _unitOfWork.Subjects.SubjectExists(command.SubjectId))
+        var subject = await _unitOfWork.Subjects
+            .GetSubjectByIdWithRelations(command.SubjectId);
+        
+        if (subject is null)
             return Errors.Subject.SubjectNotFound;
 
         var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
@@ -36,7 +39,7 @@ public class RemoveSubjectCommandHandler
         if (user is null)
             return Errors.User.UserNotFound;
         
-        _unitOfWork.Subjects.Remove(command.SubjectId);
+        _unitOfWork.Subjects.Remove(subject);
         await _unitOfWork.SaveChangesAsync();
 
         return await GetLecturerSubjects(user.Lecturer!.LecturerId);
@@ -56,8 +59,10 @@ public class RemoveSubjectCommandHandler
                 
                 return new GroupResult(gs.Group, studentResults);
             }).ToList();
+            
+            var taskResults = subject.Tasks.Select(t => new TaskResult(t)).ToList();
 
-            return new LecturerSubjectResult(subject, groupResults);
+            return new LecturerSubjectResult(subject, groupResults, taskResults);
         }).ToList();
     }
 }

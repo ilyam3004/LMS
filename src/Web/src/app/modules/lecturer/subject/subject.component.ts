@@ -6,8 +6,6 @@ import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Group} from "../../../core/models/group";
 import {GroupService} from "../../../core/services/group.service";
-import {RegisterLecturerRequest} from "../../../core/models/user";
-import {first} from "rxjs";
 
 @Component({
   selector: 'app-subject',

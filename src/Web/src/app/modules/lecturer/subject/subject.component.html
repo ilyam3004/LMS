@@ -79,8 +79,10 @@
         <div class="subject-card">
           <div class="card w-100">
             <div class="card-body">
-              <h5 class="card-title">{{ subject.name }}</h5>
-              <p class="card-text">{{ subject.description }}</p>
+              <div class="">
+                <h5 class="card-title">{{ subject.name }}</h5>
+              </div>
+              <p class="card-text text-secondary">{{ subject.description }}</p>
               <div ngbAccordion #accordion="ngbAccordion">
                 @for (group of subject.groups;track group.groupId) {
                   <div ngbAccordionItem="{{group.groupId}}">
@@ -93,7 +95,7 @@
                           @if (group.students.length == 0) {
                             <div class="d-flex justify-content-center align-items-center">
                               There is no students in this group😢
-                              Please contact student to join this group.
+                              Please contact students to join this group.
                             </div>
                           }
                           <ul class="list-group list-group-flush">

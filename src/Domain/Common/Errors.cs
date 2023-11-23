@@ -33,4 +33,10 @@ public static class Errors
         public static Error SubjectNotFound => Error.NotFound("Subject.SubjectNotFound",
             description: "Subject not found");
     }
+    
+    public static class Task
+    {
+        public static Error TaskNotFound => Error.NotFound("Task.TaskNotFound",
+            description: "Task not found");
+    }
 }

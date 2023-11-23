@@ -1,5 +1,5 @@
 <div class="container-fluid flex-column task-page-container">
-  <div class="create-task-container">
+  <div class="task-header-page-container">
     <h2>
       Tasks
     </h2>
@@ -17,7 +17,40 @@
     </p>
   } @else {
     <div class="task-container flex-column">
-
+      @for (subject of subjects;track subject.subjectId) {
+        <div class="subject-card">
+          <div class="card w-100">
+            <div class="card-body">
+              <div class="create-task-container">
+                <h4 class="card-title">{{ subject.name }}</h4>
+                <button class="btn btn-outline-primary mb-2 me-2">
+                  New task
+                </button>
+              </div>
+              <p class="text-secondary"> All tasks you have created for this subject:</p>
+              @for (task of subject.tasks;track task.taskId) {
+                <div class="card border-secondary mb-3">
+                  <div class="card-header text-secondary h5">{{ task.title }}</div>
+                  <div class="card-body text-secondary">
+                    <p class="card-text">{{ task.description }}</p>
+                    <div class="d-flex justify-content-between">
+                      <a routerLink="">
+                        <button type="button" class="btn btn-outline-primary btn-sm">Details</button>
+                      </a>
+                      <button type="button" class="btn btn-outline-danger btn-sm">Remove</button>
+                    </div>
+                  </div>
+                  <div class="card-footer">
+                    <small class="text-muted">
+                      Scheduled: {{ convertDateToReadableFormat(task.createdAt) }}
+                    </small>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        </div>
+      }
     </div>
   }
 </div>

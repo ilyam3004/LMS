@@ -1,0 +1,21 @@
+﻿@host = http://localhost:8181/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjNhN2JjNzczLTUwMWItNGZiOC04NjExLTdhMjA3MWM2Mzk3NSIsImdpdmVuX25hbWUiOiJQZXRybyIsImZhbWlseV9uYW1lIjoiUGV0cm92IiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiTGVjdHVyZXIiLCJleHAiOjE3MDA3Nzk4OTEsImlzcyI6IkxNUyIsImF1ZCI6IkxNUyJ9.UaG6LESN9_3rc1OQsm71o_jcheBMMR-Z_KhZjzrRM50
+@taskId = f23158da-8f91-4ce9-bac1-c2f49e0cea32
+@subjectId = 0930b5c4-184c-43e9-98e6-74f1be298f19
+
+### Assign new task
+POST {{host}}/tasks
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "Title": "task title",
+  "Description": "Task description", 
+  "SubjectId": "{{subjectId}}",
+  "Deadline": "2023-11-23T19:13:18.228Z",
+  "MaxGrade": 10
+}
+
+### Remove task
+DELETE {{host}}/tasks/{{taskId}}
+Authorization: Bearer {{token}}

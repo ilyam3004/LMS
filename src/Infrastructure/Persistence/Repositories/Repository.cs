@@ -14,28 +14,17 @@ public class Repository<TEntity> : IRepository<TEntity>
     }
 
     public async Task AddAsync(TEntity entity)
-    {
-        await DbContext.Set<TEntity>().AddAsync(entity);
-    }
-    
-    public void Update(TEntity entity)
-    {
-        DbContext.Set<TEntity>().Update(entity);
-    }
+        => await DbContext.Set<TEntity>().AddAsync(entity);
 
-    public void Remove(Guid id)
-    {
-        var entity = DbContext.Set<TEntity>().Find(id);
-        DbContext.Set<TEntity>().Remove(entity!);
-    }
-    
+    public void Update(TEntity entity)
+        => DbContext.Set<TEntity>().Update(entity);
+
+    public async Task Remove(TEntity entity)
+        => DbContext.Set<TEntity>().Remove(entity);
+
     public async Task<List<TEntity>> GetAll()
-    {
-        return await DbContext.Set<TEntity>().ToListAsync();
-    }
+        => await DbContext.Set<TEntity>().ToListAsync();
 
     public async Task<TEntity?> GetByIdAsync(Guid id)
-    {
-        return await DbContext.Set<TEntity>().FindAsync(id);
-    }
+        => await DbContext.Set<TEntity>().FindAsync(id);
 }

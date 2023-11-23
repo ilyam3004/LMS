@@ -1,6 +1,8 @@
-﻿using Application.Tasks.Commands;
+﻿using Application.Models;
+using Application.Tasks.Commands;
 using Application.Tasks.Commands.CreateTask;
 using Contracts.Requests.Tasks;
+using Contracts.Responses.Tasks;
 using Mapster;
 
 namespace Api.Common.Mapping;
@@ -9,12 +11,19 @@ public class TaskMappingConfig : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
-        config.NewConfig<(AssignTaskRequest, string), AssignTaskCommand>()
-            .Map(dest => dest.Title, src => src.Item1.Title)
-            .Map(dest => dest.Description, src => src.Item1.Description)
-            .Map(dest => dest.SubjectId, src => src.Item1.SubjectId)
-            .Map(dest => dest.Deadline, src => src.Item1.Deadline)
-            .Map(dest => dest.MaxGrade, src => src.Item1.MaxGrade)
-            .Map(dest => dest.Token, src => src.Item2);
+        config.NewConfig<AssignTaskRequest, AssignTaskCommand>()
+            .Map(dest => dest.Title, src => src.Title)
+            .Map(dest => dest.Description, src => src.Description)
+            .Map(dest => dest.SubjectId, src => src.SubjectId)
+            .Map(dest => dest.Deadline, src => src.Deadline)
+            .Map(dest => dest.MaxGrade, src => src.MaxGrade);
+
+        config.NewConfig<TaskResult, TaskResponse>()
+            .Map(dest => dest.TaskId, src => src.Task.TaskId)
+            .Map(dest => dest.Title, src => src.Task.Title)
+            .Map(dest => dest.Description, src => src.Task.Description)
+            .Map(dest => dest.CreatedAt, src => src.Task.CreatedAt)
+            .Map(dest => dest.Deadline, src => src.Task.Deadline)
+            .Map(dest => dest.MaxGrade, src => src.Task.MaxGrade);
     }
 }

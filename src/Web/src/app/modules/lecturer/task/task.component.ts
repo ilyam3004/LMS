@@ -1,8 +1,9 @@
-import {Component, OnInit} from '@angular/core';
-import {TaskService} from "../../../core/services/task.service";
-import {Task} from "../../../core/models/task";
-import {Subject} from "../../../core/models/subject";
 import {AlertService} from "../../../core/services/alert.service";
+import {TaskService} from "../../../core/services/task.service";
+import {Subject} from "../../../core/models/subject";
+import {Component, OnInit} from '@angular/core';
+import {SubjectService} from "../../../core/services/subject.service";
+import {DatePipe} from "@angular/common";
 
 @Component({
   selector: 'app-task',
@@ -11,28 +12,60 @@ import {AlertService} from "../../../core/services/alert.service";
 })
 export class TaskComponent implements OnInit {
   fetchLoading: boolean = false;
-  tasks: Task[] = [];
   subjects: Subject[] = [];
 
   constructor(private taskService: TaskService,
-              private alertService: AlertService) {
-  }
+              private subjectService: SubjectService,
+              private alertService: AlertService,
+              private datePipe: DatePipe) { }
 
   ngOnInit() {
-    this.fetchTasks();
+    this.fetchSubjectsWithTasks();
   }
 
-  fetchTasks(): void {
+  fetchSubjectsWithTasks(): void {
     this.fetchLoading = true;
-    this.taskService.getLecturerTasks()
+    this.subjectService.getLecturerSubjects()
       .subscribe(
         {
           next: subjects => {
+            this.subjects = subjects;
+            console.log(this.subjects);
+            this.fetchLoading = false;
           },
           error: err => {
             this.alertService.error(err);
             this.fetchLoading = false;
           }
         });
+  }
+
+  convertDateToReadableFormat(isoDate: Date): string {
+    const date = new Date(isoDate);
+
+    if (this.isCreatedToday(date)) {
+      return 'Today at ' + this.datePipe.transform(isoDate, 'HH:mm') ?? '-';
+    }
+
+    if (this.isYearsEqual(date)) {
+      const dateWithOutYear = this.datePipe.transform(isoDate, 'MMM d, HH:mm');
+      return dateWithOutYear == null ? '-' : dateWithOutYear;
+    }
+
+    const readableDate = this.datePipe.transform(isoDate, 'MMM d, y, HH:mm');
+    return readableDate == null ? '-' : readableDate;
+  }
+
+  private isCreatedToday(date: Date): boolean {
+    const currentDate = new Date();
+
+    return date.getDate() === currentDate.getDate()
+      && date.getMonth() === currentDate.getMonth()
+      && date.getFullYear() === currentDate.getFullYear();
+  }
+
+  private isYearsEqual(date: Date): boolean {
+    const currentDate = new Date();
+    return date.getFullYear() == currentDate.getFullYear();
   }
 }

@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import {CommonModule, DatePipe} from '@angular/common';
 
 import { LecturerRoutingModule } from './lecturer-routing.module';
 import { LayoutComponent } from './layout/layout.component';
@@ -24,7 +24,8 @@ import {AuthRoutingModule} from "../auth/auth-routing.module";
     LecturerRoutingModule,
     NgbAccordionModule,
     NgbInputDatepicker,
-    ReactiveFormsModule
-  ]
+    ReactiveFormsModule,
+  ],
+  providers: [DatePipe]
 })
 export class LecturerModule { }

@@ -5,6 +5,5 @@ using MediatR;
 namespace Application.Subjects.Commands.RemoveSubject;
 
 public record RemoveSubjectCommand(
-        Guid SubjectId,
-        string Token)
-    : IRequest<Result<List<LecturerSubjectResult>>>;
+    Guid SubjectId,
+    string Token) : IRequest<Result<List<LecturerSubjectResult>>>;

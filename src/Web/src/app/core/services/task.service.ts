@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
+import {AssignTaskRequest} from "../models/task";
 
 @Injectable({
   providedIn: 'root'
@@ -8,8 +9,8 @@ import {environment} from "../../../environments/environment";
 export class TaskService {
   constructor(private http: HttpClient) { }
 
-  getLecturerTasks() {
-    return this.http.get(`${environment.apiBaseUrl}/tasks/lecturer`)
+  assignTask(request: AssignTaskRequest){
+    return this.http.post(`${environment}/tasks`, request);
   }
 
   getStudentTasks() {

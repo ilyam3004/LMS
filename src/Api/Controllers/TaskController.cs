@@ -1,13 +1,12 @@
-﻿using Application.Tasks.Commands;
-using Application.Tasks.Commands.CreateTask;
+﻿using Application.Tasks.Commands.CreateTask;
 using Application.Tasks.Commands.RemoveTask;
+using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Subjects;
+using Microsoft.AspNetCore.Mvc;
 using Domain.Common;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers;
 
@@ -24,34 +23,26 @@ public class TaskController : ApiController
         _mapper = mapper;
     }
 
-    [HttpGet]
-    [Authorize(Roles = Roles.Student)]
-    public IActionResult GetAllTasks()
-    {
-        return Ok("Successfully Authorized");
-    }
-
-    [HttpPost("assign")]
+    [HttpPost]
     [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> AssignTask(AssignTaskRequest request)
     {
-        var token = Request.Headers.Authorization;
-        var command = _mapper.Map<AssignTaskCommand>((request, token));
-        
+        var command = _mapper.Map<AssignTaskCommand>(request);
+
         var result = await _sender.Send(command);
 
         return result.Match(
             value => Ok(_mapper.Map<LecturerSubjectResponse>(value)),
             Problem);
     }
-    
+
     [HttpDelete("{taskId}")]
     [Authorize(Roles = Roles.Lecturer)]
-    public async Task <IActionResult> RemoveTask(Guid taskId)
+    public async Task<IActionResult> RemoveTask(Guid taskId)
     {
         var token = Request.Headers.Authorization;
 
-        var command = new RemoveTaskCommand(taskId, token);
+        var command = new RemoveTaskCommand(taskId);
 
         var result = await _sender.Send(command);
 

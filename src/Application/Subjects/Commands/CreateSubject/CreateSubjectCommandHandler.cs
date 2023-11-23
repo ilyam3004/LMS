@@ -76,8 +76,10 @@ public class CreateSubjectCommandHandler
                 
                 return new GroupResult(gs.Group, studentResults);
             }).ToList();
+            
+            var taskResults = subject.Tasks.Select(t => new TaskResult(t)).ToList();
 
-            return new LecturerSubjectResult(subject, groupResults);
+            return new LecturerSubjectResult(subject, groupResults, taskResults);
         }).ToList();
     }
 

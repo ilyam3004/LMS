@@ -1,3 +1,5 @@
-﻿namespace Application.Models;
+﻿using Task = Domain.Entities.Task;
 
-public record TaskResult();
+namespace Application.Models;
+
+public record TaskResult(Task Task);

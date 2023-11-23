@@ -9,5 +9,4 @@ public record AssignTaskCommand(
     string Description, 
     Guid SubjectId,
     DateTime Deadline, 
-    int MaxGrade,
-    string Token) : IRequest<Result<LecturerSubjectResult>>;
+    int MaxGrade) : IRequest<Result<LecturerSubjectResult>>;

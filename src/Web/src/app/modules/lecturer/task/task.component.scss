@@ -1,14 +1,19 @@
 .task-page-container {
   width: 60%;
 
+  .task-header-page-container {
+    display: flex;
+    margin: 3% 0 3% 0;
+  }
+
   .task-loading-container {
     height: 60vh;
   }
 
   .create-task-container {
+    width: 100%;
     display: flex;
     justify-content: space-between;
-    margin: 3% 0 3% 0;
   }
 
   .task-container {

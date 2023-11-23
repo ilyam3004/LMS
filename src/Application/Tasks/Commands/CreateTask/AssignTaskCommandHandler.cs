@@ -1,12 +1,11 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
-using Application.Models;
-using Application.Services;
-using Domain.Common;
-using Domain.Entities;
-using MediatR;
 using Task = Domain.Entities.Task;
+using Application.Services;
+using Application.Models;
+using Domain.Common;
+using MediatR;
 
 namespace Application.Tasks.Commands.CreateTask;
 
@@ -18,7 +17,7 @@ public class AssignTaskCommandHandler
     private readonly IUnitOfWork _unitOfWork;
 
     public AssignTaskCommandHandler(IJwtTokenReader jwtTokenReader,
-        IUnitOfWork unitOfWork, 
+        IUnitOfWork unitOfWork,
         IDateTimeProvider dateTimeProvider)
     {
         _jwtTokenReader = jwtTokenReader;
@@ -29,21 +28,15 @@ public class AssignTaskCommandHandler
     public async Task<Result<LecturerSubjectResult>> Handle(AssignTaskCommand command,
         CancellationToken cancellationToken)
     {
-        var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
-        if (userId is null)
-            return Errors.User.InvalidToken;
-
-        var user = await _unitOfWork.Users
-            .GetUserByIdWithRelations(Guid.Parse(userId));
-        if (user is null)
-            return Errors.User.UserNotFound;
+        if (!await _unitOfWork.Subjects.SubjectExists(command.SubjectId))
+            return Errors.Subject.SubjectNotFound;
 
         var task = new Task
         {
             TaskId = Guid.NewGuid(),
             Title = command.Title,
             Description = command.Description,
-            SubjectId = Guid.NewGuid(),
+            SubjectId = command.SubjectId,
             CreatedAt = _dateTimeProvider.UtcNow,
             Deadline = command.Deadline,
             MaxGrade = command.MaxGrade
@@ -53,14 +46,25 @@ public class AssignTaskCommandHandler
 
         await _unitOfWork.SaveChangesAsync();
 
-        throw new NotImplementedException();
+        return await GetSubjectResult(command.SubjectId);
     }
 
-    // private async Task<LecturerSubjectResult> GetSubjectResult(Guid subjectId)
-    // {
-    //     // var subject = await _unitOfWork.Subjects
-    //     //     .GetSubjectById(subjectId);
-    //
-    //     return new LecturerSubjectResult();
-    // }
+    private async Task<LecturerSubjectResult> GetSubjectResult(Guid subjectId)
+    {
+        var subject = await _unitOfWork.Subjects
+            .GetSubjectByIdWithRelations(subjectId);
+
+        var groupResults = subject.GroupSubjects.Select(gs =>
+        {
+            var studentResults = gs.Group.Students.Select(s =>
+                new StudentResult(s)).ToList();
+
+            return new GroupResult(gs.Group, studentResults);
+        }).ToList();
+
+        var taskResults = subject.Tasks.Select(t =>
+            new TaskResult(t)).ToList();
+        
+        return new LecturerSubjectResult(subject, groupResults, taskResults);
+    }
 }
