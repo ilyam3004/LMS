@@ -6,4 +6,6 @@ public record TaskResponse(
     string Description,
     DateTime Deadline,
     DateTime CreatedAt,
-    int MaxGrade);
+    int MaxGrade,
+    string GroupName,
+    List<UploadedTaskResponse> UploadedTasks);

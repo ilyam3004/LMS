@@ -3,6 +3,7 @@ using Application.Tasks.Commands.RemoveTask;
 using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Subjects;
+using Contracts.Responses.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Common;
 using MapsterMapper;
@@ -48,6 +49,21 @@ public class TaskController : ApiController
 
         return result.Match(
             value => Ok(_mapper.Map<LecturerSubjectResponse>(value)),
+            Problem);
+    }
+    
+    [HttpGet("{taskId}")]
+    [Authorize(Roles = Roles.Lecturer)]
+    public async Task<IActionResult> GetTask(Guid taskId)
+    {
+        var token = Request.Headers.Authorization;
+
+        var command = new RemoveTaskCommand(taskId);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            value => Ok(_mapper.Map<TaskResponse>(value)),
             Problem);
     }
 }

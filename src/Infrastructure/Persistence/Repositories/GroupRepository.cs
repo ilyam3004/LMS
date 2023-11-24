@@ -17,4 +17,8 @@ public class GroupRepository : Repository<Group>, IGroupRepository
     public async Task<List<Group>> GetAllGroupsWithStudents()
         => await DbContext.Groups.Include(g => g.Students)
             .ToListAsync();
+
+    public async Task<Group?> GetGroupByIdWithStudents(Guid groupId)
+        => await DbContext.Groups.Include(g => g.Students)
+            .FirstOrDefaultAsync(g => g.GroupId == groupId);
 }

@@ -5,6 +5,7 @@ using Task = Domain.Entities.Task;
 using Application.Services;
 using Application.Models;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Tasks.Commands.CreateTask;
@@ -43,6 +44,8 @@ public class AssignTaskCommandHandler
         };
 
         await _unitOfWork.Tasks.AddAsync(task);
+        
+        await AddStudentTasks(task);
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -66,5 +69,22 @@ public class AssignTaskCommandHandler
             new TaskResult(t)).ToList();
         
         return new LecturerSubjectResult(subject, groupResults, taskResults);
+    }
+
+    private async Task AddStudentTasks(Task task)
+    {
+        await _unitOfWork.Groups
+            .GetGroupByIdWithStudents(task.Subject.)
+            .ForEachAsync(s =>
+            {
+                var studentTask = new StudentTask
+                {
+                    StudentTaskId = Guid.NewGuid(),
+                    TaskId = task.TaskId,
+                    StudentId = s.StudentId
+                };
+
+                _unitOfWork.StudentTasks.AddAsync(studentTask);
+            });
     }
 }
