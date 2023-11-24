@@ -23,9 +23,95 @@
             <div class="card-body">
               <div class="create-task-container">
                 <h4 class="card-title">{{ subject.name }}</h4>
-                <button class="btn btn-outline-primary mb-2 me-2">
-                  New task
-                </button>
+                <div>
+                  <ng-template #content let-modal>
+                    <form [formGroup]="assignTaskForm"
+                          (ngSubmit)="onAssignTaskFormSubmit(modal, subject.subjectId)">
+                      <div class="modal-header">
+                        <h4 class="modal-title">Assign new task</h4>
+                        <button type="button" class="btn-close" aria-label="Close"
+                                (click)="modal.dismiss('Cross click')"></button>
+                      </div>
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label class="form-label">Title</label>
+                          <input type="text" formControlName="title" class="form-control"
+                                 [ngClass]="{ 'is-invalid': submitted && assignTaskFormControl['title'].errors }"/>
+                          @if (submitted && assignTaskFormControl['title'].errors) {
+                            <div class="invalid-feedback">
+                              @if (assignTaskFormControl['title'].hasError('required')) {
+                                Title is required
+                              } @else if (assignTaskFormControl['title'].hasError('maxLength')) {
+                                Title cannot be longer than 100 characters
+                              }
+                            </div>
+                          }
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Description</label>
+                          <textarea type="text" formControlName="description" class="form-control" rows="5"
+                                    [ngClass]="{ 'is-invalid': submitted && assignTaskFormControl['description'].errors }">
+                          </textarea>
+                          @if (submitted && assignTaskFormControl['description'].errors) {
+                            <div class="invalid-feedback">
+                              @if (assignTaskFormControl['description'].hasError('required')) {
+                                Description is required
+                              } @else if (assignTaskFormControl['description'].hasError('maxLength')) {
+                                Description cannot be longer than 2000 characters
+                              }
+                            </div>
+                          }
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Deadline(optional)</label>
+                          <form class="row">
+                            <div class="input-group">
+                              <input class="form-control" placeholder="yyyy-mm-dd" name="dp"
+                                     [(ngModel)]="dateModel" ngbDatepicker #d="ngbDatepicker"
+                                     (ngModelChange)="onDateChange()"/>
+                              <button class="btn btn-outline-secondary bi bi-calendar3"
+                                      (click)="d.toggle()"
+                                      type="button"></button>
+                            </div>
+                          </form>
+                          @if (isDateSet) {
+                            <form class="row">
+                              <div class="input-group">
+                                <ngb-timepicker [(ngModel)]="timeModel"
+                                                [ngModelOptions]="{ standalone: true }"/>
+                              </div>
+                            </form>
+                          }
+                        </div>
+                        <div class="mb-3">
+                          <label class="form-label">Max grade</label>
+                          <input type="number" formControlName="maxGrade" class="form-control"
+                                 [ngClass]="{ 'is-invalid': submitted && assignTaskFormControl['maxGrade'].errors }"/>
+                          @if (submitted && assignTaskFormControl['maxGrade'].errors) {
+                            <div class="invalid-feedback">
+                              @if (assignTaskFormControl['maxGrade'].hasError('required')) {
+                                Max grade is required
+                              } @else if (assignTaskFormControl['maxGrade'].hasError('max')) {
+                                Grade cannot be bigger that 100
+                              } @else if (assignTaskFormControl['maxGrade'].hasError('min')) {
+                                Grade cannot be less than 1
+                              }
+                            </div>
+                          }
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button [disabled]="createLoading" class="btn btn-primary">
+                          <span *ngIf="createLoading" class="spinner-border spinner-border-sm me-1"></span>
+                          Create
+                        </button>
+                      </div>
+                    </form>
+                  </ng-template>
+                  <button class="btn btn-outline-primary mb-2 me-2" (click)="openModal(content)">
+                    Assign
+                  </button>
+                </div>
               </div>
               <p class="text-secondary"> All tasks you have created for this subject:</p>
               @for (task of subject.tasks;track task.taskId) {
@@ -34,7 +120,7 @@
                   <div class="card-body text-secondary">
                     <p class="card-text">{{ task.description }}</p>
                     <div class="d-flex justify-content-between">
-                      <a [routerLink]="['../task']" [queryParams]="{taskId: task.taskId}">
+                      <a [routerLink]="['../tasks/task']" [queryParams]="{id: task.taskId}">
                         <button type="button" class="btn btn-outline-primary btn-sm">
                           Details
                         </button>
@@ -49,7 +135,11 @@
                   </div>
                   <div class="card-footer">
                     <small class="text-muted">
-                      Scheduled: {{ convertDateToReadableFormat(task.createdAt) }}
+                      Assigned: {{ convertDateToReadableFormat(task.createdAt) }}
+                      Deadline: {{
+                        task.deadline ? convertDateToReadableFormat(task.deadline)
+                          : 'No deadline'
+                      }}
                     </small>
                   </div>
                 </div>

@@ -7,7 +7,7 @@ public class Task
     public string Description { get; set; } = null!;
     public Guid SubjectId { get; set; }
     public DateTime CreatedAt { get; set; }
-    public DateTime Deadline { get; set; }
+    public DateTime? Deadline { get; set; }
     public int MaxGrade { get; set; }
     public Subject Subject { get; set; } = null!;
 }

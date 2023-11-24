@@ -13,10 +13,7 @@ public class AssignTaskCommandValidator : AbstractValidator<AssignTaskCommand>
         RuleFor(command => command.Description)
             .NotEmpty()
             .MaximumLength(2000);
-
-        RuleFor(command => command.Deadline)
-            .NotEmpty();
-
+        
         RuleFor(command => command.MaxGrade)
             .NotEmpty()
             .GreaterThan(0)

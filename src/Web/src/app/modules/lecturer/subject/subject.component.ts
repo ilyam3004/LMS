@@ -13,7 +13,7 @@ import {GroupService} from "../../../core/services/group.service";
   styleUrl: './subject.component.scss'
 })
 export class SubjectComponent implements OnInit {
-  requestForm!: FormGroup;
+  createSubjectForm!: FormGroup;
   subjects: Subject[] = [];
   groups: Group[] = [];
   fetchLoading: boolean = false;
@@ -33,8 +33,8 @@ export class SubjectComponent implements OnInit {
     this.fetchGroups();
   }
 
-  get requestFormControl() {
-    return this.requestForm.controls;
+  get createSubjectFormControl() {
+    return this.createSubjectForm.controls;
   }
 
   fetchSubjects(): void {
@@ -69,15 +69,13 @@ export class SubjectComponent implements OnInit {
   onCreateSubjectFormSubmit(modal: any) {
     this.submitted = true;
 
-    console.log(this.requestForm.errors)
     this.alertService.clear();
-    if (this.requestForm.invalid) {
+    if (this.createSubjectForm.invalid) {
       return;
     }
-    console.log(this.requestForm.value)
     this.createLoading = true;
 
-    const request: CreateSubjectRequest = this.requestForm.value;
+    const request: CreateSubjectRequest = this.createSubjectForm.value;
 
     this.subjectService.createSubject(request)
       .subscribe({
@@ -113,7 +111,7 @@ export class SubjectComponent implements OnInit {
   }
 
   private initializeForms() {
-    this.requestForm = this.formBuilder.group({
+    this.createSubjectForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
       description: ['', [Validators.required, Validators.maxLength(400)]],
       groupName: ['', Validators.required],

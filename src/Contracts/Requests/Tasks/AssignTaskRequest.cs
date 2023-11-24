@@ -4,5 +4,5 @@ public record AssignTaskRequest(
     string Title, 
     string Description, 
     Guid SubjectId, 
-    DateTime Deadline, 
+    DateTime? Deadline, 
     int MaxGrade);

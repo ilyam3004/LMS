@@ -11,6 +11,6 @@ export interface AssignTaskRequest {
   title: string,
   description: string,
   subjectId: string,
-  deadline: Date,
+  deadline: string | null,
   maxGrade: number
 }

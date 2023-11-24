@@ -6,7 +6,7 @@ import { LayoutComponent } from './layout/layout.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { SubjectComponent } from './subject/subject.component';
 import { TaskComponent } from './task/task.component';
-import {NgbAccordionModule, NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap";
+import {NgbAccordionModule, NgbInputDatepicker, NgbTimepicker} from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { TaskDetailsComponent } from './task-details/task-details.component';
 
@@ -26,6 +26,7 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
     NgbAccordionModule,
     NgbInputDatepicker,
     ReactiveFormsModule,
+    NgbTimepicker,
   ],
   providers: [DatePipe]
 })

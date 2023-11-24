@@ -4,7 +4,7 @@
       Subjects
     </h2>
     <ng-template #content let-modal>
-      <form [formGroup]="requestForm" (ngSubmit)="onCreateSubjectFormSubmit(modal)">
+      <form [formGroup]="createSubjectForm" (ngSubmit)="onCreateSubjectFormSubmit(modal)">
         <div class="modal-header">
           <h4 class="modal-title">Create new subject</h4>
           <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
@@ -13,12 +13,12 @@
           <div class="mb-3">
             <label class="form-label">Name</label>
             <input type="text" formControlName="name" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && requestFormControl['name'].errors }"/>
-            @if (submitted && requestFormControl['name'].errors) {
+                   [ngClass]="{ 'is-invalid': submitted && createSubjectFormControl['name'].errors }"/>
+            @if (submitted && createSubjectFormControl['name'].errors) {
               <div class="invalid-feedback">
-                @if (requestFormControl['name'].hasError('required')) {
+                @if (createSubjectFormControl['name'].hasError('required')) {
                   Subject name is required
-                } @else if (requestFormControl['name'].hasError('maxLength')) {
+                } @else if (createSubjectFormControl['name'].hasError('maxLength')) {
                   Subject name cannot be longer than 100 characters
                 }
               </div>
@@ -27,12 +27,12 @@
           <div class="mb-3">
             <label class="form-label">Description</label>
             <input type="text" formControlName="description" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && requestFormControl['description'].errors }"/>
-            @if (submitted && requestFormControl['description'].errors) {
+                   [ngClass]="{ 'is-invalid': submitted && createSubjectFormControl['description'].errors }"/>
+            @if (submitted && createSubjectFormControl['description'].errors) {
               <div class="invalid-feedback">
-                @if (requestFormControl['description'].hasError('required')) {
+                @if (createSubjectFormControl['description'].hasError('required')) {
                   Description is required
-                } @else if (requestFormControl['description'].hasError('maxLength')) {
+                } @else if (createSubjectFormControl['description'].hasError('maxLength')) {
                   Description cannot be longer than 400 characters
                 }
               </div>
@@ -41,12 +41,12 @@
           <div class="mb-3">
             <label class="form-label">Group</label>
             <select class="form-select" formControlName="groupName"
-                    [ngClass]="{ 'is-invalid': submitted && requestFormControl['groupName'].errors }">
+                    [ngClass]="{ 'is-invalid': submitted && createSubjectFormControl['groupName'].errors }">
               @for (group of groups;track group.groupId) {
                 <option ngValue="{{group.name}}">{{ group.name }}</option>
               }
             </select>
-            @if (submitted && requestFormControl['groupName'].errors) {
+            @if (submitted && createSubjectFormControl['groupName'].errors) {
               <div class="invalid-feedback">
                 Group is required
               </div>

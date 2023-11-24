@@ -11,8 +11,8 @@ import {Subject} from "../models/subject";
 export class TaskService {
   constructor(private http: HttpClient) { }
 
-  assignTask(request: AssignTaskRequest){
-    return this.http.post(`${environment}/tasks`, request);
+  assignTask(request: AssignTaskRequest): Observable<Subject>{
+    return this.http.post<Subject>(`${environment.apiBaseUrl}/tasks`, request);
   }
 
   removeTask(taskId: string): Observable<Subject>{
