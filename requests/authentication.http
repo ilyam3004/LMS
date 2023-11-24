@@ -1,4 +1,4 @@
-﻿@host = http://localhost:8181/api
+﻿@host = http://localhost:5137/api
 
 ### Register Lecturer
 POST {{host}}/users/lecturers/register
@@ -26,7 +26,7 @@ Content-Type: application/json
   "Address": "Address",
   "Course": 6,
   "Birthday": "2023-11-10",
-  "GroupName": "Group A"
+  "GroupName": "Group B"
 }
 
 ### Login user

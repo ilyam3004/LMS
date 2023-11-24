@@ -19,7 +19,7 @@ public class Repository<TEntity> : IRepository<TEntity>
     public void Update(TEntity entity)
         => DbContext.Set<TEntity>().Update(entity);
 
-    public async Task Remove(TEntity entity)
+    public void Remove(TEntity entity)
         => DbContext.Set<TEntity>().Remove(entity);
 
     public async Task<List<TEntity>> GetAll()

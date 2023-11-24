@@ -14,12 +14,14 @@ public class UnitOfWork : IUnitOfWork
         Users = new UserRepository(_context);
         Tasks = new TaskRepository(_context);
         Subjects = new SubjectRepository(_context);
+        StudentTasks = new StudentTaskRepository(_context);
     }
 
     public IUserRepository Users { get; }
     public ITaskRepository Tasks { get; }
     public ISubjectRepository Subjects { get; }
     public IGroupRepository Groups { get; }
+    public IStudentTaskRepository StudentTasks { get; }
 
     public IRepository<T> GetRepository<T>() where T : class
         => new Repository<T>(_context);

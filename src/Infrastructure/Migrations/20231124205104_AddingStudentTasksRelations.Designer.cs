@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(LmsDbContext))]
-    partial class LmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231124205104_AddingStudentTasksRelations")]
+    partial class AddingStudentTasksRelations
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,37 +48,37 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            GroupId = new Guid("2e6a57ec-ec98-4466-82e2-744d0422a53e"),
+                            GroupId = new Guid("7efa13a5-f46c-4c2c-acbd-9b59127a4dbd"),
                             Department = "Computer Science",
                             Name = "Group A"
                         },
                         new
                         {
-                            GroupId = new Guid("b180e465-1f54-4253-993f-c16eb99b308e"),
+                            GroupId = new Guid("400f7da0-eef7-4e6d-97db-6cc188e883a0"),
                             Department = "Electrical Engineering",
                             Name = "Group B"
                         },
                         new
                         {
-                            GroupId = new Guid("fd870c7f-4a5c-4094-9660-69f9b7ef5a53"),
+                            GroupId = new Guid("5820c032-3853-4b8f-b57a-48cf1c194e60"),
                             Department = "Mechanical Engineering",
                             Name = "Group C"
                         },
                         new
                         {
-                            GroupId = new Guid("3e7e7eb7-5b06-4150-9456-472c011016d4"),
+                            GroupId = new Guid("b7d27f9f-e353-4054-b0d6-05041393a4c7"),
                             Department = "Physics",
                             Name = "Group D"
                         },
                         new
                         {
-                            GroupId = new Guid("8b85f69e-28d2-4160-abbe-a1d556ed214c"),
+                            GroupId = new Guid("9dc986c1-966b-461b-92f5-48e717ee44b7"),
                             Department = "Mathematics",
                             Name = "Group E"
                         },
                         new
                         {
-                            GroupId = new Guid("e00db7db-54de-4dc6-a8bd-63886dfb5354"),
+                            GroupId = new Guid("bbdd6f48-f9ad-4214-8f29-6c1d13a12ac4"),
                             Department = "Chemistry",
                             Name = "Group F"
                         });
@@ -179,7 +182,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("TaskId");
 
-                    b.ToTable("StudentTasks");
+                    b.ToTable("StudentTask");
                 });
 
             modelBuilder.Entity("Domain.Entities.Subject", b =>
@@ -245,7 +248,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("SubjectId");
 
-                    b.ToTable("Tasks");
+                    b.ToTable("Task");
                 });
 
             modelBuilder.Entity("Domain.Entities.User", b =>

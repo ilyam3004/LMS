@@ -13,13 +13,13 @@ public class GetLecturerSubjectQueryHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
 
-    public GetLecturerSubjectQueryHandler(IUnitOfWork unitOfWork, 
+    public GetLecturerSubjectQueryHandler(IUnitOfWork unitOfWork,
         IJwtTokenReader jwtTokenReader)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenReader;
     }
-    
+
     public async Task<Result<List<LecturerSubjectResult>>> Handle(
         GetLecturerSubjectsQuery query,
         CancellationToken cancellationToken)
@@ -35,21 +35,23 @@ public class GetLecturerSubjectQueryHandler
 
         var lecturerSubjects = await _unitOfWork.Subjects
             .GetLecturerSubjects(user.Lecturer!.LecturerId);
-       
+
         return lecturerSubjects.Select(subject =>
         {
-            var groupResults = subject.GroupSubjects.Select(gs =>
-            {
-                var studentResults = gs.Group.Students.Select(s => 
-                    new StudentResult(s)).ToList();
-                
-                return new GroupResult(gs.Group, studentResults);
-            }).ToList();
-            
-            var taskResults = subject.Tasks.Select(t => 
-                new TaskResult(t)).ToList();
+            var studentResults = subject.Group.Students.Select(s =>
+                new StudentResult(s)).ToList();
 
-            return new LecturerSubjectResult(subject, groupResults, taskResults);
+            var groupResult = new GroupResult(subject.Group, studentResults);
+
+            var studentTaskResults = subject.Tasks
+                .SelectMany(task => task.StudentTasks
+                    .Select(st => new StudentTaskResult(st)))
+                .ToList();
+
+            var taskResults = subject.Tasks.Select(task =>
+                new TaskResult(task, studentTaskResults, subject.Group.Name)).ToList();
+
+            return new LecturerSubjectResult(subject, groupResult, taskResults);
         }).ToList();
     }
 }

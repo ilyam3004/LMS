@@ -10,5 +10,5 @@ public class Student
     public string Address { get; set; } = null!;
     public User User { get; set; } = null!;
     public Group Group { get; set; } = null!;
-    List<StudentTask> Tasks { get; set; } = null!;
+    public List<StudentTask> Tasks { get; set; } = null!;
 }

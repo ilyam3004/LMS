@@ -13,32 +13,32 @@ public class RemoveSubjectCommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
 
-    public RemoveSubjectCommandHandler(IUnitOfWork unitOfWork, 
+    public RemoveSubjectCommandHandler(IUnitOfWork unitOfWork,
         IJwtTokenReader jwtTokenGenerator)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenGenerator;
     }
-    
+
     public async Task<Result<List<LecturerSubjectResult>>> Handle(
         RemoveSubjectCommand command,
         CancellationToken cancellationToken)
     {
         var subject = await _unitOfWork.Subjects
             .GetSubjectByIdWithRelations(command.SubjectId);
-        
+
         if (subject is null)
             return Errors.Subject.SubjectNotFound;
 
         var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
         if (userId is null)
             return Errors.User.InvalidToken;
-        
+
         var user = await _unitOfWork.Users
             .GetUserByIdWithRelations(Guid.Parse(userId));
         if (user is null)
             return Errors.User.UserNotFound;
-        
+
         _unitOfWork.Subjects.Remove(subject);
         await _unitOfWork.SaveChangesAsync();
 
@@ -49,20 +49,23 @@ public class RemoveSubjectCommandHandler
     {
         var lecturerSubjects = await _unitOfWork.Subjects
             .GetLecturerSubjects(lecturerId);
-        
+
         return lecturerSubjects.Select(subject =>
         {
-            var groupResults = subject.GroupSubjects.Select(gs =>
-            {
-                var studentResults = gs.Group.Students.Select(s => 
-                    new StudentResult(s)).ToList();
-                
-                return new GroupResult(gs.Group, studentResults);
-            }).ToList();
-            
-            var taskResults = subject.Tasks.Select(t => new TaskResult(t)).ToList();
+            var studentResults = subject.Group.Students.Select(s =>
+                new StudentResult(s)).ToList();
 
-            return new LecturerSubjectResult(subject, groupResults, taskResults);
+            var groupResult = new GroupResult(subject.Group, studentResults);
+
+            var studentTaskResults = subject.Tasks
+                .SelectMany(task => task.StudentTasks
+                    .Select(st => new StudentTaskResult(st)))
+                .ToList();
+
+            var taskResults = subject.Tasks.Select(task =>
+                new TaskResult(task, studentTaskResults, subject.Group.Name)).ToList();
+
+            return new LecturerSubjectResult(subject, groupResult, taskResults);
         }).ToList();
     }
 }

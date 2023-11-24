@@ -10,4 +10,5 @@ public class Task
     public DateTime? Deadline { get; set; }
     public int MaxGrade { get; set; }
     public Subject Subject { get; set; } = null!;
+    public List<StudentTask> StudentTasks { get; set; } = null!;
 }

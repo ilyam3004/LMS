@@ -18,6 +18,8 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
         builder.Property(g => g.Department)
             .HasMaxLength(100);
 
+        builder.HasMany(g => g.Subjects)
+            .WithOne(s => s.Group);
 
         builder.HasData(
             new Group

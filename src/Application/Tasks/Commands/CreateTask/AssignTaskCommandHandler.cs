@@ -6,6 +6,7 @@ using Application.Services;
 using Application.Models;
 using Domain.Common;
 using Domain.Entities;
+using Domain.Enums;
 using MediatR;
 
 namespace Application.Tasks.Commands.CreateTask;
@@ -44,10 +45,10 @@ public class AssignTaskCommandHandler
         };
 
         await _unitOfWork.Tasks.AddAsync(task);
-        
-        await AddStudentTasks(task);
 
         await _unitOfWork.SaveChangesAsync();
+
+        await AddStudentTasks(task.TaskId);
 
         return await GetSubjectResult(command.SubjectId);
     }
@@ -57,34 +58,40 @@ public class AssignTaskCommandHandler
         var subject = await _unitOfWork.Subjects
             .GetSubjectByIdWithRelations(subjectId);
 
-        var groupResults = subject.GroupSubjects.Select(gs =>
-        {
-            var studentResults = gs.Group.Students.Select(s =>
-                new StudentResult(s)).ToList();
+        var studentResults = subject!.Group.Students.Select(s =>
+            new StudentResult(s)).ToList();
 
-            return new GroupResult(gs.Group, studentResults);
-        }).ToList();
-
-        var taskResults = subject.Tasks.Select(t =>
-            new TaskResult(t)).ToList();
+        var groupResult = new GroupResult(subject.Group, studentResults);
         
-        return new LecturerSubjectResult(subject, groupResults, taskResults);
+        var studentTaskResults = subject.Tasks
+            .SelectMany(task => task.StudentTasks
+                .Select(st => new StudentTaskResult(st)))
+            .ToList();
+        
+        var taskResults = subject.Tasks.Select(task =>
+            new TaskResult(task, studentTaskResults, subject.Group.Name)).ToList();
+
+        return new LecturerSubjectResult(subject, groupResult, taskResults);
     }
 
-    private async Task AddStudentTasks(Task task)
+    private async System.Threading.Tasks.Task AddStudentTasks(Guid taskId)
     {
-        await _unitOfWork.Groups
-            .GetGroupByIdWithStudents(task.Subject.)
-            .ForEachAsync(s =>
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
+        var group = await _unitOfWork.Groups.GetGroupByIdWithStudents(task!.Subject.GroupId);
+        
+        group!.Students.ForEach(s =>
+        {
+            var studentTask = new StudentTask
             {
-                var studentTask = new StudentTask
-                {
-                    StudentTaskId = Guid.NewGuid(),
-                    TaskId = task.TaskId,
-                    StudentId = s.StudentId
-                };
+                StudentTaskId = Guid.NewGuid(),
+                TaskId = task.TaskId,
+                StudentId = s.StudentId,
+                Status = StudentTaskStatus.NotUploaded
+            };
 
-                _unitOfWork.StudentTasks.AddAsync(studentTask);
-            });
+            _unitOfWork.StudentTasks.AddAsync(studentTask);
+        });
+        
+        await _unitOfWork.SaveChangesAsync();
     }
 }

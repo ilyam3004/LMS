@@ -17,6 +17,10 @@ public class StudentConfiguration : IEntityTypeConfiguration<Student>
             .HasMaxLength(100);
         
         builder.HasOne(s => s.User);
+        
         builder.HasOne(s => s.Group);
+
+        builder.HasMany(s => s.Tasks)
+            .WithOne(t => t.Student);
     }
 }

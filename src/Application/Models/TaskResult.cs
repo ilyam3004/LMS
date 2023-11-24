@@ -2,4 +2,7 @@
 
 namespace Application.Models;
 
-public record TaskResult(Task Task);
+public record TaskResult(
+    Task Task, 
+    List<StudentTaskResult> StudentTasks,
+    string GroupName);

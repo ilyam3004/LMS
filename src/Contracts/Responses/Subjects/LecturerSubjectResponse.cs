@@ -7,5 +7,5 @@ public record LecturerSubjectResponse(
     Guid SubjectId,
     string Name,
     string Description,
-    List<GroupResponse> Groups,
+    GroupResponse Group,
     List<TaskResponse> Tasks);

@@ -19,7 +19,7 @@ public class CreateSubjectCommandHandler
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenReader;
     }
-    
+
     public async Task<Result<List<LecturerSubjectResult>>> Handle(
         CreateSubjectCommand command,
         CancellationToken cancellationToken)
@@ -45,17 +45,11 @@ public class CreateSubjectCommandHandler
             SubjectId = Guid.NewGuid(),
             Name = command.Name,
             Description = command.Description,
-            LecturerId = user.Lecturer!.LecturerId
-        };
-
-        var groupSubject = new GroupSubject
-        {
-            GroupId = group.GroupId,
-            SubjectId = subject.SubjectId
+            LecturerId = user.Lecturer!.LecturerId,
+            GroupId = group.GroupId
         };
 
         await _unitOfWork.Subjects.AddAsync(subject);
-        await _unitOfWork.GetRepository<GroupSubject>().AddAsync(groupSubject);
 
         await _unitOfWork.SaveChangesAsync();
 
@@ -66,23 +60,26 @@ public class CreateSubjectCommandHandler
     {
         var lecturerSubjects = await _unitOfWork.Subjects
             .GetLecturerSubjects(lecturerId);
-        
+
         return lecturerSubjects.Select(subject =>
         {
-            var groupResults = subject.GroupSubjects.Select(gs =>
-            {
-                var studentResults = gs.Group.Students.Select(s => 
-                    new StudentResult(s)).ToList();
-                
-                return new GroupResult(gs.Group, studentResults);
-            }).ToList();
-            
-            var taskResults = subject.Tasks.Select(t => new TaskResult(t)).ToList();
+            var studentResults = subject.Group.Students.Select(s =>
+                new StudentResult(s)).ToList();
 
-            return new LecturerSubjectResult(subject, groupResults, taskResults);
+            var groupResult = new GroupResult(subject.Group, studentResults);
+
+            var studentTaskResults = subject.Tasks
+                .SelectMany(task => task.StudentTasks
+                    .Select(st => new StudentTaskResult(st)))
+                .ToList();
+
+            var taskResults = subject.Tasks.Select(task =>
+                new TaskResult(task, studentTaskResults, subject.Group.Name)).ToList();
+
+            return new LecturerSubjectResult(subject, groupResult, taskResults);
         }).ToList();
     }
 
     private bool SubjectExistsInGroup(string subjectName, Group group)
-        => group.GroupSubjects.Any(gs => gs.Subject.Name == subjectName);
+        => group.Subjects.Any(s => s.Name == subjectName);
 }

@@ -1,7 +1,7 @@
-﻿@host = http://localhost:8181/api
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjNhN2JjNzczLTUwMWItNGZiOC04NjExLTdhMjA3MWM2Mzk3NSIsImdpdmVuX25hbWUiOiJQZXRybyIsImZhbWlseV9uYW1lIjoiUGV0cm92IiwiZW1haWwiOiJlbWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiTGVjdHVyZXIiLCJleHAiOjE3MDA3Nzk4OTEsImlzcyI6IkxNUyIsImF1ZCI6IkxNUyJ9.UaG6LESN9_3rc1OQsm71o_jcheBMMR-Z_KhZjzrRM50
+﻿@host = http://localhost:5137/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImNlZWEzZTQyLTQ3NzQtNGZiNS1hZTRkLTM5N2M2NjZlZTNlOSIsImdpdmVuX25hbWUiOiJGaXJzdE5hbWUiLCJmYW1pbHlfbmFtZSI6Ikxhc3ROYW1lIiwiZW1haWwiOiJsZWN0dXJlcmVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJMZWN0dXJlciIsImV4cCI6MTcxMTMxMzgwNywiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.1U6be0mIhuZBWc0-m1T9tZ84xw6cwu4MDW3aotspeZ0
 @taskId = f23158da-8f91-4ce9-bac1-c2f49e0cea32
-@subjectId = 0930b5c4-184c-43e9-98e6-74f1be298f19
+@subjectId = bbd9a788-04c1-431d-a0e8-116d02bb6b6e
 
 ### Assign new task
 POST {{host}}/tasks

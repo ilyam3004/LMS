@@ -4,5 +4,5 @@ namespace Application.Models;
 
 public record LecturerSubjectResult(
     Subject Subject, 
-    List<GroupResult> Groups,
+    GroupResult Group,
     List<TaskResult> Tasks);

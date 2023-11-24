@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Task = Domain.Entities.Task;
 using Domain.Entities;
 
 namespace Infrastructure.Persistence;
@@ -13,7 +14,8 @@ public class LmsDbContext : DbContext
     public DbSet<Student> Students { get; set; } = null!;
     public DbSet<Group> Groups { get; set; } = null!;
     public DbSet<Subject> Subjects { get; set; } = null!;
-    public DbSet<GroupSubject> GroupSubjects { get; set; } = null!;
+    public DbSet<Task> Tasks { get; set; } = null!;
+    public DbSet<StudentTask> StudentTasks { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

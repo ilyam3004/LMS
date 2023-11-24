@@ -22,5 +22,9 @@ public class SubjectConfigurations : IEntityTypeConfiguration<Subject>
 
         builder.HasMany(s => s.Tasks)
             .WithOne(t => t.Subject);
+
+        builder.HasOne(s => s.Group)
+            .WithMany(g => g.Subjects)
+            .HasForeignKey(s => s.GroupId);
     }
 }
