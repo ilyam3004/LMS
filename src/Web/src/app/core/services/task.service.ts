@@ -23,6 +23,10 @@ export class TaskService {
     return this.http.delete<LecturerSubject>(`${environment.apiBaseUrl}/tasks/${taskId}`);
   }
 
+  returnTaskToStudent(taskId: string): Observable<LecturerTask>{
+    return this.http.put<LecturerTask>(`${environment.apiBaseUrl}/tasks/${taskId}/return`, null);
+  }
+
   getStudentTasks() {
     return this.http.get(`${environment.apiBaseUrl}/tasks/student`)
   }

@@ -14,8 +14,8 @@ export interface LecturerTask {
 export interface StudentTask {
   studentTaskId: string,
   taskId: string,
-  fileUrl: string,
-  uploadedAt: Date,
+  fileUrl: string | null,
+  uploadedAt: Date | null,
   grade: number,
   status: StudentTaskStatus
   student: Student
