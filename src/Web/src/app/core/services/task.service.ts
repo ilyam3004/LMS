@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
 import {AssignTaskRequest, LecturerTask} from "../models/task";
@@ -9,25 +9,31 @@ import {LecturerSubject} from "../models/subject";
   providedIn: 'root'
 })
 export class TaskService {
+  taskApiUrl: string = `${environment.apiBaseUrl}/tasks`;
   constructor(private http: HttpClient) { }
 
-  assignTask(request: AssignTaskRequest): Observable<LecturerSubject>{
-    return this.http.post<LecturerSubject>(`${environment.apiBaseUrl}/tasks`, request);
+  assignTask(request: AssignTaskRequest): Observable<LecturerSubject> {
+    return this.http.post<LecturerSubject>(this.taskApiUrl, request);
   }
 
-  getTask(taskId: string): Observable<LecturerTask>{
-    return this.http.get<LecturerTask>(`${environment.apiBaseUrl}/tasks/${taskId}`);
+  getTask(taskId: string): Observable<LecturerTask> {
+    return this.http.get<LecturerTask>(`${this.taskApiUrl}/${taskId}`);
   }
 
-  removeTask(taskId: string): Observable<LecturerSubject>{
-    return this.http.delete<LecturerSubject>(`${environment.apiBaseUrl}/tasks/${taskId}`);
+  removeTask(taskId: string): Observable<LecturerSubject> {
+    return this.http.delete<LecturerSubject>(`${this.taskApiUrl}/${taskId}`);
   }
 
-  returnTaskToStudent(taskId: string): Observable<LecturerTask>{
-    return this.http.put<LecturerTask>(`${environment.apiBaseUrl}/tasks/${taskId}/return`, null);
+  returnTaskToStudent(studentTaskId: string): Observable<LecturerTask> {
+    return this.http.put<LecturerTask>(`${this.taskApiUrl}/${studentTaskId}/return`, null);
+  }
+
+  acceptTask(studentTaskId: string, grade: number): Observable<LecturerTask> {
+    return this.http.put<LecturerTask>(`${this.taskApiUrl}/${studentTaskId}/accept`,
+      {grade: grade});
   }
 
   getStudentTasks() {
-    return this.http.get(`${environment.apiBaseUrl}/tasks/student`)
+    return this.http.get(`${this.taskApiUrl}/student`)
   }
 }

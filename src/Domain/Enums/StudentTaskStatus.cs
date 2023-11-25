@@ -3,7 +3,7 @@
 public enum StudentTaskStatus
 { 
     Uploaded,
-    Rejected,
+    Returned,
     Accepted,
     NotUploaded
 }

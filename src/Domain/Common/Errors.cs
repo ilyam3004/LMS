@@ -1,4 +1,5 @@
-﻿using Domain.Abstractions.Errors;
+﻿using System.Security.Cryptography;
+using Domain.Abstractions.Errors;
 
 namespace Domain.Common;
 
@@ -38,5 +39,11 @@ public static class Errors
     {
         public static Error TaskNotFound => Error.NotFound("Task.TaskNotFound",
             description: "Task not found");
+        
+        public static Error TaskNotUploaded => Error.Conflict("Task.TaskNotUploaded",
+            description: "Task is not uploaded");
+        
+        public static Error GradeTooHigh => Error.Conflict("Task.GradeTooHigh",
+            description: "Grade is too high");
     }
 }

@@ -40,6 +40,7 @@ export class TaskDetailsComponent implements OnInit {
       .subscribe({
         next: task => {
           this.task = task;
+          console.log(task)
           this.fetchLoading = false;
         },
         error: err => {
@@ -47,10 +48,6 @@ export class TaskDetailsComponent implements OnInit {
           this.fetchLoading = false;
         }
       });
-  }
-
-  removeTask() {
-
   }
 
   getTurnedInCount(): number {
@@ -65,16 +62,16 @@ export class TaskDetailsComponent implements OnInit {
 
   getReturnedCount() {
     return this.task.studentTasks.filter(task =>
-      task.status === StudentTaskStatus.Rejected).length;
+      task.status === StudentTaskStatus.Returned).length;
   }
 
   getStudentTaskStatus(status: StudentTaskStatus): string {
     return status === StudentTaskStatus.Accepted ? 'Accepted' :
-      status === StudentTaskStatus.Rejected ? 'Returned' :
+      status === StudentTaskStatus.Returned ? 'Returned' :
         status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
   }
 
-  openReturnTaskModal(): void {
+  openReturnTaskModal(studentTaskId: string): void {
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.message = 'Are you sure you want to return this task to the student?';
     modalRef.componentInstance.title = 'Return task';
@@ -82,7 +79,7 @@ export class TaskDetailsComponent implements OnInit {
     modalRef.result.then(
       (result) => {
         if (result) {
-          this.returnTaskToStudent();
+          this.returnTaskToStudent(studentTaskId);
         }
       },
       () => {
@@ -90,22 +87,23 @@ export class TaskDetailsComponent implements OnInit {
     );
   }
 
-  openGradeEntryModal(): void {
+  openGradeEntryModal(studentTaskId: string): void {
     const modalRef = this.modalService.open(GradeEntryModalComponent);
     modalRef.componentInstance.maxGrade = this.task.maxGrade;
 
     modalRef.result.then(
       (result) => {
-        console.log('Grade submitted:', result);
+        if (result) {
+          this.acceptStudentTask(result, studentTaskId);
+        }
       },
       () => {
-        console.log('Grade entry cancelled');
       }
     );
   }
 
-  private returnTaskToStudent() {
-    this.taskService.returnTaskToStudent(this.taskId)
+  private returnTaskToStudent(studentTaskId: string) {
+    this.taskService.returnTaskToStudent(studentTaskId)
       .subscribe({
         next: task => {
           this.task = task;
@@ -116,4 +114,19 @@ export class TaskDetailsComponent implements OnInit {
         }
       });
   }
+
+  private acceptStudentTask(grade: number, studentTaskId: string) {
+    this.taskService.acceptTask(studentTaskId, grade)
+      .subscribe({
+        next: task => {
+          this.task = task;
+          this.alertService.success('Task accepted successfully', {keepAfterRouteChange: true});
+        },
+        error: err => {
+          this.alertService.error(err);
+        }
+      })
+  }
+
+  protected readonly StudentTaskStatus = StudentTaskStatus;
 }

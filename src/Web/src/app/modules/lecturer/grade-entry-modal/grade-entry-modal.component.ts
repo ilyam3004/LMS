@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
@@ -7,12 +7,15 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
   templateUrl: './grade-entry-modal.component.html',
   styleUrl: './grade-entry-modal.component.scss'
 })
-export class GradeEntryModalComponent {
-  @Input() maxGrade: number = 100;
-  gradeForm: FormGroup;
+export class GradeEntryModalComponent implements OnInit {
+  @Input() maxGrade: number = 0;
+  gradeForm: FormGroup = {} as FormGroup;
   submitted: boolean = false;
 
-  constructor(public activeModal: NgbActiveModal, private fb: FormBuilder) {
+  constructor(public activeModal: NgbActiveModal,
+              private fb: FormBuilder) {}
+
+  ngOnInit(): void {
     this.gradeForm = this.fb.group({
       grade: [null, [Validators.required, Validators.max(this.maxGrade), Validators.min(1)]],
     });

@@ -22,7 +22,7 @@ public class GetLecturerTaskDetailsQueryHandler
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(query.TaskId);
 
         if (task is null)
-            return Errors.Subject.SubjectNotFound;
+            return Errors.Task.TaskNotFound;
 
         return new TaskResult(task);
     }

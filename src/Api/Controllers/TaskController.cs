@@ -1,5 +1,7 @@
-﻿using Application.Tasks.Commands.CreateTask;
+﻿using Application.Tasks.Commands.AcceptTask;
+using Application.Tasks.Commands.CreateTask;
 using Application.Tasks.Commands.RemoveTask;
+using Application.Tasks.Commands.ReturnTask;
 using Application.Tasks.Queries.GetLecturerTaskDetails;
 using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Tasks;
@@ -60,6 +62,31 @@ public class TaskController : ApiController
         var token = Request.Headers.Authorization;
 
         var command = new GetLecturerTaskDetailsQuery(taskId);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            value => Ok(_mapper.Map<TaskResponse>(value)),
+            Problem);
+    }
+
+    [HttpPut("{studentTaskId}/return")]
+    public async Task<IActionResult> ReturnTask(Guid studentTaskId)
+    {
+        var command = new ReturnTaskCommand(studentTaskId);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            value => Ok(_mapper.Map<TaskResponse>(value)),
+            Problem);
+    }
+    
+    [HttpPut("{studentTaskId}/accept")]
+    public async Task<IActionResult> AcceptTask([FromRoute] Guid studentTaskId, 
+        [FromBody] AcceptTaskRequest request)
+    {
+        var command = new AcceptTaskCommand(studentTaskId, request.Grade);
 
         var result = await _sender.Send(command);
 

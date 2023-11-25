@@ -31,7 +31,7 @@ export interface AssignTaskRequest {
 
 export enum StudentTaskStatus {
   Uploaded,
-  Rejected,
+  Returned,
   Accepted,
   NotUploaded
 }
