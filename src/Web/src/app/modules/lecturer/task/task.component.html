@@ -21,7 +21,7 @@
         <div class="subject-card">
           <div class="card w-100">
             <div class="card-body">
-              <div class="create-task-container">
+              <div class="task-head-container">
                 <h4 class="card-title">{{ subject.name }}</h4>
                 <div>
                   <ng-template #content let-modal>
@@ -113,36 +113,38 @@
                   </button>
                 </div>
               </div>
-              <p class="text-secondary"> All tasks you have created for this subject:</p>
-              @for (task of subject.tasks;track task.taskId) {
-                <div class="card border-secondary mb-3">
-                  <div class="card-header text-secondary h5">{{ task.title }}</div>
-                  <div class="card-body text-secondary">
-                    <p class="card-text">{{ task.description }}</p>
-                    <div class="d-flex justify-content-between">
-                      <a [routerLink]="['../tasks/task']" [queryParams]="{id: task.taskId}">
-                        <button type="button" class="btn btn-outline-primary btn-sm">
-                          Details
+              @if (subject.tasks.length == 0) {
+                <div class="d-flex justify-content-center">
+                  <p class="text-secondary">You have not assigned any tasks before😧</p>
+                </div>
+              } @else {
+                <p class="text-secondary"> All tasks you have created for this subject:</p>
+                @for (task of subject.tasks;track task.taskId) {
+                  <div class="card border-secondary mb-3">
+                    <div class="card-header text-secondary h5">{{ task.title }}</div>
+                    <div class="card-body text-secondary">
+                      <p class="card-text">{{ task.description }}</p>
+                      <div class="d-flex justify-content-between">
+                        <a [routerLink]="['../tasks/task']" [queryParams]="{id: task.taskId}">
+                          <button type="button" class="btn btn-outline-primary btn-sm">
+                            Details
+                          </button>
+                        </a>
+                        <button type="button" class="btn btn-outline-danger btn-sm"
+                                (click)="removeTask(task.taskId)"
+                                [disabled]="removeLoading">
+                          <span *ngIf="removeLoading" class="spinner-border spinner-border-sm me-1"></span>
+                          Remove
                         </button>
-                      </a>
-                      <button type="button" class="btn btn-outline-danger btn-sm"
-                              (click)="removeTask(task.taskId)"
-                              [disabled]="removeLoading">
-                        <span *ngIf="removeLoading" class="spinner-border spinner-border-sm me-1"></span>
-                        Remove
-                      </button>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-muted">
+                        Assigned: {{ dateTimeService.convertDateToReadableFormat(task.createdAt) }}
+                      </small>
                     </div>
                   </div>
-                  <div class="card-footer">
-                    <small class="text-muted">
-                      Assigned: {{ convertDateToReadableFormat(task.createdAt) }}
-                      Deadline: {{
-                        task.deadline ? convertDateToReadableFormat(task.deadline)
-                          : 'No deadline'
-                      }}
-                    </small>
-                  </div>
-                </div>
+                }
               }
             </div>
           </div>

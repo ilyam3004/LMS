@@ -1,12 +1,13 @@
 import {AlertService} from "../../../core/services/alert.service";
 import {TaskService} from "../../../core/services/task.service";
-import {Subject} from "../../../core/models/subject";
+import {LecturerSubject} from "../../../core/models/subject";
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {SubjectService} from "../../../core/services/subject.service";
 import {DatePipe} from "@angular/common";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {AssignTaskRequest} from "../../../core/models/task";
 import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {DateTimeService} from "../../../core/services/datetime.service";
 
 @Component({
   selector: 'app-task',
@@ -15,7 +16,7 @@ import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 })
 export class TaskComponent implements OnInit {
   assignTaskForm!: FormGroup;
-  subjects: Subject[] = [];
+  subjects: LecturerSubject[] = [];
   dateModel: NgbDateStruct | null = null;
   timeModel: { hour: number, minute: number } = {hour: 0, minute: 0};
   isDateSet: boolean = false;
@@ -30,6 +31,7 @@ export class TaskComponent implements OnInit {
               private alertService: AlertService,
               private modalService: NgbModal,
               private formBuilder: FormBuilder,
+              protected dateTimeService: DateTimeService,
               private datePipe: DatePipe) {
   }
 
@@ -128,42 +130,13 @@ export class TaskComponent implements OnInit {
       });
   }
 
-  updateSubject(updatedSubject: Subject): void {
+  updateSubject(updatedSubject: LecturerSubject): void {
     const index = this.subjects.findIndex(s =>
       s.subjectId === updatedSubject.subjectId);
 
     if (index !== -1) {
       this.subjects[index] = updatedSubject;
     }
-  }
-
-  convertDateToReadableFormat(isoDate: Date): string {
-    const date = new Date(isoDate);
-
-    if (this.isCreatedToday(date)) {
-      return 'Today at ' + this.datePipe.transform(isoDate, 'HH:mm') ?? '-';
-    }
-
-    if (this.isYearsEqual(date)) {
-      const dateWithOutYear = this.datePipe.transform(isoDate, 'MMM d, HH:mm');
-      return dateWithOutYear == null ? '-' : dateWithOutYear;
-    }
-
-    const readableDate = this.datePipe.transform(isoDate, 'MMM d, y, HH:mm');
-    return readableDate == null ? '-' : readableDate;
-  }
-
-  private isCreatedToday(date: Date): boolean {
-    const currentDate = new Date();
-
-    return date.getDate() === currentDate.getDate()
-      && date.getMonth() === currentDate.getMonth()
-      && date.getFullYear() === currentDate.getFullYear();
-  }
-
-  private isYearsEqual(date: Date): boolean {
-    const currentDate = new Date();
-    return date.getFullYear() == currentDate.getFullYear();
   }
 
   openModal(content: TemplateRef<any>) {

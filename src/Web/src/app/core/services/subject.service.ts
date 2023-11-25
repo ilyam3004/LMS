@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {CreateSubjectRequest, Subject} from "../models/subject";
+import {CreateSubjectRequest, LecturerSubject} from "../models/subject";
 import {environment} from "../../../environments/environment";
 
 @Injectable({
@@ -11,15 +11,15 @@ export class SubjectService {
 
   constructor(private http: HttpClient) { }
 
-  getLecturerSubjects(): Observable<Subject[]> {
-    return this.http.get<Subject[]>(`${environment.apiBaseUrl}/subjects/lecturer`)
+  getLecturerSubjects(): Observable<LecturerSubject[]> {
+    return this.http.get<LecturerSubject[]>(`${environment.apiBaseUrl}/subjects/lecturer`)
   }
 
-  createSubject(request: CreateSubjectRequest): Observable<Subject[]> {
-    return this.http.post<Subject[]>(`${environment.apiBaseUrl}/subjects`, request);
+  createSubject(request: CreateSubjectRequest): Observable<LecturerSubject[]> {
+    return this.http.post<LecturerSubject[]>(`${environment.apiBaseUrl}/subjects`, request);
   }
 
-  removeSubject(subjectId: string): Observable<Subject[]> {
-    return this.http.delete<Subject[]>(`${environment.apiBaseUrl}/subjects/${subjectId}`);
+  removeSubject(subjectId: string): Observable<LecturerSubject[]> {
+    return this.http.delete<LecturerSubject[]>(`${environment.apiBaseUrl}/subjects/${subjectId}`);
   }
 }

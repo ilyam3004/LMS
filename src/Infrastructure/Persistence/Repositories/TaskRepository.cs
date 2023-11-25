@@ -12,7 +12,11 @@ public class TaskRepository : Repository<Task>, ITaskRepository
     public async Task<Task?> GetTaskByIdWithRelations(Guid taskId)
         => await DbContext.Tasks
             .Include(t => t.StudentTasks)
+            .ThenInclude(st => st.Student)
             .Include(t => t.Subject)
-            .ThenInclude(s => s.Lecturer)
+            .ThenInclude(s => s.Group)
             .FirstOrDefaultAsync(t => t.TaskId == taskId);
+
+    public async Task<bool> TaskExists(Guid taskId)
+        => await DbContext.Tasks.AnyAsync(t => t.TaskId == taskId);
 }

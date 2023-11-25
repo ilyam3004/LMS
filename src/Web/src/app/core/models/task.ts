@@ -1,10 +1,24 @@
-export interface Task {
+import {Student} from "./student";
+
+export interface LecturerTask {
   taskId: string,
   title: string,
   description: string,
   deadline: Date,
   createdAt: Date,
   maxGrade: number
+  groupName: string,
+  studentTasks: StudentTask[]
+}
+
+export interface StudentTask {
+  studentTaskId: string,
+  taskId: string,
+  fileUrl: string,
+  uploadedAt: Date,
+  grade: number,
+  status: StudentTaskStatus
+  student: Student
 }
 
 export interface AssignTaskRequest {
@@ -13,4 +27,11 @@ export interface AssignTaskRequest {
   subjectId: string,
   deadline: string | null,
   maxGrade: number
+}
+
+export enum StudentTaskStatus {
+  Uploaded,
+  Rejected,
+  Accepted,
+  NotUploaded
 }

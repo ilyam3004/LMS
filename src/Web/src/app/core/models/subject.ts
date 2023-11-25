@@ -1,12 +1,12 @@
 import {Group} from "./group";
-import {Task} from "./task";
+import {LecturerTask} from "./task";
 
-export interface Subject {
+export interface LecturerSubject {
   subjectId: string;
   name: string;
   description: string;
-  groups: Group[];
-  tasks: Task[];
+  group: Group;
+  tasks: LecturerTask[];
 }
 
 export interface CreateSubjectRequest {

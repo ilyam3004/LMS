@@ -7,6 +7,7 @@ import {JwtInterceptor} from "./helpers/jwt.interceptor";
 import {ErrorInterceptor} from "./helpers/error.interceptor";
 import {ReactiveFormsModule} from "@angular/forms";
 import { AlertComponent } from './shared/components/alert/alert.component';
+import {DatePipe} from "@angular/common";
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { AlertComponent } from './shared/components/alert/alert.component';
   providers: [
     {provide: HTTP_INTERCEPTORS, useClass: JwtInterceptor, multi: true},
     {provide: HTTP_INTERCEPTORS, useClass: ErrorInterceptor, multi: true},
+    DatePipe
   ],
   bootstrap: [AppComponent]
 })

@@ -6,6 +6,7 @@ public record StudentTaskResponse(
     Guid StudentTaskId,
     Guid TaskId,
     string FileUrl,
-    DateTime UploadedAt,
+    DateTime? UploadedAt,
     int Grade,
+    StudentTaskStatus Status,
     StudentResponse Student);

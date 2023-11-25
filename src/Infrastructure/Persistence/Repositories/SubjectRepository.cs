@@ -15,6 +15,7 @@ public class SubjectRepository : Repository<Subject>, ISubjectRepository
             .Include(s => s.Group)
             .ThenInclude(g => g.Students)
             .Include(s => s.Tasks)
+            .ThenInclude(t => t.StudentTasks)
             .ToListAsync();
 
     public async Task<List<Subject>> GetStudentSubjects(Guid groupId)

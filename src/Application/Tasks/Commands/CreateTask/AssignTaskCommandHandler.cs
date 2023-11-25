@@ -62,14 +62,9 @@ public class AssignTaskCommandHandler
             new StudentResult(s)).ToList();
 
         var groupResult = new GroupResult(subject.Group, studentResults);
-        
-        var studentTaskResults = subject.Tasks
-            .SelectMany(task => task.StudentTasks
-                .Select(st => new StudentTaskResult(st)))
-            .ToList();
-        
+
         var taskResults = subject.Tasks.Select(task =>
-            new TaskResult(task, studentTaskResults, subject.Group.Name)).ToList();
+            new TaskResult(task)).ToList();
 
         return new LecturerSubjectResult(subject, groupResult, taskResults);
     }
@@ -78,18 +73,21 @@ public class AssignTaskCommandHandler
     {
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
         var group = await _unitOfWork.Groups.GetGroupByIdWithStudents(task!.Subject.GroupId);
-        
-        group!.Students.ForEach(s =>
+
+        group!.Students.ForEach(async s =>
         {
             var studentTask = new StudentTask
             {
                 StudentTaskId = Guid.NewGuid(),
                 TaskId = task.TaskId,
                 StudentId = s.StudentId,
-                Status = StudentTaskStatus.NotUploaded
+                Status = StudentTaskStatus.NotUploaded,
+                UploadedAt = null,
+                FileUrl = null,
+                Grade = 0
             };
 
-            _unitOfWork.StudentTasks.AddAsync(studentTask);
+            await _unitOfWork.StudentTasks.AddAsync(studentTask);
         });
         
         await _unitOfWork.SaveChangesAsync();

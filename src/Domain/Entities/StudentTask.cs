@@ -9,7 +9,7 @@ public class StudentTask
     public Guid StudentId { get; set; }
     public string? FileUrl { get; set; }
     public DateTime? UploadedAt { get; set; }
-    public int? Grade { get; set; }
+    public int Grade { get; set; }
     public StudentTaskStatus Status { get; set; }
     public Student Student { get; set; } = null!;
     public Task Task { get; set; } = null!;

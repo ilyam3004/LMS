@@ -1,5 +1,5 @@
-@host = http://localhost:5137/api
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImNlZWEzZTQyLTQ3NzQtNGZiNS1hZTRkLTM5N2M2NjZlZTNlOSIsImdpdmVuX25hbWUiOiJGaXJzdE5hbWUiLCJmYW1pbHlfbmFtZSI6Ikxhc3ROYW1lIiwiZW1haWwiOiJsZWN0dXJlcmVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJMZWN0dXJlciIsImV4cCI6MTcxMTMxMzgwNywiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.1U6be0mIhuZBWc0-m1T9tZ84xw6cwu4MDW3aotspeZ0
+@host = http://localhost:8181/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImJhZjYxYTljLWNkN2EtNDM4Zi1hYzUyLWY4MmE3MjU1OTQxMyIsImdpdmVuX25hbWUiOiJGaXJzdE5hbWUiLCJmYW1pbHlfbmFtZSI6Ikxhc3ROYW1lIiwiZW1haWwiOiJsZWN0dXJlcmVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJMZWN0dXJlciIsImV4cCI6MTcxMTMxNzc2NSwiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.o0HgTyOZVVZGGkv9k7I-dLh-c4OU9qD4-Hy1JUhyXEA
 @subjectId = 4fdcd308-f10e-45e6-b7b1-808e2ae22bb7
 
 ### Create a new subject
@@ -8,7 +8,7 @@ Content-Type: application/json
 Authorization: Bearer {{token}} 
 
 {
-  "Name": "ТРПЗ",
+  "Name": "ТРПЗalskjdjh",
   "Description": "Description about the subject",
   "GroupName": "Group B"
 }

@@ -26,8 +26,9 @@
           </div>
           <div class="mb-3">
             <label class="form-label">Description</label>
-            <input type="text" formControlName="description" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && createSubjectFormControl['description'].errors }"/>
+            <textarea type="text" formControlName="description" class="form-control" rows="5"
+                      [ngClass]="{ 'is-invalid': submitted && createSubjectFormControl['description'].errors }">
+            </textarea>
             @if (submitted && createSubjectFormControl['description'].errors) {
               <div class="invalid-feedback">
                 @if (createSubjectFormControl['description'].hasError('required')) {
@@ -84,33 +85,32 @@
               </div>
               <p class="card-text text-secondary">{{ subject.description }}</p>
               <div ngbAccordion #accordion="ngbAccordion">
-                @for (group of subject.groups;track group.groupId) {
-                  <div ngbAccordionItem="{{group.groupId}}">
-                    <h2 ngbAccordionHeader>
-                      <button ngbAccordionButton>{{ group.name }}</button>
-                    </h2>
-                    <div ngbAccordionCollapse>
-                      <div ngbAccordionBody>
-                        <ng-template>
-                          @if (group.students.length == 0) {
-                            <div class="d-flex justify-content-center align-items-center">
-                              There is no students in this group😢
-                              Please contact students to join this group.
-                            </div>
+                <div ngbAccordionItem="{{subject.group.groupId}}">
+                  <h2 ngbAccordionHeader>
+                    <button ngbAccordionButton>{{ subject.group.name }}</button>
+                  </h2>
+                  <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                      <ng-template>
+                        @if (subject.group.students.length == 0) {
+                          <div class="d-flex justify-content-center align-items-center">
+                            There is no students in this group😢
+                            Please contact students to join this group.
+                          </div>
+                        }
+                        <ul class="list-group list-group-flush">
+                          @for (student of subject.group.students;track student.studentId) {
+                            <li class="list-group-item">
+                              <div class="bi bi-person-vcard">
+                                {{ student.fullName }}
+                              </div>
+                            </li>
                           }
-                          <ul class="list-group list-group-flush">
-                            @for (student of group.students;track student.studentId) {
-                              <li class="list-group-item">
-                                <div class="bi bi-person-vcard">
-                                  {{student.fullName}}</div>
-                              </li>
-                            }
-                          </ul>
-                        </ng-template>
-                      </div>
+                        </ul>
+                      </ng-template>
                     </div>
                   </div>
-                }
+                </div>
               </div>
               <div class="remove-button-container">
                 <button type="button" class="btn btn-outline-danger"

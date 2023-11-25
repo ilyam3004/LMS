@@ -3,6 +3,4 @@
 namespace Application.Models;
 
 public record TaskResult(
-    Task Task, 
-    List<StudentTaskResult> StudentTasks,
-    string GroupName);
+    Task Task);

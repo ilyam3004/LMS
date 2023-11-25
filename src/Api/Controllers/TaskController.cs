@@ -1,5 +1,6 @@
 ﻿using Application.Tasks.Commands.CreateTask;
 using Application.Tasks.Commands.RemoveTask;
+using Application.Tasks.Queries.GetLecturerTaskDetails;
 using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Subjects;
@@ -58,7 +59,7 @@ public class TaskController : ApiController
     {
         var token = Request.Headers.Authorization;
 
-        var command = new RemoveTaskCommand(taskId);
+        var command = new GetLecturerTaskDetailsQuery(taskId);
 
         var result = await _sender.Send(command);
 

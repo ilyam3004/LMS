@@ -1,7 +1,7 @@
-import {Component, inject, OnInit, TemplateRef} from '@angular/core';
+import {Component, OnInit, TemplateRef} from '@angular/core';
 import {SubjectService} from "../../../core/services/subject.service";
 import {AlertService} from "../../../core/services/alert.service";
-import {CreateSubjectRequest, Subject} from "../../../core/models/subject";
+import {CreateSubjectRequest, LecturerSubject} from "../../../core/models/subject";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {Group} from "../../../core/models/group";
@@ -14,7 +14,7 @@ import {GroupService} from "../../../core/services/group.service";
 })
 export class SubjectComponent implements OnInit {
   createSubjectForm!: FormGroup;
-  subjects: Subject[] = [];
+  subjects: LecturerSubject[] = [];
   groups: Group[] = [];
   fetchLoading: boolean = false;
   createLoading: boolean = false;
@@ -44,6 +44,7 @@ export class SubjectComponent implements OnInit {
         {
           next: subjects => {
             this.subjects = subjects;
+            console.log(this.subjects)
           },
           error: err => {
             this.alertService.error(err);

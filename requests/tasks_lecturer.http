@@ -1,7 +1,7 @@
 ﻿@host = http://localhost:5137/api
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImNlZWEzZTQyLTQ3NzQtNGZiNS1hZTRkLTM5N2M2NjZlZTNlOSIsImdpdmVuX25hbWUiOiJGaXJzdE5hbWUiLCJmYW1pbHlfbmFtZSI6Ikxhc3ROYW1lIiwiZW1haWwiOiJsZWN0dXJlcmVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJMZWN0dXJlciIsImV4cCI6MTcxMTMxMzgwNywiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.1U6be0mIhuZBWc0-m1T9tZ84xw6cwu4MDW3aotspeZ0
-@taskId = f23158da-8f91-4ce9-bac1-c2f49e0cea32
-@subjectId = bbd9a788-04c1-431d-a0e8-116d02bb6b6e
+@taskId = 74fe810b-6580-45ef-88cd-5d6476d4a2f0
+@subjectId = 8e279316-eb68-4709-8ccf-a9453122e303
 
 ### Assign new task
 POST {{host}}/tasks
@@ -18,4 +18,8 @@ Authorization: Bearer {{token}}
 
 ### Remove task
 DELETE {{host}}/tasks/{{taskId}}
+Authorization: Bearer {{token}}
+
+### Get lecturer task details
+GET {{host}}/tasks/{{taskId}}
 Authorization: Bearer {{token}}

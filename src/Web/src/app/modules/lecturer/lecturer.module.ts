@@ -28,6 +28,5 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
     ReactiveFormsModule,
     NgbTimepicker,
   ],
-  providers: [DatePipe]
 })
 export class LecturerModule { }

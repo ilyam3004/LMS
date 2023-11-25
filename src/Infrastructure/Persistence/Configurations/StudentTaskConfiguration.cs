@@ -16,9 +16,6 @@ public class StudentTaskConfiguration : IEntityTypeConfiguration<StudentTask>
         builder.Property(t => t.UploadedAt)
             .IsRequired(false);
 
-        builder.Property(t => t.Grade)
-            .IsRequired(false);
-
         builder.HasOne(t => t.Student)
             .WithMany(s => s.Tasks)
             .HasForeignKey(t => t.StudentId);
