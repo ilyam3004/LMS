@@ -1,0 +1,28 @@
+<div class="modal-header">
+  <h4 class="modal-title">Enter Grade</h4>
+  <button type="button" class="btn-close" aria-label="Close" (click)="cancel()"></button>
+</div>
+<div class="modal-body">
+  <form [formGroup]="gradeForm">
+    <div class="mb-3">
+      <label class="form-label">Grade</label>
+      <input type="text" formControlName="grade" class="form-control"
+             [ngClass]="{ 'is-invalid': submitted && gradeControl['grade'].errors }"/>
+      @if (submitted && gradeControl['grade'].errors) {
+        <div class="invalid-feedback">
+          @if (gradeControl['grade'].hasError('required')) {
+            Grade is required
+          } @else if (gradeControl['grade'].hasError('max')) {
+            Grade must be less than {{ maxGrade }}
+          } @else if (gradeControl['grade'].hasError('min')) {
+            Grade must be greater than 0
+          }
+        </div>
+      }
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-primary" (click)="onGradeSubmit()">Submit</button>
+  <button type="button" class="btn btn-secondary" (click)="cancel()">Cancel</button>
+</div>

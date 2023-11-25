@@ -6,6 +6,7 @@ import {LecturerTask, StudentTaskStatus} from "../../../core/models/task";
 import {DateTimeService} from "../../../core/services/datetime.service";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {ConfirmationModalComponent} from "../../../shared/components/confirmation-modal/confirmation-modal.component";
+import {GradeEntryModalComponent} from "../grade-entry-modal/grade-entry-modal.component";
 
 @Component({
   selector: 'app-task-details',
@@ -73,7 +74,7 @@ export class TaskDetailsComponent implements OnInit {
         status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
   }
 
-  openConfirmationModal(): void {
+  openReturnTaskModal(): void {
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.message = 'Are you sure you want to return this task to the student?';
     modalRef.componentInstance.title = 'Return task';
@@ -84,7 +85,22 @@ export class TaskDetailsComponent implements OnInit {
           this.returnTaskToStudent();
         }
       },
-      () => { }
+      () => {
+      }
+    );
+  }
+
+  openGradeEntryModal(): void {
+    const modalRef = this.modalService.open(GradeEntryModalComponent);
+    modalRef.componentInstance.maxGrade = this.task.maxGrade;
+
+    modalRef.result.then(
+      (result) => {
+        console.log('Grade submitted:', result);
+      },
+      () => {
+        console.log('Grade entry cancelled');
+      }
     );
   }
 

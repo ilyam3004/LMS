@@ -7,13 +7,14 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SubjectComponent } from './subject/subject.component';
 import { TaskComponent } from './task/task.component';
 import {
-  NgbAccordionModule,
+  NgbAccordionModule, NgbActiveModal,
   NgbDropdownModule,
   NgbInputDatepicker,
   NgbTimepicker
 } from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import { TaskDetailsComponent } from './task-details/task-details.component';
+import { GradeEntryModalComponent } from './grade-entry-modal/grade-entry-modal.component';
 
 
 @NgModule({
@@ -22,7 +23,8 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
     NavbarComponent,
     SubjectComponent,
     TaskComponent,
-    TaskDetailsComponent
+    TaskDetailsComponent,
+    GradeEntryModalComponent
   ],
   imports: [
     CommonModule,
@@ -33,6 +35,7 @@ import { TaskDetailsComponent } from './task-details/task-details.component';
     ReactiveFormsModule,
     NgbTimepicker,
     NgbDropdownModule
-  ]
+  ],
+  providers: [NgbActiveModal]
 })
 export class LecturerModule { }
