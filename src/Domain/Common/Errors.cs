@@ -19,7 +19,13 @@ public static class Errors
         public static Error UserNotFound => Error.NotFound("User.UserNotFound",
             description: "User not found");
     }
-    
+
+    public static class File
+    {
+        public static Error FileNotFound => Error.NotFound("File.FileNotFound",
+            description: "File not found");
+    }
+
     public static class Group
     {
         public static Error NotFound => Error.NotFound("Group.NotFound",
@@ -39,6 +45,9 @@ public static class Errors
     {
         public static Error TaskNotFound => Error.NotFound("Task.TaskNotFound",
             description: "Task not found");
+
+        public static Error StudentTaskNotFound => Error.NotFound("Task.StudentTaskNotFound",
+            description: "Uploaded Student task not found");
         
         public static Error TaskNotUploaded => Error.Conflict("Task.TaskNotUploaded",
             description: "Task is not uploaded");

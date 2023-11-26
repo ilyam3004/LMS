@@ -31,8 +31,7 @@ export class TasksComponent implements OnInit {
               private alertService: AlertService,
               private modalService: NgbModal,
               private formBuilder: FormBuilder,
-              protected dateTimeService: DateTimeService,
-              private datePipe: DatePipe) {
+              protected dateTimeService: DateTimeService) {
   }
 
   ngOnInit() {

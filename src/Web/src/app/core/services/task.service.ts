@@ -38,7 +38,14 @@ export class TaskService {
       {grade: grade});
   }
 
-  getStudentTasks() {
-    return this.http.get(`${this.taskApiUrl}/student`)
+  uploadFile(file: File, studentTaskId: string): Observable<StudentTask> {
+    const formData: FormData = new FormData();
+    formData.append('file', file, file.name);
+
+    return this.http.put<StudentTask>(`${this.taskApiUrl}/${studentTaskId}/upload`, formData);
+  }
+
+  downloadFile(studentTaskId: string): Observable<any> {
+    return this.http.get(`${this.taskApiUrl}/download/${studentTaskId}`, { responseType: 'blob' });
   }
 }

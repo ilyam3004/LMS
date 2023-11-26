@@ -15,6 +15,8 @@ import {ConfirmationModalComponent} from "../../../../shared/components/confirma
 export class TaskDetailsComponent implements OnInit {
   fetchLoading: boolean = false;
   task: StudentTask = {} as StudentTask;
+  file: File | null = null;
+
   taskId: string = '';
 
   constructor(private taskService: TaskService,
@@ -52,14 +54,15 @@ export class TaskDetailsComponent implements OnInit {
         status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
   }
 
-  openUploadFileConfirmationModal(studentTaskId: string): void {
+  onFileSelected(event: any): void {
+    this.file = event.target.files[0];
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.message = 'Are you sure you want to upload this task?';
     modalRef.componentInstance.title = 'Upload task';
 
     modalRef.result.then(
       (result) => {
-        if (result) {
+        if (result && this.file) {
           this.uploadTask();
         }
       },
@@ -67,8 +70,17 @@ export class TaskDetailsComponent implements OnInit {
     );
   }
 
-  uploadTask() {
-
+  uploadTask(): void {
+    this.taskService.uploadFile(this.file!, this.task.uploadedTask.studentTaskId)
+      .subscribe({
+        next: task => {
+          this.task = task;
+          this.alertService.success('Task solution uploaded successfully!');
+        },
+        error: err => {
+          this.alertService.error(err);
+        }
+      });
   }
 
   protected readonly StudentTaskStatus = StudentTaskStatus;

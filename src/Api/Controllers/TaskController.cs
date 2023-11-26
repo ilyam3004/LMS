@@ -3,6 +3,7 @@ using Application.Tasks.Commands.AcceptTask;
 using Application.Tasks.Commands.CreateTask;
 using Application.Tasks.Commands.RemoveTask;
 using Application.Tasks.Commands.ReturnTask;
+using Application.Tasks.Commands.UploadSolution;
 using Application.Tasks.Queries.GetStudentTask;
 using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Tasks;
@@ -73,6 +74,22 @@ public class TaskController : ApiController
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
         var command = new GetStudentTaskQuery(taskId, token);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            value => Ok(_mapper.Map<StudentTaskResponse>(value)),
+            Problem);
+    }
+    
+    [HttpPut("{studentTaskId}/upload")]
+    [Authorize(Roles = Roles.Student)]
+    public async Task<IActionResult> UploadSolution([FromRoute] Guid studentTaskId, 
+        [FromForm] IFormFile file)
+    {
+        var token = Request.Headers.Authorization.ToString().Split(" ")[1];
+        
+        var command = new UploadSolutionCommand(file, studentTaskId, token);
 
         var result = await _sender.Send(command);
 
