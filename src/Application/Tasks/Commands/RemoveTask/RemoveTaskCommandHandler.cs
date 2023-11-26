@@ -43,7 +43,7 @@ public class RemoveTaskCommandHandler
         var groupResult = new GroupResult(subject.Group, studentResults);
         
         var taskResults = subject.Tasks.Select(task =>
-            new TaskResult(task)).ToList();
+            new LecturerTaskResult(task)).ToList();
 
         return new LecturerSubjectResult(subject, groupResult, taskResults);
     }

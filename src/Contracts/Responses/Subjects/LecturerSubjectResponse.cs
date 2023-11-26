@@ -8,4 +8,4 @@ public record LecturerSubjectResponse(
     string Name,
     string Description,
     GroupResponse Group,
-    List<TaskResponse> Tasks);
+    List<LecturerTaskResponse> Tasks);

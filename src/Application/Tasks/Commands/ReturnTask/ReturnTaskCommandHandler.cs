@@ -8,7 +8,7 @@ using MediatR;
 namespace Application.Tasks.Commands.ReturnTask;
 
 public class ReturnTaskCommandHandler
-    : IRequestHandler<ReturnTaskCommand, Result<TaskResult>>
+    : IRequestHandler<ReturnTaskCommand, Result<LecturerTaskResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -17,7 +17,7 @@ public class ReturnTaskCommandHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<TaskResult>> Handle(ReturnTaskCommand command,
+    public async Task<Result<LecturerTaskResult>> Handle(ReturnTaskCommand command,
         CancellationToken cancellationToken)
     {
         var studentTask = await _unitOfWork.StudentTasks.GetByIdAsync(command.StudentTaskId);
@@ -42,6 +42,6 @@ public class ReturnTaskCommandHandler
         if (task is null)
             return Errors.Task.TaskNotFound;
 
-        return new TaskResult(task);
+        return new LecturerTaskResult(task);
     }
 }

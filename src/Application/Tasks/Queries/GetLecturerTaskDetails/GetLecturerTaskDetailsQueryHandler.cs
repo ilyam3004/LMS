@@ -7,7 +7,7 @@ using MediatR;
 namespace Application.Tasks.Queries.GetLecturerTaskDetails;
 
 public class GetLecturerTaskDetailsQueryHandler
-    : IRequestHandler<GetLecturerTaskDetailsQuery, Result<TaskResult>>
+    : IRequestHandler<GetLecturerTaskDetailsQuery, Result<LecturerTaskResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -16,7 +16,7 @@ public class GetLecturerTaskDetailsQueryHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<TaskResult>> Handle(GetLecturerTaskDetailsQuery query,
+    public async Task<Result<LecturerTaskResult>> Handle(GetLecturerTaskDetailsQuery query,
         CancellationToken cancellationToken)
     {
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(query.TaskId);
@@ -24,6 +24,6 @@ public class GetLecturerTaskDetailsQueryHandler
         if (task is null)
             return Errors.Task.TaskNotFound;
 
-        return new TaskResult(task);
+        return new LecturerTaskResult(task);
     }
 }

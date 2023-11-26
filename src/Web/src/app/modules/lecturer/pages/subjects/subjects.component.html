@@ -1,0 +1,130 @@
+<div class="container-fluid flex-column subject-page-container">
+  <div class="subject-header-container">
+    <h2>
+      Subjects
+    </h2>
+    <ng-template #content let-modal>
+      <form [formGroup]="createSubjectForm" (ngSubmit)="onCreateSubjectFormSubmit(modal)">
+        <div class="modal-header">
+          <h4 class="modal-title">Create new subject</h4>
+          <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+        </div>
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="form-label">Name</label>
+            <input type="text" formControlName="name" class="form-control"
+                   [ngClass]="{ 'is-invalid': submitted && createSubjectFormControl['name'].errors }"/>
+            @if (submitted && createSubjectFormControl['name'].errors) {
+              <div class="invalid-feedback">
+                @if (createSubjectFormControl['name'].hasError('required')) {
+                  Subject name is required
+                } @else if (createSubjectFormControl['name'].hasError('maxLength')) {
+                  Subject name cannot be longer than 100 characters
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Description</label>
+            <textarea type="text" formControlName="description" class="form-control" rows="5"
+                      [ngClass]="{ 'is-invalid': submitted && createSubjectFormControl['description'].errors }">
+            </textarea>
+            @if (submitted && createSubjectFormControl['description'].errors) {
+              <div class="invalid-feedback">
+                @if (createSubjectFormControl['description'].hasError('required')) {
+                  Description is required
+                } @else if (createSubjectFormControl['description'].hasError('maxLength')) {
+                  Description cannot be longer than 400 characters
+                }
+              </div>
+            }
+          </div>
+          <div class="mb-3">
+            <label class="form-label">Group</label>
+            <select class="form-select" formControlName="groupName"
+                    [ngClass]="{ 'is-invalid': submitted && createSubjectFormControl['groupName'].errors }">
+              @for (group of groups;track group.groupId) {
+                <option ngValue="{{group.name}}">{{ group.name }}</option>
+              }
+            </select>
+            @if (submitted && createSubjectFormControl['groupName'].errors) {
+              <div class="invalid-feedback">
+                Group is required
+              </div>
+            }
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button [disabled]="createLoading" class="btn btn-primary">
+            <span *ngIf="createLoading" class="spinner-border spinner-border-sm me-1"></span>
+            Create
+          </button>
+        </div>
+      </form>
+    </ng-template>
+    <button class="btn btn-outline-primary mb-2 me-2" (click)="openModal(content)">Create</button>
+  </div>
+  <hr>
+  @if (fetchLoading) {
+    <div class="d-flex justify-content-center align-items-center subject-loading-container">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+  } @else if (!fetchLoading && subjects.length == 0) {
+    <p class="d-flex justify-content-center align-items-center subject-loading-container">
+      You dont have any subjects yet😧
+    </p>
+  } @else {
+    <div class="subject-container flex-column">
+      @for (subject of subjects;track subject.subjectId) {
+        <div class="subject-card">
+          <div class="card w-100">
+            <div class="card-body">
+              <div class="">
+                <h5 class="card-title">{{ subject.name }}</h5>
+              </div>
+              <hr/>
+              <p class="card-text text-secondary">{{ subject.description }}</p>
+              <div ngbAccordion #accordion="ngbAccordion">
+                <div ngbAccordionItem="{{subject.group.groupId}}">
+                  <h2 ngbAccordionHeader>
+                    <button ngbAccordionButton>{{ subject.group.name }}</button>
+                  </h2>
+                  <div ngbAccordionCollapse>
+                    <div ngbAccordionBody>
+                      <ng-template>
+                        @if (subject.group.students.length == 0) {
+                          <div class="d-flex justify-content-center align-items-center">
+                            There is no students in this group😢
+                            Please contact students to join this group.
+                          </div>
+                        }
+                        <ul class="list-group list-group-flush">
+                          @for (student of subject.group.students;track student.studentId) {
+                            <li class="list-group-item">
+                              <div class="bi bi-person-vcard">
+                                {{ student.fullName }}
+                              </div>
+                            </li>
+                          }
+                        </ul>
+                      </ng-template>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="card-footer d-flex justify-content-end">
+              <button type="button" class="btn btn-outline-danger"
+                      (click)="removeSubject(subject.subjectId)"
+                      [disabled]="removeLoading">
+                <span *ngIf="removeLoading" class="spinner-border spinner-border-sm me-1"></span>
+                Remove
+              </button>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

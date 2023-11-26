@@ -8,10 +8,21 @@ export interface LecturerTask {
   createdAt: Date,
   maxGrade: number
   groupName: string,
-  studentTasks: StudentTask[]
+  studentTasks: UploadedStudentTask[]
 }
 
 export interface StudentTask {
+  taskId: string,
+  title: string,
+  description: string,
+  deadline: Date,
+  createdAt: Date,
+  maxGrade: number
+  groupName: string,
+  studentTasks: UploadedStudentTask[]
+}
+
+export interface UploadedStudentTask {
   studentTaskId: string,
   taskId: string,
   fileUrl: string | null,

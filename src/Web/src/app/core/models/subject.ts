@@ -9,6 +9,14 @@ export interface LecturerSubject {
   tasks: LecturerTask[];
 }
 
+export interface StudentSubject {
+  subjectId: string,
+  name: string,
+  description: string,
+  lecturerName: string,
+  tasks: LecturerTask[]
+}
+
 export interface CreateSubjectRequest {
   name: string;
   description: string;

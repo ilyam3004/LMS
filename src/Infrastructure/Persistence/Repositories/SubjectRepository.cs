@@ -6,9 +6,7 @@ namespace Infrastructure.Persistence.Repositories;
 
 public class SubjectRepository : Repository<Subject>, ISubjectRepository
 {
-    public SubjectRepository(LmsDbContext context) : base(context)
-    {
-    }
+    public SubjectRepository(LmsDbContext context) : base(context) { }
 
     public async Task<List<Subject>> GetLecturerSubjects(Guid lecturerId)
         => await DbContext.Subjects.Where(s => s.LecturerId == lecturerId)
@@ -18,10 +16,15 @@ public class SubjectRepository : Repository<Subject>, ISubjectRepository
             .ThenInclude(t => t.StudentTasks)
             .ToListAsync();
 
-    public async Task<List<Subject>> GetStudentSubjects(Guid groupId)
+    public async Task<List<Subject>> GetStudentSubjectsWithRelations(Guid groupId)
         => await DbContext.Subjects
-            .Where(gs => gs.GroupId == groupId)
+            .Where(s => s.GroupId == groupId)
             .Include(s => s.Lecturer)
+            .Include(s => s.Tasks)
+            .ThenInclude(t => t.Subject)
+            .ThenInclude(s => s.Lecturer)
+            .Include(s => s.Tasks)
+            .ThenInclude(s => s.StudentTasks)
             .ToListAsync();
 
     public async Task<bool> SubjectExists(Guid subjectId)

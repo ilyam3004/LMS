@@ -1,11 +1,6 @@
 import { NgModule } from '@angular/core';
-import {CommonModule, DatePipe} from '@angular/common';
-
+import {CommonModule} from '@angular/common';
 import { LecturerRoutingModule } from './lecturer-routing.module';
-import { LayoutComponent } from './layout/layout.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { SubjectComponent } from './subject/subject.component';
-import { TaskComponent } from './task/task.component';
 import {
   NgbAccordionModule, NgbActiveModal,
   NgbDropdownModule,
@@ -13,16 +8,19 @@ import {
   NgbTimepicker
 } from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import { TaskDetailsComponent } from './task-details/task-details.component';
-import { GradeEntryModalComponent } from './grade-entry-modal/grade-entry-modal.component';
-
+import {LayoutComponent} from "../lecturer/pages/layout/layout.component";
+import {TaskDetailsComponent} from "./pages/task-details/task-details.component";
+import {GradeEntryModalComponent} from "./components/grade-entry-modal/grade-entry-modal.component";
+import {TasksComponent} from "./pages/tasks/tasks.component";
+import {SubjectsComponent} from "./pages/subjects/subjects.component";
+import {NavbarComponent} from "./components/navbar/navbar.component";
 
 @NgModule({
   declarations: [
     LayoutComponent,
     NavbarComponent,
-    SubjectComponent,
-    TaskComponent,
+    SubjectsComponent,
+    TasksComponent,
     TaskDetailsComponent,
     GradeEntryModalComponent
   ],
@@ -35,6 +33,9 @@ import { GradeEntryModalComponent } from './grade-entry-modal/grade-entry-modal.
     ReactiveFormsModule,
     NgbTimepicker,
     NgbDropdownModule
+  ],
+  exports: [
+    NavbarComponent
   ],
   providers: [NgbActiveModal]
 })

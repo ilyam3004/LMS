@@ -5,4 +5,4 @@ using MediatR;
 namespace Application.Tasks.Queries.GetLecturerTaskDetails;
 
 public record GetLecturerTaskDetailsQuery(
-    Guid TaskId) : IRequest<Result<TaskResult>>;
+    Guid TaskId) : IRequest<Result<LecturerTaskResult>>;

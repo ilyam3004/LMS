@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models;
 using Domain.Abstractions.Results;
+using Application.Models;
 using Domain.Common;
 using MediatR;
 
@@ -12,14 +12,14 @@ public class GetStudentSubjectsQueryHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
-    
-    public GetStudentSubjectsQueryHandler(IUnitOfWork unitOfWork, 
+
+    public GetStudentSubjectsQueryHandler(IUnitOfWork unitOfWork,
         IJwtTokenReader jwtTokenGenerator)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenGenerator;
     }
-    
+
     public async Task<Result<List<StudentSubjectResult>>> Handle(
         GetStudentSubjectsQuery query,
         CancellationToken cancellationToken)
@@ -34,10 +34,18 @@ public class GetStudentSubjectsQueryHandler
             return Errors.User.UserNotFound;
 
         var studentSubjects = await _unitOfWork.Subjects
-            .GetStudentSubjects(user.Student!.GroupId);
+            .GetStudentSubjectsWithRelations(user.Student!.GroupId);
+
+        var taskResults = studentSubjects.SelectMany(subject =>
+            subject.Tasks.Select(task =>
+            {
+                var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
+                    studentTask.StudentId == user.Student!.StudentId);
+                return new StudentTaskResult(task, studentTask);
+            })).ToList();
 
         return studentSubjects.Select(subject =>
-            new StudentSubjectResult(subject, subject.Lecturer.FullName))
+                new StudentSubjectResult(subject, taskResults))
             .ToList();
     }
 }

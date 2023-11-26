@@ -1,12 +1,11 @@
-﻿using Contracts.Responses.Students;
-
-namespace Contracts.Responses.Tasks;
+﻿namespace Contracts.Responses.Tasks;
 
 public record StudentTaskResponse(
-    Guid StudentTaskId,
     Guid TaskId,
-    string? FileUrl,
-    DateTime? UploadedAt,
-    int Grade,
-    StudentTaskStatus Status,
-    StudentResponse Student);
+    string Title,
+    string Description,
+    DateTime Deadline,
+    DateTime CreatedAt,
+    int MaxGrade,
+    string LecturerName,
+    UploadedStudentTaskResponse UploadedTask);

@@ -1,0 +1,35 @@
+<div class="container-fluid flex-column subject-page-container">
+  <div class="subject-header-container">
+    <h2>Your subjects</h2>
+  </div>
+  <hr>
+  @if (fetchLoading) {
+    <div class="d-flex justify-content-center align-items-center subject-loading-container">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+  } @else if (!fetchLoading && subjects.length == 0) {
+    <p class="d-flex justify-content-center align-items-center subject-loading-container">
+      You dont have any subjects yet😧
+    </p>
+  } @else {
+    <div class="subject-container flex-column">
+      @for (subject of subjects;track subject.subjectId) {
+        <div class="subject-card">
+          <div class="card w-100">
+            <div class="card-body">
+              <h5 class="card-title">{{ subject.name }}</h5>
+              <hr/>
+              <p class="card-text text-secondary">{{ subject.description }}</p>
+            </div>
+            <div class="card-footer">
+              <small class="text-secondary">
+                Lecturer: {{ subject.lecturerName }}
+              </small>
+            </div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+</div>

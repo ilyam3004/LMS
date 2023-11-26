@@ -1,8 +1,8 @@
-﻿using Application.Tasks.Commands.AcceptTask;
+﻿using Application.Tasks.Queries.GetLecturerTaskDetails;
+using Application.Tasks.Commands.AcceptTask;
 using Application.Tasks.Commands.CreateTask;
 using Application.Tasks.Commands.RemoveTask;
 using Application.Tasks.Commands.ReturnTask;
-using Application.Tasks.Queries.GetLecturerTaskDetails;
 using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Subjects;
@@ -66,7 +66,7 @@ public class TaskController : ApiController
         var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(_mapper.Map<TaskResponse>(value)),
+            value => Ok(_mapper.Map<LecturerTaskResponse>(value)),
             Problem);
     }
 
@@ -78,7 +78,7 @@ public class TaskController : ApiController
         var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(_mapper.Map<TaskResponse>(value)),
+            value => Ok(_mapper.Map<LecturerTaskResponse>(value)),
             Problem);
     }
     
@@ -91,7 +91,7 @@ public class TaskController : ApiController
         var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(_mapper.Map<TaskResponse>(value)),
+            value => Ok(_mapper.Map<LecturerTaskResponse>(value)),
             Problem);
     }
 }

@@ -1,0 +1,60 @@
+<div class="container-fluid flex-column task-page-container">
+  <div class="task-header-page-container">
+    <h2>Tasks</h2>
+  </div>
+  <hr>
+  @if (fetchLoading) {
+    <div class="d-flex justify-content-center align-items-center task-loading-container">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+  } @else if (!fetchLoading && subjects.length == 0) {
+    <p class="d-flex justify-content-center align-items-center task-loading-container">
+      You dont have any subjects yet😧
+    </p>
+  } @else {
+    <div class="task-container flex-column">
+      @for (subject of subjects;track subject.subjectId) {
+        <div class="subject-card">
+          <div class="card w-100">
+            <div class="card-body">
+              <div class="task-head-container">
+                <h4 class="card-title">{{ subject.name }}</h4>
+              </div>
+              @if (subject.tasks.length == 0) {
+                <div class="d-flex justify-content-center">
+                  <p class="text-secondary">
+                    It is not any tasks assigned for you in this subject😧
+                  </p>
+                </div>
+              } @else {
+                <p class="text-secondary"> All tasks assigned for you:</p>
+                @for (task of subject.tasks;track task.taskId) {
+                  <div class="card border-secondary mb-3">
+                    <div class="card-header text-secondary h5">{{ task.title }}</div>
+                    <div class="card-body text-secondary">
+                      <p class="card-text">{{ task.description }}</p>
+                      <div class="d-flex justify-content-between">
+                        <a [routerLink]="['../tasks/task']" [queryParams]="{id: task.taskId}">
+                          <button type="button" class="btn btn-outline-primary btn-sm">
+                            Details
+                          </button>
+                        </a>
+                      </div>
+                    </div>
+                    <div class="card-footer">
+                      <small class="text-secondary">
+                        Assigned: {{ dateTimeService.convertDateToReadableFormat(task.createdAt) }}
+                      </small>
+                    </div>
+                  </div>
+                }
+              }
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom: 3%"></div>
+      }
+    </div>
+  }
+</div>

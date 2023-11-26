@@ -1,0 +1,54 @@
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Tektur:wght@400;500;600;700;800;900&display=swap');
+</style>
+<nav class="navbar navbar-expand-sm bg-dark navbar-dark">
+  <i class="bi-film"></i>
+  <div class="container-fluid justify-content-center">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <a routerLink="./subjects"
+           routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+           class="nav-link"
+           [class.active]="currentRoute === 'student/subjects'">
+          <i class="fs-4 bi-collection"></i>
+          <span class="ms-1 d-none d-sm-inline">
+            Subjects
+            </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="./tasks"
+           routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+           class="nav-link"
+           [class.active]="currentRoute === 'student/tasks'">
+          <i class="fs-4 bi-columns-gap"></i>
+          <span class="ms-1 d-none d-sm-inline">
+            Tasks
+        </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="./grades"
+           routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+           class="nav-link"
+           [class.active]="currentRoute === 'student/grades'">
+          <i class="fs-4 bi bi-graph-up"></i>
+          <span class="ms-1 d-none d-sm-inline">
+            Grades
+        </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="./profile"
+           routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+           class="nav-link"
+           [class.active]="currentRoute === 'student/profile'">
+          <i class="fs-4 bi-person-lines-fill"></i>
+          <span class="ms-1 d-none d-sm-inline">
+            Profile
+          </span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</nav>

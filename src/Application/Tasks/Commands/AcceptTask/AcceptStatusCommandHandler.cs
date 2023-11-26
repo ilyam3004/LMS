@@ -8,7 +8,7 @@ using MediatR;
 namespace Application.Tasks.Commands.AcceptTask;
 
 public class AcceptStatusCommandHandler
-    : IRequestHandler<AcceptTaskCommand, Result<TaskResult>>
+    : IRequestHandler<AcceptTaskCommand, Result<LecturerTaskResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
@@ -17,7 +17,7 @@ public class AcceptStatusCommandHandler
         _unitOfWork = unitOfWork;
     }
 
-    public async Task<Result<TaskResult>> Handle(AcceptTaskCommand command,
+    public async Task<Result<LecturerTaskResult>> Handle(AcceptTaskCommand command,
         CancellationToken cancellationToken)
     {
         var studentTask = await _unitOfWork.StudentTasks
@@ -42,10 +42,10 @@ public class AcceptStatusCommandHandler
         return await GetTaskResult(studentTask.TaskId);
     }
 
-    private async Task<TaskResult> GetTaskResult(Guid taskId)
+    private async Task<LecturerTaskResult> GetTaskResult(Guid taskId)
     {
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
 
-        return new TaskResult(task!);
+        return new LecturerTaskResult(task!);
     }
 }

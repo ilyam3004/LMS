@@ -1,0 +1,22 @@
+.subject-page-container {
+  width: 60%;
+
+  .subject-loading-container {
+    height: 60vh;
+  }
+
+  .subject-header-container {
+    display: flex;
+    margin: 3% 0 3% 0;
+  }
+
+  .subject-container {
+    display: flex;
+    margin-top: 5%;
+    justify-content: center;
+
+    .subject-card {
+      margin-bottom: 2%;
+    }
+  }
+}

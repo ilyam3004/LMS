@@ -26,6 +26,7 @@ public class SubjectMappingConfig : IRegister
             .Map(dest => dest.Id, src => src.Subject.SubjectId)
             .Map(dest => dest.Name, src => src.Subject.Name)
             .Map(dest => dest.Description, src => src.Subject.Description)
-            .Map(dest => dest.LecturerName, src => src.lecturerName);
+            .Map(dest => dest.LecturerName, src => src.Subject.Lecturer.FullName)
+            .Map(dest => dest.Tasks, src => src.Tasks);
     }
 }

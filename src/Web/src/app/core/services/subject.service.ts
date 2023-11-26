@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
-import {CreateSubjectRequest, LecturerSubject} from "../models/subject";
+import {CreateSubjectRequest, LecturerSubject, StudentSubject} from "../models/subject";
 import {environment} from "../../../environments/environment";
 
 @Injectable({
@@ -13,6 +13,10 @@ export class SubjectService {
 
   getLecturerSubjects(): Observable<LecturerSubject[]> {
     return this.http.get<LecturerSubject[]>(`${environment.apiBaseUrl}/subjects/lecturer`)
+  }
+
+  getStudentSubjects(): Observable<StudentSubject[]> {
+    return this.http.get<StudentSubject[]>(`${environment.apiBaseUrl}/subjects/student`)
   }
 
   createSubject(request: CreateSubjectRequest): Observable<LecturerSubject[]> {

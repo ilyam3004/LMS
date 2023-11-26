@@ -9,15 +9,20 @@ import {LecturerSubject} from "../models/subject";
   providedIn: 'root'
 })
 export class TaskService {
-  taskApiUrl: string = `${environment.apiBaseUrl}/tasks`;
+  private taskApiUrl: string = `${environment.apiBaseUrl}/tasks`;
+
   constructor(private http: HttpClient) { }
 
   assignTask(request: AssignTaskRequest): Observable<LecturerSubject> {
     return this.http.post<LecturerSubject>(this.taskApiUrl, request);
   }
 
-  getTask(taskId: string): Observable<LecturerTask> {
+  getLecturerTaskDetails(taskId: string): Observable<LecturerTask> {
     return this.http.get<LecturerTask>(`${this.taskApiUrl}/${taskId}`);
+  }
+
+  getStudentTaskDetails(taskId: string): Observable<LecturerTask> {
+    return this.http.get<LecturerTask>(`${this.taskApiUrl}/student/${taskId}`);
   }
 
   removeTask(taskId: string): Observable<LecturerSubject> {

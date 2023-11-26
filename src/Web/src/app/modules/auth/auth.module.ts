@@ -6,6 +6,7 @@ import {LayoutComponent} from "./layout/layout.component";
 import {LoginComponent} from "./login/login.component";
 import {RegisterComponent} from "./register/register.component";
 import {NgbDatepicker, NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap";
+import {LecturerModule} from "../lecturer/lecturer.module";
 
 @NgModule({
   imports: [
@@ -14,7 +15,8 @@ import {NgbDatepicker, NgbInputDatepicker} from "@ng-bootstrap/ng-bootstrap";
     AuthRoutingModule,
     FormsModule,
     NgbDatepicker,
-    NgbInputDatepicker
+    NgbInputDatepicker,
+    LecturerModule
   ],
   declarations: [
     LayoutComponent,
