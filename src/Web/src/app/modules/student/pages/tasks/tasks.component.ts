@@ -3,6 +3,7 @@ import {StudentSubject} from "../../../../core/models/subject";
 import {SubjectService} from "../../../../core/services/subject.service";
 import {AlertService} from "../../../../core/services/alert.service";
 import {DateTimeService} from "../../../../core/services/datetime.service";
+import {StudentTaskStatus} from "../../../../core/models/task";
 
 @Component({
   selector: 'app-tasks',
@@ -37,5 +38,26 @@ export class TasksComponent implements OnInit {
             this.fetchLoading = false;
           }
         });
+  }
+
+  getTaskStatus(status: StudentTaskStatus): string {
+    return status === StudentTaskStatus.Accepted ? 'Accepted' :
+      status === StudentTaskStatus.Returned ? 'Returned' :
+        status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
+  }
+
+  getTaskStatusColor(status: StudentTaskStatus): string {
+    switch (status) {
+      case StudentTaskStatus.Uploaded:
+        return '#ffb96f';
+      case StudentTaskStatus.Accepted:
+        return '#00d300';
+      case StudentTaskStatus.Returned:
+        return 'red';
+      case StudentTaskStatus.NotUploaded:
+        return 'gray';
+      default:
+        return 'gray';
+    }
   }
 }

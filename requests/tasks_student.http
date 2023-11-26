@@ -1,0 +1,7 @@
+﻿@host = http://localhost:5137/api
+@taskId = 29c2b0b1-704d-4e61-858c-3af3261017f7 
+
+### Get student task details
+GET {{host}}/tasks/student/{{taskId}}
+Content-Type: application/json
+Authorization: Bearer {{token}}

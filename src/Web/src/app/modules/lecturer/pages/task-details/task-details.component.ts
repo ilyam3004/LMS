@@ -22,8 +22,7 @@ export class TaskDetailsComponent implements OnInit {
               private alertService: AlertService,
               private route: ActivatedRoute,
               protected modalService: NgbModal,
-              protected dateTimeService: DateTimeService) {
-  }
+              protected dateTimeService: DateTimeService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -126,4 +125,6 @@ export class TaskDetailsComponent implements OnInit {
         }
       })
   }
+
+  protected readonly StudentTaskStatus = StudentTaskStatus;
 }

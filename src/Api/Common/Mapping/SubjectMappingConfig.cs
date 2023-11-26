@@ -23,7 +23,7 @@ public class SubjectMappingConfig : IRegister
             .Map(dest => dest.Group, src => src.Group);
 
         config.NewConfig<StudentSubjectResult, StudentSubjectResponse>()
-            .Map(dest => dest.Id, src => src.Subject.SubjectId)
+            .Map(dest => dest.SubjectId, src => src.Subject.SubjectId)
             .Map(dest => dest.Name, src => src.Subject.Name)
             .Map(dest => dest.Description, src => src.Subject.Description)
             .Map(dest => dest.LecturerName, src => src.Subject.Lecturer.FullName)

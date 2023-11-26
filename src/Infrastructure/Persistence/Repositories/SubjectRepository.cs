@@ -21,10 +21,7 @@ public class SubjectRepository : Repository<Subject>, ISubjectRepository
             .Where(s => s.GroupId == groupId)
             .Include(s => s.Lecturer)
             .Include(s => s.Tasks)
-            .ThenInclude(t => t.Subject)
-            .ThenInclude(s => s.Lecturer)
-            .Include(s => s.Tasks)
-            .ThenInclude(s => s.StudentTasks)
+            .ThenInclude(st => st.StudentTasks)
             .ToListAsync();
 
     public async Task<bool> SubjectExists(Guid subjectId)

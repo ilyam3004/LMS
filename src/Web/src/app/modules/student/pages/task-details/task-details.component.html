@@ -1,1 +1,40 @@
-<p>task-details works!</p>
+<div class="container-fluid task-detail-container">
+  @if (fetchLoading) {
+    <div class="d-flex justify-content-center align-items-center task-loading-container">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+  } @else {
+    <div class="task-container flex-column">
+      <h2>
+        {{ task.title }}
+      </h2>
+    </div>
+    <hr>
+    <div class="mt-4">
+      <div class="row">
+        <div class="col-md-9" style="border-right: 1px solid #ccc; padding-right: 5%">
+          <div class="task-description-container">
+            <h5>Description</h5>
+            <p>{{ task.description }}</p>
+            <div class="d-flex justify-content-between text-secondary">
+              <p>{{ task.lecturerName }} at {{ dateTimeService.convertDateToReadableFormat(task.createdAt) }}</p>
+              <p>Due to: {{ dateTimeService.convertDateToReadableFormat(task.deadline) }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-3">
+          <div class="additional-info-container text-secondary">
+            <p>Status: {{ getTaskStatus(task.uploadedTask.status) }}</p>
+            <p class="text-primary">{{ task.uploadedTask.grade }}/{{ task.maxGrade }} points</p>
+            @if (task.uploadedTask.status !== StudentTaskStatus.Returned && task.uploadedTask.uploadedAt
+            || task.uploadedTask.status !== StudentTaskStatus.Returned && task.uploadedTask.uploadedAt) {
+              <p>Uploaded at: {{ dateTimeService.convertDateToReadableFormat(task.uploadedTask.uploadedAt!) }}</p>
+              <p>Uploaded at: {{ dateTimeService.convertDateToReadableFormat(task.uploadedTask.uploadedAt!) }}</p>
+            }
+          </div>
+        </div>
+      </div>
+    </div>
+  }
+</div>

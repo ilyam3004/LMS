@@ -1,4 +1,4 @@
-﻿@host = http://localhost:8181/api
+﻿@host = http://localhost:5137/api
 
 ### Register Lecturer
 POST {{host}}/users/lecturers/register
@@ -19,7 +19,7 @@ POST {{host}}/users/students/register
 Content-Type: application/json
 
 {
-  "Email": "studentmail64@gmail.com",
+  "Email": "studentEmail@gmail.com",
   "Password": "Password1234",
   "FirstName": "FirstName",
   "LastName": "LastName",
@@ -34,6 +34,6 @@ POST {{host}}/users/login
 Content-Type: application/json
 
 {
-  "Email": "email@gmail.com",
-  "Password": "password1234"
+  "Email": "studentEmail@gmail.com",
+  "Password": "Password1234"
 }

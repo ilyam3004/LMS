@@ -36,16 +36,17 @@ public class GetStudentSubjectsQueryHandler
         var studentSubjects = await _unitOfWork.Subjects
             .GetStudentSubjectsWithRelations(user.Student!.GroupId);
 
-        var taskResults = studentSubjects.SelectMany(subject =>
-            subject.Tasks.Select(task =>
+        return studentSubjects.Select(subject =>
+        {
+            var taskResults = subject.Tasks.Select(task =>
             {
                 var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
                     studentTask.StudentId == user.Student!.StudentId);
+                
                 return new StudentTaskResult(task, studentTask);
-            })).ToList();
+            }).ToList();
 
-        return studentSubjects.Select(subject =>
-                new StudentSubjectResult(subject, taskResults))
-            .ToList();
+            return new StudentSubjectResult(subject, taskResults);
+        }).ToList();
     }
 }

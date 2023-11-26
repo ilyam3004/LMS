@@ -19,7 +19,7 @@ public class GetLecturerTaskDetailsQueryHandler
     public async Task<Result<LecturerTaskResult>> Handle(GetLecturerTaskDetailsQuery query,
         CancellationToken cancellationToken)
     {
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(query.TaskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithGroupRelation(query.TaskId);
 
         if (task is null)
             return Errors.Task.TaskNotFound;

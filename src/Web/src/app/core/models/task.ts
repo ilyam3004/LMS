@@ -18,8 +18,8 @@ export interface StudentTask {
   deadline: Date,
   createdAt: Date,
   maxGrade: number
-  groupName: string,
-  studentTasks: UploadedStudentTask[]
+  lecturerName: string,
+  uploadedTask: UploadedStudentTask
 }
 
 export interface UploadedStudentTask {

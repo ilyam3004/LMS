@@ -44,7 +44,7 @@ public class AcceptStatusCommandHandler
 
     private async Task<LecturerTaskResult> GetTaskResult(Guid taskId)
     {
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithGroupRelation(taskId);
 
         return new LecturerTaskResult(task!);
     }

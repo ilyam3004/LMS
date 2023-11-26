@@ -4,6 +4,7 @@ namespace Application.Common.Interfaces.Persistence;
 
 public interface ITaskRepository : IRepository<Task>
 {
-    Task<Task?> GetTaskByIdWithRelations(Guid taskId);
+    Task<Task?> GetTaskByIdWithGroupRelation(Guid taskId);
+    Task<Task?> GetTaskByIdWithLecturerRelation(Guid taskId);
     Task<bool> TaskExists(Guid taskId);
 }

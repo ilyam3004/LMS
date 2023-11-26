@@ -37,7 +37,7 @@ public class ReturnTaskCommandHandler
         
         await _unitOfWork.SaveChangesAsync();
         
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(studentTask.TaskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithGroupRelation(studentTask.TaskId);
 
         if (task is null)
             return Errors.Task.TaskNotFound;

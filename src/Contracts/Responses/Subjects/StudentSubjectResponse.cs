@@ -3,8 +3,8 @@
 namespace Contracts.Responses.Subjects;
 
 public record StudentSubjectResponse(
-    Guid Id,
+    Guid SubjectId,
     string Name,
     string Description,
     string LecturerName,
-    List<LecturerTaskResponse> Tasks);
+    List<StudentTaskResponse> Tasks);

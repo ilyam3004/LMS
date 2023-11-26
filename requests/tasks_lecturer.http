@@ -1,25 +1,25 @@
 ﻿@host = http://localhost:5137/api
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImNlZWEzZTQyLTQ3NzQtNGZiNS1hZTRkLTM5N2M2NjZlZTNlOSIsImdpdmVuX25hbWUiOiJGaXJzdE5hbWUiLCJmYW1pbHlfbmFtZSI6Ikxhc3ROYW1lIiwiZW1haWwiOiJsZWN0dXJlcmVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJMZWN0dXJlciIsImV4cCI6MTcxMTMxMzgwNywiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.1U6be0mIhuZBWc0-m1T9tZ84xw6cwu4MDW3aotspeZ0
-@taskId = 74fe810b-6580-45ef-88cd-5d6476d4a2f0
-@subjectId = 8e279316-eb68-4709-8ccf-a9453122e303
+@token = eyjhbgcioijiuzi1niisinr5cci6ikpxvcj9.eyj1bmlxdwvfbmftzsi6imnlzwezztqyltq3nzqtngzins1hztrkltm5n2m2njzlztnlosisimdpdmvux25hbwuioijgaxjzde5hbwuilcjmyw1pbhlfbmftzsi6ikxhc3royw1liiwizw1hawwioijszwn0dxjlcmvtywlsqgdtywlslmnvbsisinjvbguioijmzwn0dxjlciisimv4cci6mtcxmtmxmzgwnywiaxnzijoite1tiiwiyxvkijoite1tin0.1u6be0mihuzbwc0-m1t9tz84xw6cwu4mdw3aotspez0
+@taskid = 74fe810b-6580-45ef-88cd-5d6476d4a2f0
+@subjectid = 8e279316-eb68-4709-8ccf-a9453122e303
 
-### Assign new task
-POST {{host}}/tasks
-Content-Type: application/json
-Authorization: Bearer {{token}}
+### assign new task
+post {{host}}/tasks
+content-type: application/json
+authorization: bearer {{token}}
 
 {
-  "Title": "task title",
-  "Description": "Task description", 
-  "SubjectId": "{{subjectId}}",
-  "Deadline": "2023-11-23T19:13:18.228Z",
-  "MaxGrade": 10
+  "title": "task title",
+  "description": "task description", 
+  "subjectid": "{{subjectid}}",
+  "deadline": "2023-11-23t19:13:18.228z",
+  "maxgrade": 10
 }
 
-### Remove task
-DELETE {{host}}/tasks/{{taskId}}
-Authorization: Bearer {{token}}
+### remove task
+delete {{host}}/tasks/{{taskid}}
+authorization: bearer {{token}}
 
-### Get lecturer task details
-GET {{host}}/tasks/{{taskId}}
-Authorization: Bearer {{token}}
+### get lecturer task details
+get {{host}}/tasks/{{taskid}}
+authorization: bearer {{token}}

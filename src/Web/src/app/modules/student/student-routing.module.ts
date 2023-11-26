@@ -4,6 +4,7 @@ import {LayoutComponent} from "./pages/layout/layout.component";
 import {SubjectsComponent} from "./pages/subject/subjects.component";
 import {TasksComponent} from "./pages/tasks/tasks.component";
 import {GradesComponent} from "./pages/grades/grades.component";
+import {TaskDetailsComponent} from "./pages/task-details/task-details.component";
 
 const routes: Routes = [
   {
@@ -11,7 +12,8 @@ const routes: Routes = [
     children: [
       {path: 'subjects', component: SubjectsComponent},
       {path: 'tasks', component: TasksComponent},
-      {path: 'grades', component: GradesComponent}
+      {path: 'grades', component: GradesComponent},
+      {path: 'tasks/task', component: TaskDetailsComponent}
     ]
   }
 ];

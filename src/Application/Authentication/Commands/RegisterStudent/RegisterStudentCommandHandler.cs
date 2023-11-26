@@ -4,12 +4,15 @@ using Domain.Abstractions.Results;
 using Application.Models;
 using Domain.Entities;
 using Domain.Common;
+using Domain.Enums;
 using MediatR;
+using Task = System.Threading.Tasks.Task;
 
 namespace Application.Authentication.Commands.RegisterStudent;
 
 public class RegisterStudentCommandHandler(
-        IJwtTokenGenerator jwtTokenGenerator, IUnitOfWork unitOfWork)
+    IJwtTokenGenerator jwtTokenGenerator,
+    IUnitOfWork unitOfWork)
     : IRequestHandler<RegisterStudentCommand, Result<AuthenticationResult>>
 {
     public async Task<Result<AuthenticationResult>> Handle(
@@ -26,7 +29,7 @@ public class RegisterStudentCommandHandler(
         {
             return Errors.Group.NotFound;
         }
-        
+
         var user = new User
         {
             UserId = Guid.NewGuid(),
@@ -38,7 +41,7 @@ public class RegisterStudentCommandHandler(
 
         var student = new Student
         {
-            StudentId= Guid.NewGuid(),
+            StudentId = Guid.NewGuid(),
             UserId = user.UserId,
             GroupId = group.GroupId,
             FullName = $"{command.FirstName} {command.LastName}",
@@ -49,6 +52,8 @@ public class RegisterStudentCommandHandler(
         await unitOfWork.GetRepository<Student>().AddAsync(student);
         await unitOfWork.SaveChangesAsync();
 
+        await AddAllTasksToStudent(student, group);
+
         var token = jwtTokenGenerator.GenerateToken(
             user.UserId,
             student.FullName,
@@ -58,5 +63,29 @@ public class RegisterStudentCommandHandler(
         return new AuthenticationResult(
             user,
             token);
+    }
+
+    private async Task AddAllTasksToStudent(Student student, Group group)
+    {
+        group.Subjects.ForEach(subject =>
+        {
+            subject.Tasks.ForEach(async task =>
+            {
+                var studentTask = new StudentTask
+                {
+                    StudentTaskId = Guid.NewGuid(),
+                    TaskId = task.TaskId,
+                    StudentId = student.StudentId,
+                    Status = StudentTaskStatus.NotUploaded,
+                    UploadedAt = null,
+                    FileUrl = null,
+                    Grade = 0
+                };
+
+                await unitOfWork.StudentTasks.AddAsync(studentTask);
+            });
+        });
+        
+        await unitOfWork.SaveChangesAsync();
     }
 }

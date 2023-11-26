@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {AssignTaskRequest, LecturerTask} from "../models/task";
+import {AssignTaskRequest, LecturerTask, StudentTask} from "../models/task";
 import {Observable} from "rxjs";
 import {LecturerSubject} from "../models/subject";
 
@@ -18,11 +18,11 @@ export class TaskService {
   }
 
   getLecturerTaskDetails(taskId: string): Observable<LecturerTask> {
-    return this.http.get<LecturerTask>(`${this.taskApiUrl}/${taskId}`);
+    return this.http.get<LecturerTask>(`${this.taskApiUrl}/lecturer/${taskId}`);
   }
 
-  getStudentTaskDetails(taskId: string): Observable<LecturerTask> {
-    return this.http.get<LecturerTask>(`${this.taskApiUrl}/student/${taskId}`);
+  getStudentTaskDetails(taskId: string): Observable<StudentTask> {
+    return this.http.get<StudentTask>(`${this.taskApiUrl}/student/${taskId}`);
   }
 
   removeTask(taskId: string): Observable<LecturerSubject> {

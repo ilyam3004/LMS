@@ -21,6 +21,7 @@
               <div class="task-head-container">
                 <h4 class="card-title">{{ subject.name }}</h4>
               </div>
+              <hr>
               @if (subject.tasks.length == 0) {
                 <div class="d-flex justify-content-center">
                   <p class="text-secondary">
@@ -40,6 +41,9 @@
                             Details
                           </button>
                         </a>
+                        <p [style.color]="getTaskStatusColor(task.uploadedTask.status)">
+                          {{ getTaskStatus(task.uploadedTask.status) }}
+                        </p>
                       </div>
                     </div>
                     <div class="card-footer">

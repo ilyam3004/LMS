@@ -1,5 +1,5 @@
 import {Group} from "./group";
-import {LecturerTask} from "./task";
+import {LecturerTask, StudentTask} from "./task";
 
 export interface LecturerSubject {
   subjectId: string;
@@ -14,7 +14,7 @@ export interface StudentSubject {
   name: string,
   description: string,
   lecturerName: string,
-  tasks: LecturerTask[]
+  tasks: StudentTask[]
 }
 
 export interface CreateSubjectRequest {
