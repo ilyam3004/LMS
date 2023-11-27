@@ -5,8 +5,11 @@ import {LecturerTask, StudentTaskStatus} from "../../../../core/models/task";
 import {TaskService} from "../../../../core/services/task.service";
 import {AlertService} from "../../../../core/services/alert.service";
 import {DateTimeService} from "../../../../core/services/datetime.service";
-import {ConfirmationModalComponent} from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
+import {
+  ConfirmationModalComponent
+} from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
 import {GradeEntryModalComponent} from "../../components/grade-entry-modal/grade-entry-modal.component";
+import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-task-details',
@@ -22,7 +25,8 @@ export class TaskDetailsComponent implements OnInit {
               private alertService: AlertService,
               private route: ActivatedRoute,
               protected modalService: NgbModal,
-              protected dateTimeService: DateTimeService) { }
+              protected dateTimeService: DateTimeService) {
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -46,6 +50,26 @@ export class TaskDetailsComponent implements OnInit {
           this.fetchLoading = false;
         }
       });
+  }
+
+  onDownload(studentTaskId: string): void {
+    this.taskService.downloadFile(studentTaskId).subscribe(async (event) => {
+      let data = event as HttpResponse < Blob > ;
+      const downloadedFile = new Blob([data.body as BlobPart], {
+        type: data.body?.type
+      });
+      console.log("ddd", downloadedFile)
+      if (downloadedFile.type != "") {
+        const a = document.createElement('a');
+        a.setAttribute('style', 'display:none;');
+        document.body.appendChild(a);
+        a.download = "task.pdf";
+        a.href = URL.createObjectURL(downloadedFile);
+        a.target = '_blank';
+        a.click();
+        document.body.removeChild(a);
+      }
+    });
   }
 
   getTurnedInCount(): number {

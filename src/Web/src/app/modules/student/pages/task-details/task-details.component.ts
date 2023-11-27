@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {StudentTaskStatus, StudentTask} from "../../../../core/models/task";
 import {TaskService} from "../../../../core/services/task.service";
 import {AlertService} from "../../../../core/services/alert.service";
@@ -13,6 +13,7 @@ import {ConfirmationModalComponent} from "../../../../shared/components/confirma
   styleUrl: './task-details.component.scss'
 })
 export class TaskDetailsComponent implements OnInit {
+  @ViewChild('fileUploader') fileUploader: ElementRef = {} as ElementRef;
   fetchLoading: boolean = false;
   task: StudentTask = {} as StudentTask;
   file: File | null = null;
@@ -64,6 +65,7 @@ export class TaskDetailsComponent implements OnInit {
       (result) => {
         if (result && this.file) {
           this.uploadTask();
+          this.resetFileInput();
         }
       },
       () => { }
@@ -81,6 +83,13 @@ export class TaskDetailsComponent implements OnInit {
           this.alertService.error(err);
         }
       });
+  }
+
+  resetFileInput(): void {
+    if (this.fileUploader) {
+      this.fileUploader.nativeElement.value = '';
+    }
+    this.file = null;
   }
 
   protected readonly StudentTaskStatus = StudentTaskStatus;

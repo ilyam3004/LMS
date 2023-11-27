@@ -59,7 +59,13 @@
             <td>
               {{ studentTask.uploadedAt ? dateTimeService.convertDateToReadableFormat(studentTask.uploadedAt) : '-' }}
             </td>
-            <td>{{ studentTask.fileUrl ? studentTask.fileUrl : '-' }}</td>
+            <td>
+              @if(studentTask.fileUrl) {
+                <button class="btn btn-outline-primary btn-sm" (click)="onDownload(studentTask.studentTaskId)">Download</button>
+              } @else {
+                -
+              }
+            </td>
             <td [width]="40">
               @if (studentTask.status === StudentTaskStatus.Uploaded) {
                 <div ngbDropdown container="body">

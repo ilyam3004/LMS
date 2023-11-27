@@ -26,7 +26,10 @@
         <div class="col-md-5">
           <div class="additional-info-container text-secondary">
             <div class="mb-3">
-              <input class="form-control" type="file" id="formFile" (change)="onFileSelected($event)">
+              <input class="form-control" type="file" id="formFile"
+                     [disabled]="task.uploadedTask.status === StudentTaskStatus.Uploaded ||
+                     task.uploadedTask.status === StudentTaskStatus.Accepted"
+                     (change)="onFileSelected($event)" #fileUploader/>
             </div>
             <p>Status: {{ getTaskStatus(task.uploadedTask.status) }}</p>
             <p class="text-primary">{{ task.uploadedTask.grade }}/{{ task.maxGrade }} points</p>

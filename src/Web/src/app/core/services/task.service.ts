@@ -11,7 +11,8 @@ import {LecturerSubject} from "../models/subject";
 export class TaskService {
   private taskApiUrl: string = `${environment.apiBaseUrl}/tasks`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   assignTask(request: AssignTaskRequest): Observable<LecturerSubject> {
     return this.http.post<LecturerSubject>(this.taskApiUrl, request);
@@ -46,6 +47,10 @@ export class TaskService {
   }
 
   downloadFile(studentTaskId: string): Observable<any> {
-    return this.http.get(`${this.taskApiUrl}/download/${studentTaskId}`, { responseType: 'blob' });
+    return this.http.get(`${this.taskApiUrl}/${studentTaskId}/download`, {
+      reportProgress: true,
+      observe: 'events',
+      responseType: 'blob'
+    })
   }
 }
