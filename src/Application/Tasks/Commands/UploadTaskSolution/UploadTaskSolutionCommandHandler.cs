@@ -10,14 +10,14 @@ using Microsoft.AspNetCore.Http;
 
 namespace Application.Tasks.Commands.UploadSolution;
 
-public class UploadSolutionCommandHandler
-    : IRequestHandler<UploadSolutionCommand, Result<StudentTaskResult>>
+public class UploadTaskSolutionCommandHandler
+    : IRequestHandler<UploadTaskSolutionCommand, Result<StudentTaskResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IJwtTokenReader _jwtTokenReader;
 
-    public UploadSolutionCommandHandler(IUnitOfWork unitOfWork,
+    public UploadTaskSolutionCommandHandler(IUnitOfWork unitOfWork,
         IDateTimeProvider dateTimeProvider,
         IJwtTokenReader jwtTokenReader)
     {
@@ -26,7 +26,7 @@ public class UploadSolutionCommandHandler
         _jwtTokenReader = jwtTokenReader;
     }
 
-    public async Task<Result<StudentTaskResult>> Handle(UploadSolutionCommand command,
+    public async Task<Result<StudentTaskResult>> Handle(UploadTaskSolutionCommand command,
         CancellationToken cancellationToken)
     {
         var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
@@ -51,6 +51,7 @@ public class UploadSolutionCommandHandler
         var filePath = await UploadFileAndGetFilePath(command.File);
         
         studentTask.FileUrl = filePath;
+        studentTask.OrdinalFileName = command.File.FileName;
         studentTask.Status = StudentTaskStatus.Uploaded;
         studentTask.UploadedAt = _dateTimeProvider.UtcNow;
         

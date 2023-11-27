@@ -31,6 +31,7 @@ public class ReturnTaskCommandHandler
         studentTask.Status = StudentTaskStatus.Returned;
         studentTask.UploadedAt = null;
         studentTask.FileUrl = null;
+        studentTask.OrdinalFileName = null;
         studentTask.Grade = 0;
         
         _unitOfWork.StudentTasks.Update(studentTask);

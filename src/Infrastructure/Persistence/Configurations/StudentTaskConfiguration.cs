@@ -12,6 +12,9 @@ public class StudentTaskConfiguration : IEntityTypeConfiguration<StudentTask>
 
         builder.Property(t => t.FileUrl)
             .IsRequired(false);
+        
+        builder.Property(t => t.OrdinalFileName)
+            .IsRequired(false);
 
         builder.Property(t => t.UploadedAt)
             .IsRequired(false);

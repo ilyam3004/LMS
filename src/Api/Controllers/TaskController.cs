@@ -4,6 +4,7 @@ using Application.Tasks.Commands.CreateTask;
 using Application.Tasks.Commands.RemoveTask;
 using Application.Tasks.Commands.ReturnTask;
 using Application.Tasks.Commands.UploadSolution;
+using Application.Tasks.Queries.DownloadTaskSolution;
 using Application.Tasks.Queries.GetStudentTask;
 using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Tasks;
@@ -67,7 +68,7 @@ public class TaskController : ApiController
             value => Ok(_mapper.Map<LecturerTaskResponse>(value)),
             Problem);
     }
-    
+
     [HttpGet("student/{taskId}")]
     [Authorize(Roles = Roles.Student)]
     public async Task<IActionResult> GetStudentTask(Guid taskId)
@@ -81,20 +82,34 @@ public class TaskController : ApiController
             value => Ok(_mapper.Map<StudentTaskResponse>(value)),
             Problem);
     }
-    
+
     [HttpPut("{studentTaskId}/upload")]
     [Authorize(Roles = Roles.Student)]
-    public async Task<IActionResult> UploadSolution([FromRoute] Guid studentTaskId, 
+    public async Task<IActionResult> UploadSolution([FromRoute] Guid studentTaskId,
         [FromForm] IFormFile file)
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
-        
-        var command = new UploadSolutionCommand(file, studentTaskId, token);
+
+        var command = new UploadTaskSolutionCommand(file, studentTaskId, token);
 
         var result = await _sender.Send(command);
 
         return result.Match(
             value => Ok(_mapper.Map<StudentTaskResponse>(value)),
+            Problem);
+    }
+
+    [HttpGet("{studentTaskId}/download")]
+    [Authorize(Roles = Roles.Lecturer)]
+    public async Task<IActionResult> DownloadSolution(Guid studentTaskId)
+    {
+        var command = new DownloadTaskSolutionQuery(studentTaskId);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            value => 
+                File(value.FileContent, "application/octet-stream", value.FileName),
             Problem);
     }
 
