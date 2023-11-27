@@ -151,7 +151,7 @@ public class TaskController : ApiController
             value => Ok(_mapper.Map<LecturerTaskResponse>(value)),
             Problem);
     }
-    
+
     [HttpPut("{studentTaskId}/comment")]
     public async Task<IActionResult> CreateComment([FromRoute] Guid studentTaskId,
         [FromBody] CreateCommentRequest request)
@@ -165,4 +165,5 @@ public class TaskController : ApiController
         return result.Match(
             value => Ok(_mapper.Map<StudentTaskResponse>(value)),
             Problem);
+    }
 }

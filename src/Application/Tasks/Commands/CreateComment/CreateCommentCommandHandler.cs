@@ -63,7 +63,7 @@ public class CreateCommentCommandHandler
         var task = await _unitOfWork.Tasks.GetTaskByIdWithLecturerRelation(studentTask.TaskId);
 
         var updatedStudentTask = task.StudentTasks.FirstOrDefault(studentTask =>
-            studentTask.StudentId == studentTask.StudentTaskId);
+            studentTask.StudentId == studentTask.StudentId);
 
         return new StudentTaskResult(task, updatedStudentTask);
     }
