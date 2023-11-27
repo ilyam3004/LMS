@@ -25,9 +25,20 @@ export interface RegisterStudentRequest {
 }
 
 export interface StudentProfile {
-
+  userId: string,
+  email: string,
+  fullName: string,
+  group: string,
+  course: string,
+  birthday: string,
+  address: string
 }
 
 export interface LecturerProfile {
-
+  userId: string,
+  email: string,
+  fullName: string,
+  degree: string,
+  birthday: string,
+  address: string
 }

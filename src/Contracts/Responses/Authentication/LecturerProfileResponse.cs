@@ -5,5 +5,5 @@ public record LecturerProfileResponse(
     string Email, 
     string FullName,
     string Degree, 
-    string BirthDate,
+    string Birthday,
     string Address);

@@ -1,7 +1,7 @@
 import {BehaviorSubject, Observable, map} from 'rxjs';
 import {HttpClient} from '@angular/common/http';
 import {Router} from '@angular/router';
-import {RegisterLecturerRequest, RegisterStudentRequest, User} from '../models/user';
+import {LecturerProfile, RegisterLecturerRequest, RegisterStudentRequest, StudentProfile, User} from '../models/user';
 import {Injectable} from '@angular/core';
 import {environment} from '../../../environments/environment';
 import {JwtHelperService} from "@auth0/angular-jwt";
@@ -54,6 +54,14 @@ export class AuthenticationService {
         this.userSubject.next(user);
         return user;
       }));
+  }
+
+  getStudentProfile(): Observable<StudentProfile> {
+    return this.http.get<StudentProfile>(`${environment.apiBaseUrl}/users/students/profile`);
+  }
+
+  getLecturerProfile(): Observable<LecturerProfile>{
+    return this.http.get<LecturerProfile>(`${environment.apiBaseUrl}/users/lecturers/profile`);
   }
 
   getUserRole(token: string): string | null {

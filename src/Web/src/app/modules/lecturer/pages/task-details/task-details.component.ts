@@ -10,6 +10,7 @@ import {
 } from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
 import {GradeEntryModalComponent} from "../../components/grade-entry-modal/grade-entry-modal.component";
 import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
+import {CommentsModalComponent} from "../../components/comments-modal/comments-modal.component";
 
 @Component({
   selector: 'app-task-details',
@@ -125,6 +126,10 @@ export class TaskDetailsComponent implements OnInit {
       () => {
       }
     );
+  }
+
+  openCommentsModal() {
+    const modalRef = this.modalService.open(CommentsModalComponent);
   }
 
   openRejectTaskConfirmationModal(studentTaskId: string): void {

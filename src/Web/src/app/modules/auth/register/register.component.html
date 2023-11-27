@@ -16,7 +16,33 @@
       </div>
       @if (role == 'student') {
         <form [formGroup]="studentForm" (ngSubmit)="onStudentFormSubmit()">
-          <div class="mb-3">
+          <div class="row">
+            <div class="form-group col-md-6">
+              <label class="form-label">First Name</label>
+              <input type="text" formControlName="firstName" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && studentFormControl['firstName'].errors }"/>
+              @if (submitted && studentFormControl['firstName'].errors) {
+                <div class="invalid-feedback">
+                  @if (studentFormControl['firstName'].errors['required']) {
+                    First Name is required
+                  }
+                </div>
+              }
+            </div>
+            <div class="form-group col-md-6">
+              <label class="form-label">Last Name</label>
+              <input type="text" formControlName="lastName" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && studentFormControl['lastName'].errors }"/>
+              @if (submitted && studentFormControl['lastName'].errors) {
+                <div class="invalid-feedback">
+                  @if (studentFormControl['lastName'].errors['required']) {
+                    Last Name is required
+                  }
+                </div>
+              }
+            </div>
+          </div>
+          <div class="mb-3" style="margin-top: 2%">
             <label class="form-label">Email</label>
             <input type="text" formControlName="email" class="form-control"
                    [ngClass]="{ 'is-invalid': submitted && studentFormControl['email'].errors }"/>
@@ -44,31 +70,54 @@
               </div>
             }
           </div>
-          <div class="mb-3">
-            <label class="form-label">First Name</label>
-            <input type="text" formControlName="firstName" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && studentFormControl['firstName'].errors }"/>
-            @if (submitted && studentFormControl['firstName'].errors) {
+          <div class="form-group">
+            <label class="form-label">Course</label>
+            <select class="form-control" formControlName="course"
+                    [ngClass]="{ 'is-invalid': submitted && studentFormControl['course'].errors }">
+              <option ngValue="1">1</option>
+              <option ngValue="2">2</option>
+              <option ngValue="3">3</option>
+              <option ngValue="4">4</option>
+              <option ngValue="5">5</option>
+              <option ngValue="5">6</option>
+            </select>
+            @if (submitted && studentFormControl['course'].errors) {
               <div class="invalid-feedback">
-                @if (studentFormControl['firstName'].errors['required']) {
-                  First Name is required
-                }
+                Course is required
               </div>
             }
           </div>
-          <div class="mb-3">
-            <label class="form-label">Last Name</label>
-            <input type="text" formControlName="lastName" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && studentFormControl['lastName'].errors }"/>
-            @if (submitted && studentFormControl['lastName'].errors) {
-              <div class="invalid-feedback">
-                @if (studentFormControl['lastName'].errors['required']) {
-                  Last Name is required
+          <div class="row" style="margin-top: 2%">
+            <div class="form-group col-md-6">
+              <label class="form-label">Birthday</label>
+              <div class="input-group">
+                <input class="form-control"
+                       [ngClass]="{ 'is-invalid': submitted && studentFormControl['birthday'].errors }"
+                       placeholder="yyyy-mm-dd" name="birthday" formControlName="birthday"
+                       ngbDatepicker #d="ngbDatepicker" [positionTarget]="buttonEl" required/>
+                <button #buttonEl class="btn btn-outline-secondary bi bi-calendar3"
+                        (click)="d.toggle()" type="button"></button>
+                @if (submitted && studentFormControl['birthday'].errors) {
+                  <div class="invalid-feedback">
+                    Birthday is required
+                  </div>
                 }
               </div>
-            }
+            </div>
+            <div class="form-group col-md-6">
+              <label class="form-label">Address</label>
+              <input type="text" formControlName="address" class="form-control"
+                     [ngClass]="{ 'is-invalid': submitted && studentFormControl['address'].errors }"/>
+              @if (submitted && studentFormControl['address'].errors) {
+                <div class="invalid-feedback">
+                  @if (studentFormControl['address'].errors['required']) {
+                    Address is required
+                  }
+                </div>
+              }
+            </div>
           </div>
-          <div class="mb-3">
+          <div class="form-group" style="margin-top: 2%">
             <label class="form-label">Group</label>
             <select class="form-control" formControlName="groupName"
                     [ngClass]="{ 'is-invalid': submitted && studentFormControl['groupName'].errors }">
@@ -82,35 +131,7 @@
               </div>
             }
           </div>
-          <div class="mb-3">
-            <label class="form-label">Birthday</label>
-            <div class="input-group">
-              <input class="form-control"
-                     [ngClass]="{ 'is-invalid': submitted && studentFormControl['birthday'].errors }"
-                     placeholder="yyyy-mm-dd" name="birthday" formControlName="birthday"
-                     ngbDatepicker #d="ngbDatepicker" [positionTarget]="buttonEl" required/>
-              <button #buttonEl class="btn btn-outline-secondary bi bi-calendar3"
-                      (click)="d.toggle()" type="button"></button>
-              @if (submitted && studentFormControl['birthday'].errors) {
-                <div class="invalid-feedback">
-                  Birthday is required
-                </div>
-              }
-            </div>
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Address</label>
-            <input type="text" formControlName="address" class="form-control"
-                   [ngClass]="{ 'is-invalid': submitted && studentFormControl['address'].errors }"/>
-            @if (submitted && studentFormControl['address'].errors) {
-              <div class="invalid-feedback">
-                @if (studentFormControl['address'].errors['required']) {
-                  Address is required
-                }
-              </div>
-            }
-          </div>
-          <div>
+          <div style="margin-top: 2%">
             <button [disabled]="registerLoading" class="btn btn-primary">
               <span *ngIf="registerLoading" class="spinner-border spinner-border-sm me-1"></span>
               Register
@@ -120,7 +141,7 @@
         </form>
       } @else if (role == 'lecturer') {
         <form [formGroup]="lecturerForm" (ngSubmit)="onLecturerFormSubmit()">
-          <div class="mb-3">
+          <div class="mb-3" style="margin-top: 2%">
             <label class="form-label">Email</label>
             <input type="text" formControlName="email" class="form-control"
                    [ngClass]="{ 'is-invalid': submitted && lecturerFormControl['email'].errors }"/>

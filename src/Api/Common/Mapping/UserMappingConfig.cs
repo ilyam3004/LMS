@@ -18,7 +18,7 @@ public class UserMappingConfig : IRegister
             .Map(dest => dest.FullName, src => src.User.Lecturer!.FullName)
             .Map(dest => dest.Degree, src => src.User.Lecturer!.Degree)
             .Map(dest => dest.Address, src => src.User.Lecturer!.Address)
-            .Map(dest => dest.BirthDate, src => src.User.Lecturer!.Birthday.ToString("dd.MM.yyyy"));
+            .Map(dest => dest.Birthday, src => src.User.Lecturer!.Birthday.ToString("dd.MM.yyyy"));
 
         config.NewConfig<ProfileResult, StudentProfileResponse>()
             .Map(dest => dest.UserId, src => src.User.UserId)
@@ -27,6 +27,6 @@ public class UserMappingConfig : IRegister
             .Map(dest => dest.Group, src => src.User.Student!.Group.Name)
             .Map(dest => dest.Course, src => src.User.Student!.Course)
             .Map(dest => dest.Address, src => src.User.Student!.Address)
-            .Map(dest => dest.BirthDate, src => src.User.Student!.Birthday.ToString("dd.MM.yyyy"));
+            .Map(dest => dest.Birthday, src => src.User.Student!.Birthday.ToString("dd.MM.yyyy"));
     }
 }

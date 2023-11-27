@@ -6,9 +6,7 @@
     </div>
   } @else {
     <div class="task-container flex-column">
-      <h2>
-        {{ task.title }}
-      </h2>
+      <h2>{{ task.title }}</h2>
     </div>
     <hr>
     <div class="mt-4">
@@ -77,13 +75,15 @@
                     Actions
                   </button>
                   <div ngbDropdownMenu>
+                    <button ngbDropdownItem (click)="openCommentsModal()">
+                      Open comments
+                    </button>
                     <button ngbDropdownItem (click)="openGradeEntryModal(studentTask.studentTaskId)">
                       Accept
                     </button>
                     <button ngbDropdownItem (click)="openReturnTaskModal(studentTask.studentTaskId)">
                       Return
                     </button>
-
                   </div>
                 </div>
               } @else if (studentTask.status === StudentTaskStatus.Accepted) {

@@ -6,5 +6,5 @@ public record StudentProfileResponse(
     string FullName,
     string Group,
     string Course,
-    string BirthDate,
+    string Birthday,
     string Address);

@@ -1,0 +1,26 @@
+<div class="modal-header">
+  <h4 class="modal-title">Comments</h4>
+  <button
+    type="button"
+    class="btn-close"
+    aria-describedby="modal-title"
+    (click)="activeModal.dismiss('Cross click')"></button>
+</div>
+<div class="modal-body">
+  <div *ngIf="comments.length === 0" class="alert alert-info">
+    No comments yet.
+  </div>
+  <div *ngFor="let comment of comments" class="card mb-3">
+    <div class="card-header">
+      {{ comment.user }} <small class="text-muted">{{ comment.timestamp | date: 'short' }}</small>
+    </div>
+    <div class="card-body">
+      <p class="card-text">{{ comment.text }}</p>
+    </div>
+  </div>
+  <textarea [(ngModel)]="newComment.text" class="form-control" placeholder="Add a comment..."></textarea>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" (click)="activeModal.dismiss()">Close</button>
+  <button type="button" class="btn btn-primary" (click)="addComment()">Add Comment</button>
+</div>

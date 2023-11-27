@@ -11,6 +11,7 @@ import {TasksComponent} from "./pages/tasks/tasks.component";
 import {SubjectsComponent} from "./pages/subjects/subjects.component";
 import {NavbarComponent} from "./components/navbar/navbar.component";
 import { ProfileComponent } from './pages/profile/profile.component';
+import { CommentsModalComponent } from './components/comments-modal/comments-modal.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ProfileComponent } from './pages/profile/profile.component';
     TasksComponent,
     TaskDetailsComponent,
     GradeEntryModalComponent,
-    ProfileComponent
+    ProfileComponent,
+    CommentsModalComponent
   ],
   imports: [
     CommonModule,
