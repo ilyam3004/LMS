@@ -20,7 +20,7 @@ export class TaskDetailsComponent implements OnInit {
 
   taskId: string = '';
 
-  constructor(private taskService: TaskService,
+  constructor(protected taskService: TaskService,
               private alertService: AlertService,
               private route: ActivatedRoute,
               protected modalService: NgbModal,
@@ -49,16 +49,10 @@ export class TaskDetailsComponent implements OnInit {
       });
   }
 
-  getTaskStatus(status: StudentTaskStatus): string {
-    return status === StudentTaskStatus.Accepted ? 'Accepted' :
-      status === StudentTaskStatus.Returned ? 'Returned' :
-        status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
-  }
-
   onFileSelected(event: any): void {
     this.file = event.target.files[0];
     const modalRef = this.modalService.open(ConfirmationModalComponent);
-    modalRef.componentInstance.message = 'Are you sure you want to upload this task?';
+    modalRef.componentInstance.message = `Are you sure you want to upload ${this.file?.name}?`;
     modalRef.componentInstance.title = 'Upload task';
 
     modalRef.result.then(
@@ -73,7 +67,7 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   uploadTask(): void {
-    this.taskService.uploadFile(this.file!, this.task.uploadedTask.studentTaskId)
+    this.taskService.uploadSolutions(this.file!, this.task.uploadedTask.studentTaskId)
       .subscribe({
         next: task => {
           this.task = task;

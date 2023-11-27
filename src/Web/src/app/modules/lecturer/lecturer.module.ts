@@ -1,11 +1,7 @@
 import { NgModule } from '@angular/core';
 import {CommonModule} from '@angular/common';
 import { LecturerRoutingModule } from './lecturer-routing.module';
-import {
-  NgbAccordionModule, NgbActiveModal,
-  NgbDropdownModule,
-  NgbInputDatepicker,
-  NgbTimepicker
+import { NgbAccordionModule, NgbActiveModal, NgbDropdownModule, NgbInputDatepicker, NgbTimepicker
 } from "@ng-bootstrap/ng-bootstrap";
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {LayoutComponent} from "../lecturer/pages/layout/layout.component";

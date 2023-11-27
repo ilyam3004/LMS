@@ -1,5 +1,4 @@
-﻿using System.Security.Cryptography;
-using Domain.Abstractions.Errors;
+﻿using Domain.Abstractions.Errors;
 
 namespace Domain.Common;
 
@@ -24,6 +23,9 @@ public static class Errors
     {
         public static Error FileNotFound => Error.NotFound("File.FileNotFound",
             description: "File not found");
+        
+        public static Error OrdinalFileNameNotFound => Error.NotFound("File.OrdinalFileNameNotFound",
+            description: "Ordinal file name not found, because task status not uploaded");
     }
 
     public static class Group
@@ -54,5 +56,11 @@ public static class Errors
         
         public static Error GradeTooHigh => Error.Conflict("Task.GradeTooHigh",
             description: "Grade is too high");
+        
+        public static Error RejectFailed => Error.Conflict("Task.RejectFailed",
+            description: "You can't reject this task. Check the task status");
+
+        public static Error TaskDeadlineNotExpired => Error.Conflict("Task.TaskDeadlineNotExpired",
+            description: "You cannot reject this task. Task deadline not expired");
     }
 }

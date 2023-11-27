@@ -41,8 +41,8 @@
                             Details
                           </button>
                         </a>
-                        <p [style.color]="getTaskStatusColor(task.uploadedTask.status)">
-                          {{ getTaskStatus(task.uploadedTask.status) }}
+                        <p [style.color]="taskService.getTaskStatusColor(task.uploadedTask.status)">
+                          {{ taskService.getTaskStatus(task.uploadedTask.status) }}
                         </p>
                       </div>
                     </div>

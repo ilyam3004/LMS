@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {AssignTaskRequest, LecturerTask, StudentTask} from "../models/task";
+import {AssignTaskRequest, LecturerTask, StudentTask, StudentTaskStatus} from "../models/task";
 import {Observable} from "rxjs";
 import {LecturerSubject} from "../models/subject";
 
@@ -11,8 +11,7 @@ import {LecturerSubject} from "../models/subject";
 export class TaskService {
   private taskApiUrl: string = `${environment.apiBaseUrl}/tasks`;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   assignTask(request: AssignTaskRequest): Observable<LecturerSubject> {
     return this.http.post<LecturerSubject>(this.taskApiUrl, request);
@@ -39,18 +38,42 @@ export class TaskService {
       {grade: grade});
   }
 
-  uploadFile(file: File, studentTaskId: string): Observable<StudentTask> {
+  rejectTask(studentTaskId: string): Observable<LecturerTask> {
+    return this.http.put<LecturerTask>(`${this.taskApiUrl}/${studentTaskId}/reject`, null);
+  }
+
+  uploadSolutions(file: File, studentTaskId: string): Observable<StudentTask> {
     const formData: FormData = new FormData();
     formData.append('file', file, file.name);
 
     return this.http.put<StudentTask>(`${this.taskApiUrl}/${studentTaskId}/upload`, formData);
   }
 
-  downloadFile(studentTaskId: string): Observable<any> {
+  downloadSolution(studentTaskId: string): Observable<any> {
     return this.http.get(`${this.taskApiUrl}/${studentTaskId}/download`, {
-      reportProgress: true,
-      observe: 'events',
+      observe: 'response',
       responseType: 'blob'
     })
+  }
+
+  getTaskStatus(status: StudentTaskStatus): string {
+    return status === StudentTaskStatus.Accepted ? 'Accepted' :
+      status === StudentTaskStatus.Returned ? 'Returned' :
+        status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
+  }
+
+  getTaskStatusColor(status: StudentTaskStatus): string {
+    switch (status) {
+      case StudentTaskStatus.Uploaded:
+        return '#ffa94b';
+      case StudentTaskStatus.Accepted:
+        return '#00d300';
+      case StudentTaskStatus.Returned:
+        return 'red';
+      case StudentTaskStatus.NotUploaded:
+        return 'gray';
+      default:
+        return 'gray';
+    }
   }
 }

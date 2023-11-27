@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {LecturerTask, StudentTaskStatus} from "../../../../core/models/task";
+import {LecturerTask, StudentTask, StudentTaskStatus, UploadedStudentTask} from "../../../../core/models/task";
 import {TaskService} from "../../../../core/services/task.service";
 import {AlertService} from "../../../../core/services/alert.service";
 import {DateTimeService} from "../../../../core/services/datetime.service";
@@ -9,7 +9,6 @@ import {
   ConfirmationModalComponent
 } from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
 import {GradeEntryModalComponent} from "../../components/grade-entry-modal/grade-entry-modal.component";
-import {HttpResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-task-details',
@@ -21,9 +20,9 @@ export class TaskDetailsComponent implements OnInit {
   task: LecturerTask = {} as LecturerTask;
   taskId: string = '';
 
-  constructor(private taskService: TaskService,
-              private alertService: AlertService,
+  constructor(private alertService: AlertService,
               private route: ActivatedRoute,
+              protected taskService: TaskService,
               protected modalService: NgbModal,
               protected dateTimeService: DateTimeService) {
   }
@@ -53,23 +52,46 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   onDownload(studentTaskId: string): void {
-    this.taskService.downloadFile(studentTaskId).subscribe(async (event) => {
-      let data = event as HttpResponse < Blob > ;
-      const downloadedFile = new Blob([data.body as BlobPart], {
-        type: data.body?.type
-      });
-      console.log("ddd", downloadedFile)
-      if (downloadedFile.type != "") {
-        const a = document.createElement('a');
-        a.setAttribute('style', 'display:none;');
-        document.body.appendChild(a);
-        a.download = "task.pdf";
-        a.href = URL.createObjectURL(downloadedFile);
-        a.target = '_blank';
-        a.click();
-        document.body.removeChild(a);
+    this.taskService.downloadSolution(studentTaskId).subscribe({
+        next: (response) => {
+          const contentDispositionHeader = response.headers.get('Content-Disposition');
+
+          if (contentDispositionHeader) {
+            const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDispositionHeader);
+            const fileName = matches && matches.length > 1 ? matches[1] : null;
+
+            if (fileName) {
+              const data = response.body as Blob;
+
+              const a = document.createElement('a');
+              a.download = fileName;
+              a.href = URL.createObjectURL(data);
+              a.click();
+            } else {
+              this.alertService.error('Unable to extract filename from Content-Disposition header.');
+              this.downloadFileWithDefaultName(response);
+            }
+          } else {
+            this.alertService.error('Content-Disposition header not found in the response.' +
+              'Downloading file with default filename.');
+            this.downloadFileWithDefaultName(response);
+          }
+        },
+        error:
+          err => {
+            this.alertService.error(err);
+          }
       }
-    });
+    );
+  }
+
+  downloadFileWithDefaultName(response: any): void {
+    const data = response.body as Blob;
+
+    const a = document.createElement('a');
+    a.download = 'file';
+    a.href = URL.createObjectURL(data);
+    a.click();
   }
 
   getTurnedInCount(): number {
@@ -87,21 +109,35 @@ export class TaskDetailsComponent implements OnInit {
       task.status === StudentTaskStatus.Returned).length;
   }
 
-  getStudentTaskStatus(status: StudentTaskStatus): string {
-    return status === StudentTaskStatus.Accepted ? 'Accepted' :
-      status === StudentTaskStatus.Returned ? 'Returned' :
-        status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
-  }
-
   openReturnTaskModal(studentTaskId: string): void {
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.message = 'Are you sure you want to return this task to the student?';
+    modalRef.componentInstance.removeOption = true;
     modalRef.componentInstance.title = 'Return task';
 
     modalRef.result.then(
       (result) => {
         if (result) {
           this.returnTaskToStudent(studentTaskId);
+        }
+      },
+      () => {
+      }
+    );
+  }
+
+  openRejectTaskConfirmationModal(studentTaskId: string): void {
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.title = 'Return task';
+    modalRef.componentInstance.message = 'Are you sure you want to reject this task?';
+    modalRef.componentInstance.removeOption = true;
+    modalRef.componentInstance.warningMessage = 'Note that this action cannot be undone ' +
+      'and after rejecting the task student will not be able to upload it again.';
+
+    modalRef.result.then(
+      (result) => {
+        if (result) {
+          this.rejectStudentTask(studentTaskId);
         }
       },
       () => {
@@ -137,6 +173,19 @@ export class TaskDetailsComponent implements OnInit {
       });
   }
 
+  private rejectStudentTask(studentTaskId: string) {
+    this.taskService.rejectTask(studentTaskId)
+      .subscribe({
+        next: task => {
+          this.task = task;
+          this.alertService.success('Task rejected successfully', {keepAfterRouteChange: true});
+        },
+        error: err => {
+          this.alertService.error(err);
+        }
+      });
+  }
+
   private acceptStudentTask(grade: number, studentTaskId: string) {
     this.taskService.acceptTask(studentTaskId, grade)
       .subscribe({
@@ -148,6 +197,17 @@ export class TaskDetailsComponent implements OnInit {
           this.alertService.error(err);
         }
       })
+  }
+
+  protected getUploadedDateColor(uploadedAt: Date | null, deadline: Date): string {
+    return uploadedAt! > deadline ? 'red' : 'black';
+  }
+
+  canReject(task: LecturerTask, studentTask: UploadedStudentTask): boolean {
+    return studentTask.status === StudentTaskStatus.NotUploaded
+      && task.deadline < this.dateTimeService.getCurrentDateTime()
+      || studentTask.status === StudentTaskStatus.Returned
+      && task.deadline < this.dateTimeService.getCurrentDateTime();
   }
 
   protected readonly StudentTaskStatus = StudentTaskStatus;

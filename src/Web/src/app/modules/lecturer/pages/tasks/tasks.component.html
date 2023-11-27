@@ -119,7 +119,7 @@
                   <p class="text-secondary">You have not assigned any tasks before😧</p>
                 </div>
               } @else {
-                <p class="text-secondary">Group: {{ subject.group.name }}</p>
+                <p class="text-secondary">{{ subject.group.name }}</p>
                 @for (task of subject.tasks;track task.taskId) {
                   <div class="card border-secondary mb-3">
                     <div class="card-header text-secondary h5">{{ task.title }}</div>

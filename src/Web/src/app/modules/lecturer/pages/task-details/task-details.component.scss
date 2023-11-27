@@ -36,4 +36,10 @@
       margin-top: 2%;
     }
   }
+
+  .download-link {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 }

@@ -13,7 +13,7 @@
     <hr>
     <div class="mt-4">
       <div class="row">
-        <div class="col-md-7" style="border-right: 1px solid #ccc; padding-right: 5%">
+        <div class="col-md-7" style="padding-right: 5%">
           <div class="task-description-container">
             <h5>Description</h5>
             <p>{{ task.description }}</p>
@@ -27,11 +27,13 @@
           <div class="additional-info-container text-secondary">
             <div class="mb-3">
               <input class="form-control" type="file" id="formFile"
+                     accept=".txt, .pdf, .doc, .docx, .jpeg, .jpg, .csv, .json, .xls, .xlsx"
+                     lang="en"
                      [disabled]="task.uploadedTask.status === StudentTaskStatus.Uploaded ||
                      task.uploadedTask.status === StudentTaskStatus.Accepted"
                      (change)="onFileSelected($event)" #fileUploader/>
             </div>
-            <p>Status: {{ getTaskStatus(task.uploadedTask.status) }}</p>
+            <p>Status: {{ taskService.getTaskStatus(task.uploadedTask.status) }}</p>
             <p class="text-primary">{{ task.uploadedTask.grade }}/{{ task.maxGrade }} points</p>
             @if (task.uploadedTask.status !== StudentTaskStatus.Returned && task.uploadedTask.uploadedAt
             || task.uploadedTask.status !== StudentTaskStatus.Returned && task.uploadedTask.uploadedAt) {
@@ -42,6 +44,5 @@
       </div>
     </div>
     <hr>
-
   }
 </div>

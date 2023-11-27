@@ -1,5 +1,4 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
-import {DatePipe} from "@angular/common";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {LecturerSubject} from '../../../../core/models/subject';
@@ -31,8 +30,7 @@ export class TasksComponent implements OnInit {
               private alertService: AlertService,
               private modalService: NgbModal,
               private formBuilder: FormBuilder,
-              protected dateTimeService: DateTimeService) {
-  }
+              protected dateTimeService: DateTimeService) { }
 
   ngOnInit() {
     this.initializeForms();

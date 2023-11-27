@@ -116,7 +116,7 @@
             </div>
             <div class="card-footer d-flex justify-content-end">
               <button type="button" class="btn btn-outline-danger"
-                      (click)="removeSubject(subject.subjectId)"
+                      (click)="openRemoveSubjectConfirmationModal(subject.subjectId, subject.name)"
                       [disabled]="removeLoading">
                 <span *ngIf="removeLoading" class="spinner-border spinner-border-sm me-1"></span>
                 Remove

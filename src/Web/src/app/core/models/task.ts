@@ -44,5 +44,6 @@ export enum StudentTaskStatus {
   Uploaded,
   Returned,
   Accepted,
-  NotUploaded
+  NotUploaded,
+  Rejected
 }

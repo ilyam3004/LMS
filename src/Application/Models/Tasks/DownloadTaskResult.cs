@@ -2,4 +2,5 @@
 
 public record DownloadTaskResult(
     byte[] FileContent,
-    string FileName);
+    string FileName,
+    string ContentType);

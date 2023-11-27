@@ -3,7 +3,7 @@ import {StudentSubject} from "../../../../core/models/subject";
 import {SubjectService} from "../../../../core/services/subject.service";
 import {AlertService} from "../../../../core/services/alert.service";
 import {DateTimeService} from "../../../../core/services/datetime.service";
-import {StudentTaskStatus} from "../../../../core/models/task";
+import {TaskService} from "../../../../core/services/task.service";
 
 @Component({
   selector: 'app-tasks',
@@ -17,6 +17,7 @@ export class TasksComponent implements OnInit {
   submitted: boolean = false;
 
   constructor(private subjectService: SubjectService,
+              protected taskService: TaskService,
               private alertService: AlertService,
               protected dateTimeService: DateTimeService) { }
   ngOnInit() {
@@ -40,24 +41,5 @@ export class TasksComponent implements OnInit {
         });
   }
 
-  getTaskStatus(status: StudentTaskStatus): string {
-    return status === StudentTaskStatus.Accepted ? 'Accepted' :
-      status === StudentTaskStatus.Returned ? 'Returned' :
-        status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
-  }
-
-  getTaskStatusColor(status: StudentTaskStatus): string {
-    switch (status) {
-      case StudentTaskStatus.Uploaded:
-        return '#ffb96f';
-      case StudentTaskStatus.Accepted:
-        return '#00d300';
-      case StudentTaskStatus.Returned:
-        return 'red';
-      case StudentTaskStatus.NotUploaded:
-        return 'gray';
-      default:
-        return 'gray';
-    }
-  }
+  protected readonly TaskService = TaskService;
 }

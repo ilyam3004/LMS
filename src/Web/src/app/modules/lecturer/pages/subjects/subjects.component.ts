@@ -6,6 +6,9 @@ import {Group} from "../../../../core/models/group";
 import {SubjectService} from "../../../../core/services/subject.service";
 import {GroupService} from "../../../../core/services/group.service";
 import {AlertService} from "../../../../core/services/alert.service";
+import {
+  ConfirmationModalComponent
+} from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
 
 @Component({
   selector: 'app-subject',
@@ -92,6 +95,23 @@ export class SubjectsComponent implements OnInit {
           this.createLoading = false;
         }
       });
+  }
+
+  openRemoveSubjectConfirmationModal(subjectId: string, subjectName: string): void {
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.message = `Are you sure you want to remove subject ${subjectName}?`;
+    modalRef.componentInstance.removeOption = true;
+    modalRef.componentInstance.title = 'Remove subject';
+
+    modalRef.result.then(
+      (result) => {
+        if (result) {
+          this.removeSubject(subjectId);
+        }
+      },
+      () => {
+      }
+    );
   }
 
   removeSubject(subjectId: string): void {

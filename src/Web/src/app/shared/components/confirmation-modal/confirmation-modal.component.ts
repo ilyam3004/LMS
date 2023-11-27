@@ -7,8 +7,10 @@ import {NgbActiveModal} from "@ng-bootstrap/ng-bootstrap";
   styleUrl: './confirmation-modal.component.scss'
 })
 export class ConfirmationModalComponent {
-  @Input() message: string = '';
   @Input() title: string = '';
+  @Input() message: string = '';
+  @Input() isWarning: boolean = false;
+  @Input() warningMessage: string = 'This operation cannot be undone.';
 
   constructor(public modal: NgbActiveModal) {}
 

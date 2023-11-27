@@ -1,1 +1,83 @@
-<p>grades works!</p>
+<div class="container-fluid flex-column subject-page-container">
+  <div class="subject-header-container">
+    <h2>Grades</h2>
+  </div>
+  <hr>
+  @if (fetchLoading) {
+    <div class="d-flex justify-content-center align-items-center subject-loading-container">
+      <div class="spinner-border" role="status">
+      </div>
+    </div>
+  } @else if (!fetchLoading && subjects.length == 0) {
+    <p class="d-flex justify-content-center align-items-center subject-loading-container">
+      You dont have any subjects yet😧
+    </p>
+  } @else {
+    <div class="subject-container flex-column">
+      <p class="text-secondary">Grades for each subject:</p>
+      @for (subject of subjects;track subject.subjectId) {
+        <div ngbAccordion #accordion="ngbAccordion">
+          <div ngbAccordionItem="{{subject.subjectId}}">
+            <h2 ngbAccordionHeader>
+              <button ngbAccordionButton>{{ subject.name }}</button>
+            </h2>
+            <div ngbAccordionCollapse>
+              <div ngbAccordionBody>
+                <ng-template>
+                  @if (subject.tasks.length == 0) {
+                    <div class="d-flex justify-content-center align-items-center">
+                      <div class="text-secondary">No tasks yet😃</div>
+                    </div>
+                  } @else {
+                    <table class="table table-striped">
+                      <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Task</th>
+                        <th scope="col">Status</th>
+                        <th scope="col">Grade</th>
+                        <th scope="col">Uploaded at</th>
+                        <th scope="col">File</th>
+                      </tr>
+                      </thead>
+                      <tbody>
+                        @for (task of subject.tasks;track task.taskId;let i = $index) {
+                          <tr>
+                            <td>{{ i + 1 }}</td>
+                            <td>{{ task.title }}</td>
+                            <td [style.color]="taskService.getTaskStatusColor(task.uploadedTask.status)">
+                              {{ taskService.getTaskStatus(task.uploadedTask.status) }}
+                            </td>
+                            <td>{{ task.uploadedTask.grade }}</td>
+                            <td>
+                              {{
+                                task.uploadedTask.uploadedAt ?
+                                  dateTimeService.convertDateToReadableFormat(task.uploadedTask.uploadedAt) : '-'
+                              }}
+                            </td>
+                            <td>
+                              @if (task.uploadedTask.fileUrl && task.uploadedTask.status === StudentTaskStatus.Uploaded ||
+                              task.uploadedTask.fileUrl && task.uploadedTask.status == StudentTaskStatus.Accepted) {
+                                <a class="link-primary download-link"
+                                   (click)="onDownload(task.uploadedTask.studentTaskId)">
+                                  Download
+                                </a>
+                              } @else {
+                                -
+                              }
+                            </td>
+                          </tr>
+                        }
+                      </tbody>
+                    </table>
+                  }
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom: 2%"></div>
+      }
+    </div>
+  }
+</div>

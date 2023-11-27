@@ -3,6 +3,7 @@ using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
 using Application.Models;
 using Application.Services;
+using Domain.Abstractions.Errors;
 using Domain.Common;
 using Domain.Enums;
 using MediatR;
@@ -45,16 +46,19 @@ public class UploadTaskSolutionCommandHandler
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
 
+        if (studentTask.Status == StudentTaskStatus.Rejected)
+            return Errors.Task.RejectFailed;
+
         if (command.File == null || command.File.Length == 0)
             return Errors.File.FileNotFound;
 
         var filePath = await UploadFileAndGetFilePath(command.File);
-        
+
         studentTask.FileUrl = filePath;
         studentTask.OrdinalFileName = command.File.FileName;
         studentTask.Status = StudentTaskStatus.Uploaded;
         studentTask.UploadedAt = _dateTimeProvider.UtcNow;
-        
+
         _unitOfWork.StudentTasks.Update(studentTask);
 
         await _unitOfWork.SaveChangesAsync();

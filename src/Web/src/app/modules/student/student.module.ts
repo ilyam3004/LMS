@@ -7,7 +7,13 @@ import {SubjectsComponent} from "./pages/subject/subjects.component";
 import {GradesComponent} from "./pages/grades/grades.component";
 import { TasksComponent } from './pages/tasks/tasks.component';
 import {FormsModule, ReactiveFormsModule} from "@angular/forms";
-import {NgbInputDatepicker, NgbTimepicker} from "@ng-bootstrap/ng-bootstrap";
+import {
+  NgbAccordionModule,
+  NgbDropdown,
+  NgbDropdownButtonItem, NgbDropdownItem, NgbDropdownMenu, NgbDropdownToggle,
+  NgbInputDatepicker,
+  NgbTimepicker
+} from "@ng-bootstrap/ng-bootstrap";
 import { TaskDetailsComponent } from './pages/task-details/task-details.component';
 
 
@@ -27,7 +33,13 @@ import { TaskDetailsComponent } from './pages/task-details/task-details.componen
     FormsModule,
     NgbInputDatepicker,
     NgbTimepicker,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    NgbAccordionModule,
+    NgbDropdown,
+    NgbDropdownButtonItem,
+    NgbDropdownItem,
+    NgbDropdownMenu,
+    NgbDropdownToggle
   ]
 })
 export class StudentModule { }

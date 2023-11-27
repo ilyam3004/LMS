@@ -1,6 +1,7 @@
 ﻿using Application.Tasks.Queries.GetLecturerTaskDetails;
 using Application.Tasks.Commands.AcceptTask;
 using Application.Tasks.Commands.CreateTask;
+using Application.Tasks.Commands.RejectTask;
 using Application.Tasks.Commands.RemoveTask;
 using Application.Tasks.Commands.ReturnTask;
 using Application.Tasks.Commands.UploadSolution;
@@ -100,7 +101,7 @@ public class TaskController : ApiController
     }
 
     [HttpGet("{studentTaskId}/download")]
-    [Authorize(Roles = Roles.Lecturer)]
+    [Authorize(Roles = $"{Roles.Lecturer},{Roles.Student}")]
     public async Task<IActionResult> DownloadSolution(Guid studentTaskId)
     {
         var command = new DownloadTaskSolutionQuery(studentTaskId);
@@ -109,7 +110,7 @@ public class TaskController : ApiController
 
         return result.Match(
             value => 
-                File(value.FileContent, "application/octet-stream", value.FileName),
+                File(value.FileContent, value.ContentType, value.FileName),
             Problem);
     }
 
@@ -130,6 +131,18 @@ public class TaskController : ApiController
         [FromBody] AcceptTaskRequest request)
     {
         var command = new AcceptTaskCommand(studentTaskId, request.Grade);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            value => Ok(_mapper.Map<LecturerTaskResponse>(value)),
+            Problem);
+    }
+    
+    [HttpPut("{studentTaskId}/reject")]
+    public async Task<IActionResult> RejectTask(Guid studentTaskId)
+    {
+        var command = new RejectTaskCommand(studentTaskId);
 
         var result = await _sender.Send(command);
 

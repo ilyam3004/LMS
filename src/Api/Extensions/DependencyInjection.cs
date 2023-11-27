@@ -10,7 +10,8 @@ public static class DependencyInjection
                 .SetIsOriginAllowed((host) => true)
                 .AllowAnyHeader()
                 .AllowAnyMethod()
-                .AllowCredentials());
+                .AllowCredentials()
+                .WithExposedHeaders("content-disposition"));
         });
 
         services.AddAuthorization();

@@ -13,8 +13,8 @@
     <hr>
     <div class="mt-4">
       <div class="row">
-        <div class="col-md-9" style="border-right: 1px solid #ccc; padding-right: 5%">
-          <div class="task-description-container">
+        <div class="col-md-9" style="border-right: 1px solid #ccc; padding-right: 3%">
+          <div class="task-description-container" style="text-align: justify">
             <h5>Description</h5>
             <p>{{ task.description }}</p>
             <div class="d-flex justify-content-between text-secondary">
@@ -23,7 +23,7 @@
             </div>
           </div>
         </div>
-        <div class="col-md-3">
+        <div class="col-md-3" style="padding-left: 3%">
           <div class="additional-info-container text-secondary">
             <p>Group: {{ task.groupName }}</p>
             <p>Turned in: {{ getTurnedInCount() }}</p>
@@ -43,8 +43,8 @@
         <th scope="col">Name</th>
         <th scope="col">Status</th>
         <th scope="col">Grade</th>
+        <th scope="col">Solution</th>
         <th scope="col">Uploaded at</th>
-        <th scope="col">File</th>
         <th scope="col"></th>
       </tr>
       </thead>
@@ -53,18 +53,22 @@
           <tr>
             <th scope="row">{{ i + 1 }}</th>
             <td>{{ studentTask.student.fullName }}</td>
-            <td>{{ getStudentTaskStatus(studentTask.status) }}</td>
+            <td>{{ taskService.getTaskStatus(studentTask.status) }}</td>
             <td>{{ studentTask.grade }}
             </td>
             <td>
-              {{ studentTask.uploadedAt ? dateTimeService.convertDateToReadableFormat(studentTask.uploadedAt) : '-' }}
-            </td>
-            <td>
-              @if(studentTask.fileUrl) {
-                <button class="btn btn-outline-primary btn-sm" (click)="onDownload(studentTask.studentTaskId)">Download</button>
+              @if (studentTask.fileUrl && studentTask.status === StudentTaskStatus.Uploaded ||
+              studentTask.fileUrl && studentTask.status == StudentTaskStatus.Accepted) {
+                <a class="link-primary download-link"
+                   (click)="onDownload(studentTask.studentTaskId)">
+                  Download
+                </a>
               } @else {
                 -
               }
+            </td>
+            <td [style.color]="getUploadedDateColor(studentTask.uploadedAt, task.deadline)">
+              {{ studentTask.uploadedAt ? dateTimeService.convertDateToReadableFormat(studentTask.uploadedAt) : '-' }}
             </td>
             <td [width]="40">
               @if (studentTask.status === StudentTaskStatus.Uploaded) {
@@ -79,6 +83,11 @@
                     <button ngbDropdownItem (click)="openReturnTaskModal(studentTask.studentTaskId)">
                       Return
                     </button>
+                    @if (canReject(task, studentTask)) {
+                      <button ngbDropdownItem (click)="openRejectTaskConfirmationModal(studentTask.studentTaskId)">
+                        Reject
+                      </button>
+                    }
                   </div>
                 </div>
               }
@@ -86,6 +95,6 @@
           </tr>
         }
       </tbody>
-   </table>
+    </table>
   }
 </div>

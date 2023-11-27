@@ -25,6 +25,10 @@ export class DateTimeService {
     return readableDate == null ? '-' : readableDate;
   }
 
+  public getCurrentDateTime(): Date {
+    return new Date();
+  }
+
   private isCreatedToday(date: Date): boolean {
     const currentDate = new Date();
 
