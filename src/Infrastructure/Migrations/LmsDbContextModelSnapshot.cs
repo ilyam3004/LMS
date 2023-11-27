@@ -45,37 +45,37 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            GroupId = new Guid("0cbd7397-1c21-4998-bd30-7f01004daa2f"),
+                            GroupId = new Guid("b769d722-f4cd-4ba7-8a71-35d7a8dc8cfe"),
                             Department = "Computer Science",
                             Name = "Group A"
                         },
                         new
                         {
-                            GroupId = new Guid("fd23bc35-5dd4-4a4a-bee1-ef17800f333f"),
+                            GroupId = new Guid("204d0439-a0de-41d6-92bc-56715ac660ba"),
                             Department = "Electrical Engineering",
                             Name = "Group B"
                         },
                         new
                         {
-                            GroupId = new Guid("fcc8f716-dacc-4359-9104-3da1a9045f5e"),
+                            GroupId = new Guid("ae29fe80-39d6-42c8-9c86-3602277ecbb7"),
                             Department = "Mechanical Engineering",
                             Name = "Group C"
                         },
                         new
                         {
-                            GroupId = new Guid("71d43514-35a7-4e9d-aba3-2195391ba76a"),
+                            GroupId = new Guid("c27ede98-1239-476f-a36d-5a1c8201c863"),
                             Department = "Physics",
                             Name = "Group D"
                         },
                         new
                         {
-                            GroupId = new Guid("f6e6c779-15da-420b-a00f-10c469f6c825"),
+                            GroupId = new Guid("2be714c2-60bb-4f17-bd2d-af622f1f6ff7"),
                             Department = "Mathematics",
                             Name = "Group E"
                         },
                         new
                         {
-                            GroupId = new Guid("dbfa1cc7-4891-4194-a621-8c29d91009c2"),
+                            GroupId = new Guid("90925c1f-3fb1-4c9d-a927-d8708d09b2fc"),
                             Department = "Chemistry",
                             Name = "Group F"
                         });
@@ -127,6 +127,9 @@ namespace Infrastructure.Migrations
 
                     b.Property<DateTime>("Birthday")
                         .HasColumnType("timestamp with time zone");
+
+                    b.Property<int>("Course")
+                        .HasColumnType("integer");
 
                     b.Property<string>("FullName")
                         .IsRequired()

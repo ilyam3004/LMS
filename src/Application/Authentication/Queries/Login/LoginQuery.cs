@@ -1,4 +1,5 @@
 using Application.Models;
+using Application.Models.Authentication;
 using Domain.Abstractions.Results;
 using MediatR;
 

@@ -9,6 +9,7 @@ import {
   ConfirmationModalComponent
 } from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
 import {GradeEntryModalComponent} from "../../components/grade-entry-modal/grade-entry-modal.component";
+import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 
 @Component({
   selector: 'app-task-details',
@@ -112,7 +113,7 @@ export class TaskDetailsComponent implements OnInit {
   openReturnTaskModal(studentTaskId: string): void {
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.message = 'Are you sure you want to return this task to the student?';
-    modalRef.componentInstance.removeOption = true;
+    modalRef.componentInstance.isWarning = true;
     modalRef.componentInstance.title = 'Return task';
 
     modalRef.result.then(
@@ -130,7 +131,7 @@ export class TaskDetailsComponent implements OnInit {
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.title = 'Return task';
     modalRef.componentInstance.message = 'Are you sure you want to reject this task?';
-    modalRef.componentInstance.removeOption = true;
+    modalRef.componentInstance.isWarning = true;
     modalRef.componentInstance.warningMessage = 'Note that this action cannot be undone ' +
       'and after rejecting the task student will not be able to upload it again.';
 
@@ -200,12 +201,12 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   protected getUploadedDateColor(uploadedAt: Date | null, deadline: Date): string {
-    return uploadedAt! > deadline ? 'red' : 'black';
+    return uploadedAt! > deadline ? '#ff1818' : 'black';
   }
 
   canReject(task: LecturerTask, studentTask: UploadedStudentTask): boolean {
-    return studentTask.status === StudentTaskStatus.NotUploaded
-      && task.deadline < this.dateTimeService.getCurrentDateTime()
+    return studentTask.status === StudentTaskStatus.Returned
+      && new Date(task.deadline) < this.dateTimeService.getCurrentDateTime()
       || studentTask.status === StudentTaskStatus.Returned
       && task.deadline < this.dateTimeService.getCurrentDateTime();
   }

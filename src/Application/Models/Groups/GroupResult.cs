@@ -1,4 +1,5 @@
-﻿using Domain.Entities;
+﻿using Application.Models.Groups;
+using Domain.Entities;
 
 namespace Application.Models;
 

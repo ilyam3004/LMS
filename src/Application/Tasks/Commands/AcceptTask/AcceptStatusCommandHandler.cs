@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Models;
+using Application.Models.Tasks;
 using Domain.Abstractions.Results;
 using Domain.Common;
 using Domain.Enums;
@@ -26,7 +27,8 @@ public class AcceptStatusCommandHandler
         if (studentTask is null)
             return Errors.Task.TaskNotFound;
 
-        if (studentTask.Status != StudentTaskStatus.Uploaded)
+        if (studentTask.Status != StudentTaskStatus.Uploaded 
+            && studentTask.Status != StudentTaskStatus.Accepted)
             return Errors.Task.TaskNotUploaded;
 
         if (studentTask.Task.MaxGrade < command.Grade)

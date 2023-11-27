@@ -1,5 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Application.Models;
+using Application.Models.Tasks;
 using Domain.Abstractions.Results;
 using Domain.Common;
 using Domain.Enums;

@@ -1,0 +1,18 @@
+.profile-page-container {
+  width: 60%;
+
+  .profile-loading-container {
+    height: 60vh;
+  }
+
+  .profile-header-container {
+    display: flex;
+    margin: 3% 0 3% 0;
+  }
+
+  .profile-container {
+    display: flex;
+    margin-top: 5%;
+    justify-content: center;
+  }
+}

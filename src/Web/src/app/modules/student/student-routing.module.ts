@@ -5,6 +5,7 @@ import {SubjectsComponent} from "./pages/subject/subjects.component";
 import {TasksComponent} from "./pages/tasks/tasks.component";
 import {GradesComponent} from "./pages/grades/grades.component";
 import {TaskDetailsComponent} from "./pages/task-details/task-details.component";
+import {ProfileComponent} from "./pages/profile/profile.component";
 
 const routes: Routes = [
   {
@@ -13,7 +14,8 @@ const routes: Routes = [
       {path: 'subjects', component: SubjectsComponent},
       {path: 'tasks', component: TasksComponent},
       {path: 'grades', component: GradesComponent},
-      {path: 'tasks/task', component: TaskDetailsComponent}
+      {path: 'tasks/task', component: TaskDetailsComponent},
+      {path: 'profile', component: ProfileComponent},
     ]
   }
 ];

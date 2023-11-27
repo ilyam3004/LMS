@@ -7,4 +7,6 @@ public record StudentSubjectResponse(
     string Name,
     string Description,
     string LecturerName,
-    List<StudentTaskResponse> Tasks);
+    List<StudentTaskResponse> Tasks,
+    double AverageGrade,
+    int TotalGrade);

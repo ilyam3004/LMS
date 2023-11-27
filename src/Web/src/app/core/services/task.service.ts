@@ -11,7 +11,8 @@ import {LecturerSubject} from "../models/subject";
 export class TaskService {
   private taskApiUrl: string = `${environment.apiBaseUrl}/tasks`;
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) {
+  }
 
   assignTask(request: AssignTaskRequest): Observable<LecturerSubject> {
     return this.http.post<LecturerSubject>(this.taskApiUrl, request);
@@ -59,7 +60,8 @@ export class TaskService {
   getTaskStatus(status: StudentTaskStatus): string {
     return status === StudentTaskStatus.Accepted ? 'Accepted' :
       status === StudentTaskStatus.Returned ? 'Returned' :
-        status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
+        status === StudentTaskStatus.Rejected ? 'Rejected' :
+          status === StudentTaskStatus.Uploaded ? 'Turned in' : 'Not uploaded';
   }
 
   getTaskStatusColor(status: StudentTaskStatus): string {
@@ -72,6 +74,8 @@ export class TaskService {
         return 'red';
       case StudentTaskStatus.NotUploaded:
         return 'gray';
+      case StudentTaskStatus.Rejected:
+        return '#fa4343';
       default:
         return 'gray';
     }

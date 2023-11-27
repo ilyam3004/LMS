@@ -1,5 +1,6 @@
 ﻿using Domain.Abstractions.Results;
 using Application.Models;
+using Application.Models.Subjects;
 using MediatR;
 
 namespace Application.Subjects.Queries.GetStudentSubjectsQuery;

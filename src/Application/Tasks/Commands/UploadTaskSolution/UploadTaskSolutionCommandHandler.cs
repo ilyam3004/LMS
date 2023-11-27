@@ -2,6 +2,7 @@
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
 using Application.Models;
+using Application.Models.Tasks;
 using Application.Services;
 using Domain.Abstractions.Errors;
 using Domain.Common;

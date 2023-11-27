@@ -1,6 +1,7 @@
+using Application.Models.Tasks;
 using Domain.Entities;
 
-namespace Application.Models;
+namespace Application.Models.Subjects;
 
 public record LecturerSubjectResult(
     Subject Subject, 

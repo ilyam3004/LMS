@@ -2,6 +2,7 @@ using Application.Subjects.Commands.CreateSubject;
 using Contracts.Requests.Subjects;
 using Contracts.Responses.Subjects;
 using Application.Models;
+using Application.Models.Subjects;
 using Mapster;
 
 namespace Api.Common.Mapping;
@@ -27,6 +28,8 @@ public class SubjectMappingConfig : IRegister
             .Map(dest => dest.Name, src => src.Subject.Name)
             .Map(dest => dest.Description, src => src.Subject.Description)
             .Map(dest => dest.LecturerName, src => src.Subject.Lecturer.FullName)
-            .Map(dest => dest.Tasks, src => src.Tasks);
+            .Map(dest => dest.Tasks, src => src.Tasks)
+            .Map(dest => dest.AverageGrade, src => src.AverageGrade)
+            .Map(dest => dest.TotalGrade, src => src.TotalGrade);
     }
 }

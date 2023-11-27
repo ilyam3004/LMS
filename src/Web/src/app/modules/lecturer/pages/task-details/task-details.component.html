@@ -83,13 +83,18 @@
                     <button ngbDropdownItem (click)="openReturnTaskModal(studentTask.studentTaskId)">
                       Return
                     </button>
-                    @if (canReject(task, studentTask)) {
-                      <button ngbDropdownItem (click)="openRejectTaskConfirmationModal(studentTask.studentTaskId)">
-                        Reject
-                      </button>
-                    }
+
                   </div>
                 </div>
+              } @else if (studentTask.status === StudentTaskStatus.Accepted) {
+                <button class="btn btn-outline-secondary" (click)="openGradeEntryModal(studentTask.studentTaskId)">
+                  Edit
+                </button>
+              } @else if (canReject(task, studentTask)) {
+                <button class="btn btn-outline-secondary"
+                        (click)="openRejectTaskConfirmationModal(studentTask.studentTaskId)">
+                  Reject
+                </button>
               }
             </td>
           </tr>

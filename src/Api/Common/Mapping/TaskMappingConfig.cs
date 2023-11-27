@@ -2,6 +2,7 @@
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Tasks;
 using Application.Models;
+using Application.Models.Tasks;
 using Domain.Entities;
 using Mapster;
 

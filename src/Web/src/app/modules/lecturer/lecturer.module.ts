@@ -10,6 +10,7 @@ import {GradeEntryModalComponent} from "./components/grade-entry-modal/grade-ent
 import {TasksComponent} from "./pages/tasks/tasks.component";
 import {SubjectsComponent} from "./pages/subjects/subjects.component";
 import {NavbarComponent} from "./components/navbar/navbar.component";
+import { ProfileComponent } from './pages/profile/profile.component';
 
 @NgModule({
   declarations: [
@@ -18,7 +19,8 @@ import {NavbarComponent} from "./components/navbar/navbar.component";
     SubjectsComponent,
     TasksComponent,
     TaskDetailsComponent,
-    GradeEntryModalComponent
+    GradeEntryModalComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,

@@ -1,5 +1,6 @@
 using Domain.Abstractions.Results;
 using Application.Models;
+using Application.Models.Authentication;
 using MediatR;
 
 namespace Application.Authentication.Commands.RegisterLecturer;

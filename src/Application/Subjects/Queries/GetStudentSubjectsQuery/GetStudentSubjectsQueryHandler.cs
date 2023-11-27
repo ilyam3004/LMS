@@ -2,6 +2,8 @@
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
 using Application.Models;
+using Application.Models.Subjects;
+using Application.Models.Tasks;
 using Domain.Common;
 using MediatR;
 
@@ -38,15 +40,29 @@ public class GetStudentSubjectsQueryHandler
 
         return studentSubjects.Select(subject =>
         {
+            int totalGrade = 0;
+
             var taskResults = subject.Tasks.Select(task =>
             {
+                float averageGrade = 0;
                 var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
                     studentTask.StudentId == user.Student!.StudentId);
-                
+
+                if (studentTask is null)
+                    return new StudentTaskResult(task, studentTask);
+
+                totalGrade += studentTask.Grade;
+
                 return new StudentTaskResult(task, studentTask);
             }).ToList();
 
-            return new StudentSubjectResult(subject, taskResults);
+            var averageGrade = 0.0;
+
+            if (subject.Tasks.Count != 0)
+                averageGrade = Convert.ToDouble(totalGrade) / subject.Tasks.Count;
+
+            return new StudentSubjectResult(subject, taskResults,
+                Math.Round(averageGrade, 2), totalGrade);
         }).ToList();
     }
 }

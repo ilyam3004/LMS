@@ -2,6 +2,8 @@ using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
 using Application.Models;
+using Application.Models.Groups;
+using Application.Models.Subjects;
 using Domain.Entities;
 using Domain.Common;
 using MediatR;

@@ -1,4 +1,5 @@
 ﻿@host = http://localhost:5137/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjVjYmE5YzkxLTliYzMtNDMwNy1hZGQxLTQyZGEzZWNjZWY1OSIsImdpdmVuX25hbWUiOiJQYXZsbyIsImZhbWlseV9uYW1lIjoiUGV0cm92IiwiZW1haWwiOiJsZWNlbWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiTGVjdHVyZXIiLCJleHAiOjE3MTE1NzE2NzksImlzcyI6IkxNUyIsImF1ZCI6IkxNUyJ9.W3-xyIme61u4vnQhbtA99Fu9URjQuMi-IWJpBt-hMrU
 
 ### Register Lecturer
 POST {{host}}/users/lecturers/register
@@ -25,8 +26,8 @@ Content-Type: application/json
   "LastName": "LastName",
   "Address": "Address",
   "Course": 6,
-  "Birthday": "2023-11-10",
-  "GroupName": "Group B"
+  "Birthday": "2003-11-10",
+  "GroupName": "Group A"
 }
 
 ### Login user
@@ -34,6 +35,16 @@ POST {{host}}/users/login
 Content-Type: application/json
 
 {
-  "Email": "studentEmail@gmail.com",
-  "Password": "Password1234"
+  "Email": "lecemail@gmail.com",
+  "Password": "password1234"
 }
+
+### Get student profile
+GET {{host}}/users/students/profile
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+### Get lecturer profile
+GET {{host}}/users/lecturers/profile
+Content-Type: application/json
+Authorization: Bearer {{token}}

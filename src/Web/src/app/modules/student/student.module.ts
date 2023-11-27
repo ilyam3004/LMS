@@ -15,6 +15,7 @@ import {
   NgbTimepicker
 } from "@ng-bootstrap/ng-bootstrap";
 import { TaskDetailsComponent } from './pages/task-details/task-details.component';
+import { ProfileComponent } from './pages/profile/profile.component';
 
 
 @NgModule({
@@ -25,7 +26,8 @@ import { TaskDetailsComponent } from './pages/task-details/task-details.componen
     GradesComponent,
     TasksComponent,
     NavbarComponent,
-    TaskDetailsComponent
+    TaskDetailsComponent,
+    ProfileComponent
   ],
   imports: [
     CommonModule,

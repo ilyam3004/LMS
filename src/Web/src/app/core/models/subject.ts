@@ -14,7 +14,9 @@ export interface StudentSubject {
   name: string,
   description: string,
   lecturerName: string,
-  tasks: StudentTask[]
+  tasks: StudentTask[],
+  totalGrade: number,
+  averageGrade: number,
 }
 
 export interface CreateSubjectRequest {

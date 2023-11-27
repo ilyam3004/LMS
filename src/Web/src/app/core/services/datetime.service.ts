@@ -26,7 +26,16 @@ export class DateTimeService {
   }
 
   public getCurrentDateTime(): Date {
-    return new Date();
+    const currentDate: Date = new Date();
+    return new Date(Date.UTC(
+      currentDate.getUTCFullYear(),
+      currentDate.getUTCMonth(),
+      currentDate.getUTCDate(),
+      currentDate.getUTCHours(),
+      currentDate.getUTCMinutes(),
+      currentDate.getUTCSeconds(),
+      currentDate.getUTCMilliseconds()
+    ));
   }
 
   private isCreatedToday(date: Date): boolean {

@@ -100,7 +100,7 @@ export class SubjectsComponent implements OnInit {
   openRemoveSubjectConfirmationModal(subjectId: string, subjectName: string): void {
     const modalRef = this.modalService.open(ConfirmationModalComponent);
     modalRef.componentInstance.message = `Are you sure you want to remove subject ${subjectName}?`;
-    modalRef.componentInstance.removeOption = true;
+    modalRef.componentInstance.isWarning = true;
     modalRef.componentInstance.title = 'Remove subject';
 
     modalRef.result.then(

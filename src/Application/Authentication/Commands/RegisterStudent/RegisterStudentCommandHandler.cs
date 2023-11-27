@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
-using Application.Models;
+using Application.Models.Authentication;
 using Domain.Entities;
 using Domain.Common;
 using Domain.Enums;
@@ -46,7 +46,8 @@ public class RegisterStudentCommandHandler(
             GroupId = group.GroupId,
             FullName = $"{command.FirstName} {command.LastName}",
             Address = command.Address,
-            Birthday = command.Birthday.ToUniversalTime()
+            Birthday = command.Birthday.ToUniversalTime(),
+            Course = command.Course
         };
 
         await unitOfWork.GetRepository<Student>().AddAsync(student);

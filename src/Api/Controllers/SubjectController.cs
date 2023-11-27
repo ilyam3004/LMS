@@ -1,7 +1,7 @@
-﻿using Application.Subjects.Commands.CreateSubject;
-using Application.Subjects.Commands.RemoveSubject;
+﻿using Application.Subjects.Queries.GetStudentSubjectsQuery;
 using Application.Subjects.Queries.GetLecturerSubjects;
-using Application.Subjects.Queries.GetStudentSubjectsQuery;
+using Application.Subjects.Commands.CreateSubject;
+using Application.Subjects.Commands.RemoveSubject;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Contracts.Requests.Subjects;
@@ -56,7 +56,7 @@ public class SubjectController : ApiController
     [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> GetLecturerSubjects()
     {
-        var token = Request.Headers["Authorization"].ToString().Split(" ")[1];
+        var token = Request.Headers.Authorization.ToString().Split(" ")[1];
         var command = new GetLecturerSubjectsQuery(token);
 
         var result = await _sender.Send(command);

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
 using Application.Models;
+using Application.Models.Groups;
 using MediatR;
 
 namespace Application.Groups.Queries.GetAllGroups;
