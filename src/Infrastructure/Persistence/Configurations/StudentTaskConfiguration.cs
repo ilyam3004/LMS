@@ -12,7 +12,7 @@ public class StudentTaskConfiguration : IEntityTypeConfiguration<StudentTask>
 
         builder.Property(t => t.FileUrl)
             .IsRequired(false);
-        
+
         builder.Property(t => t.OrdinalFileName)
             .IsRequired(false);
 
@@ -29,5 +29,8 @@ public class StudentTaskConfiguration : IEntityTypeConfiguration<StudentTask>
 
         builder.Property(t => t.Status)
             .IsRequired();
+
+        builder.HasMany(t => t.Comments)
+            .WithOne(tc => tc.StudentTask);
     }
 }

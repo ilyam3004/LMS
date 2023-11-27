@@ -1,5 +1,6 @@
 ﻿using Application.Tasks.Queries.GetLecturerTaskDetails;
 using Application.Tasks.Commands.AcceptTask;
+using Application.Tasks.Commands.CreateComment;
 using Application.Tasks.Commands.CreateTask;
 using Application.Tasks.Commands.RejectTask;
 using Application.Tasks.Commands.RemoveTask;
@@ -150,4 +151,18 @@ public class TaskController : ApiController
             value => Ok(_mapper.Map<LecturerTaskResponse>(value)),
             Problem);
     }
+    
+    [HttpPut("{studentTaskId}/comment")]
+    public async Task<IActionResult> CreateComment([FromRoute] Guid studentTaskId,
+        [FromBody] CreateCommentRequest request)
+    {
+        var token = Request.Headers.Authorization.ToString().Split(" ")[1];
+
+        var command = new CreateCommentCommand(request.Comment, studentTaskId, token);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            value => Ok(_mapper.Map<StudentTaskResponse>(value)),
+            Problem);
 }

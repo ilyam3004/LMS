@@ -14,4 +14,5 @@ public class StudentTask
     public StudentTaskStatus Status { get; set; }
     public Student Student { get; set; } = null!;
     public Task Task { get; set; } = null!;
+    public List<TaskComment> Comments { get; set; } = null!;
 }

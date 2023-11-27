@@ -16,6 +16,7 @@ public class LmsDbContext : DbContext
     public DbSet<Subject> Subjects { get; set; } = null!;
     public DbSet<Task> Tasks { get; set; } = null!;
     public DbSet<StudentTask> StudentTasks { get; set; } = null!;
+    public DbSet<TaskComment> TaskComments { get; set; } = null!;
     
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {

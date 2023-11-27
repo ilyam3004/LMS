@@ -13,6 +13,8 @@ public class TaskRepository : Repository<Task>, ITaskRepository
         => await DbContext.Tasks
             .Include(t => t.StudentTasks)
             .ThenInclude(st => st.Student)
+            .Include(t => t.StudentTasks)
+            .ThenInclude(st => st.Comments)
             .Include(t => t.Subject)
             .ThenInclude(s => s.Group)
             .FirstOrDefaultAsync(t => t.TaskId == taskId);

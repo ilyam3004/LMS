@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(LmsDbContext))]
-    partial class LmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20231127223758_AddingTaskComments")]
+    partial class AddingTaskComments
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -45,37 +48,37 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            GroupId = new Guid("9daa3884-a4da-4545-ad93-3662de384865"),
+                            GroupId = new Guid("046e0488-0dab-46e0-a013-5e13175e1564"),
                             Department = "Computer Science",
                             Name = "Group A"
                         },
                         new
                         {
-                            GroupId = new Guid("8802a678-8395-4827-897a-c85c1c02e0c3"),
+                            GroupId = new Guid("aab5f7bc-6733-42d4-95ec-7a5fe14a1e8b"),
                             Department = "Electrical Engineering",
                             Name = "Group B"
                         },
                         new
                         {
-                            GroupId = new Guid("6b3e13bb-d858-4a7f-bf6f-578eec805619"),
+                            GroupId = new Guid("521fedae-7cc8-4ff7-adc9-693c6cbe4946"),
                             Department = "Mechanical Engineering",
                             Name = "Group C"
                         },
                         new
                         {
-                            GroupId = new Guid("a375292b-a848-4853-b713-2a31aa9511d4"),
+                            GroupId = new Guid("d82f7608-f9ab-467e-806a-79758b9eb449"),
                             Department = "Physics",
                             Name = "Group D"
                         },
                         new
                         {
-                            GroupId = new Guid("f8e8c246-fc54-449f-a4aa-0c8e73897f07"),
+                            GroupId = new Guid("01e8e2a5-c7c9-443c-b99c-e2220680cf8d"),
                             Department = "Mathematics",
                             Name = "Group E"
                         },
                         new
                         {
-                            GroupId = new Guid("c49e481a-875c-4a44-992c-539fa41af32a"),
+                            GroupId = new Guid("b1ab675c-3daf-4b13-a00a-e766b8419f22"),
                             Department = "Chemistry",
                             Name = "Group F"
                         });
@@ -268,7 +271,7 @@ namespace Infrastructure.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<Guid>("StudentTaskId")
+                    b.Property<Guid>("TaskId")
                         .HasColumnType("uuid");
 
                     b.Property<Guid>("UserId")
@@ -276,7 +279,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("TaskCommentId");
 
-                    b.HasIndex("StudentTaskId");
+                    b.HasIndex("TaskId");
 
                     b.HasIndex("UserId");
 
@@ -385,9 +388,9 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.TaskComment", b =>
                 {
-                    b.HasOne("Domain.Entities.StudentTask", "StudentTask")
+                    b.HasOne("Domain.Entities.Task", "Task")
                         .WithMany("Comments")
-                        .HasForeignKey("StudentTaskId")
+                        .HasForeignKey("TaskId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -397,7 +400,7 @@ namespace Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("StudentTask");
+                    b.Navigation("Task");
 
                     b.Navigation("User");
                 });
@@ -419,11 +422,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Tasks");
                 });
 
-            modelBuilder.Entity("Domain.Entities.StudentTask", b =>
-                {
-                    b.Navigation("Comments");
-                });
-
             modelBuilder.Entity("Domain.Entities.Subject", b =>
                 {
                     b.Navigation("Tasks");
@@ -431,6 +429,8 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.Entities.Task", b =>
                 {
+                    b.Navigation("Comments");
+
                     b.Navigation("StudentTasks");
                 });
 

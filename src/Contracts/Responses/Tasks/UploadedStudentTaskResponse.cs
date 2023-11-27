@@ -9,4 +9,5 @@ public record UploadedStudentTaskResponse(
     DateTime? UploadedAt,
     int Grade,
     StudentTaskStatus Status,
-    StudentResponse Student);
+    StudentResponse Student,
+    List<TaskCommentResponse> Comments);
