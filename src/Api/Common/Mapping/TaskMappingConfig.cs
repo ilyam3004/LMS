@@ -49,13 +49,13 @@ public class TaskMappingConfig : IRegister
             .Map(dest => dest.LecturerName, src => src.Task.Subject.Lecturer.FullName)
             .Map(dest => dest.UploadedTask, src => src.UploadedTask);
 
-        config.NewConfig<TaskCommentResult, TaskCommentResponse>()
-            .Map(dest => dest.TaskCommentId, src => src.Comment.TaskCommentId)
-            .Map(dest => dest.Comment, src => src.Comment.Comment)
-            .Map(dest => dest.CreatedAt, src => src.Comment.CreatedAt)
+        config.NewConfig<TaskComment, TaskCommentResponse>()
+            .Map(dest => dest.TaskCommentId, src => src.TaskCommentId)
+            .Map(dest => dest.Comment, src => src.Comment)
+            .Map(dest => dest.CreatedAt, src => src.CreatedAt)
             .Map(dest => dest.Username, src =>
-                src.Comment.User.Student != null
-                    ? src.Comment.User.Student.FullName
-                    : src.Comment.User.Lecturer.FullName);
+                src.User.Student != null
+                    ? src.User.Student.FullName
+                    : src.User.Lecturer.FullName);
     }
 }
