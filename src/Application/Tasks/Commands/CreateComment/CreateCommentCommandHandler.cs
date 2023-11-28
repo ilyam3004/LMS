@@ -12,7 +12,7 @@ using MediatR;
 namespace Application.Tasks.Commands.CreateComment;
 
 public class CreateCommentCommandHandler
-    : IRequestHandler<CreateCommentCommand, Result<StudentTaskResult>>
+    : IRequestHandler<CreateCommentCommand, Result<UploadedTaskResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
@@ -27,7 +27,7 @@ public class CreateCommentCommandHandler
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task<Result<StudentTaskResult>> Handle(CreateCommentCommand command,
+    public async Task<Result<UploadedTaskResult>> Handle(CreateCommentCommand command,
         CancellationToken cancellationToken)
     {
         var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
@@ -55,16 +55,16 @@ public class CreateCommentCommandHandler
 
         await _unitOfWork.SaveChangesAsync();
 
-        return await GetStudentTaskResult(studentTask);
+        return await GetUploadedTaskResult(studentTask);
     }
 
-    private async Task<StudentTaskResult> GetStudentTaskResult(StudentTask studentTask)
+    private async Task<UploadedTaskResult> GetUploadedTaskResult(StudentTask studentTask)
     {
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithLecturerRelation(studentTask.TaskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(studentTask.TaskId);
 
-        var updatedStudentTask = task.StudentTasks.FirstOrDefault(studentTask =>
+        var uploadedStudentTask = task.StudentTasks.FirstOrDefault(studentTask =>
             studentTask.StudentId == studentTask.StudentId);
 
-        return new StudentTaskResult(task, updatedStudentTask);
+        return new UploadedTaskResult(uploadedStudentTask);
     }
 }

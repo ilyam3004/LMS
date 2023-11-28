@@ -1,7 +1,6 @@
 ﻿using Application.Tasks.Commands.CreateTask;
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Tasks;
-using Application.Models;
 using Application.Models.Tasks;
 using Domain.Entities;
 using Mapster;
@@ -49,13 +48,24 @@ public class TaskMappingConfig : IRegister
             .Map(dest => dest.LecturerName, src => src.Task.Subject.Lecturer.FullName)
             .Map(dest => dest.UploadedTask, src => src.UploadedTask);
 
+        config.NewConfig<UploadedTaskResult, UploadedStudentTaskResponse>()
+            .Map(dest => dest.StudentTaskId, src => src.Task.StudentTaskId)
+            .Map(dest => dest.TaskId, src => src.Task.TaskId)
+            .Map(dest => dest.FileUrl, src => src.Task.FileUrl)
+            .Map(dest => dest.UploadedAt, src => src.Task.UploadedAt)
+            .Map(dest => dest.Grade, src => src.Task.Grade)
+            .Map(dest => dest.Student, src => src.Task.Student)
+            .Map(dest => dest.Status, src => src.Task.Status)
+            .Map(dest => dest.Comments, src => src.Task.Comments);
+
         config.NewConfig<TaskComment, TaskCommentResponse>()
             .Map(dest => dest.TaskCommentId, src => src.TaskCommentId)
             .Map(dest => dest.Comment, src => src.Comment)
             .Map(dest => dest.CreatedAt, src => src.CreatedAt)
+            .Map(dest => dest.UserId, src => src.UserId)
             .Map(dest => dest.Username, src =>
                 src.User.Student != null
                     ? src.User.Student.FullName
-                    : src.User.Lecturer.FullName);
+                    : src.User.Lecturer!.FullName);
     }
 }

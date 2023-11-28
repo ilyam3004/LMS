@@ -74,7 +74,7 @@ public class AssignTaskCommandHandler
 
     private async System.Threading.Tasks.Task AddStudentTasks(Guid taskId)
     {
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithGroupRelation(taskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
         var group = await _unitOfWork.Groups.GetGroupByIdWithStudents(task!.Subject.GroupId);
 
         group!.Students.ForEach(async s =>

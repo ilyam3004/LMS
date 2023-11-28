@@ -44,7 +44,7 @@ public class RejectTaskCommandHandler
 
         await _unitOfWork.SaveChangesAsync();
 
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithGroupRelation(studentTask.TaskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(studentTask.TaskId);
 
         if (task is null)
             return Errors.Task.TaskNotFound;

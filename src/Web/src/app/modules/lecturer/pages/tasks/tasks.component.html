@@ -19,7 +19,7 @@
     <div class="task-container flex-column">
       @for (subject of subjects;track subject.subjectId) {
         <div class="subject-card">
-          <div class="card w-100">
+          <div class="card border border-2 w-100">
             <div class="card-body">
               <div class="task-head-container">
                 <h4 class="card-title">{{ subject.name }}</h4>
@@ -121,7 +121,7 @@
               } @else {
                 <p class="text-secondary">{{ subject.group.name }}</p>
                 @for (task of subject.tasks;track task.taskId) {
-                  <div class="card border-secondary mb-3">
+                  <div class="card border-2 mb-3">
                     <div class="card-header text-secondary h5">{{ task.title }}</div>
                     <div class="card-body text-secondary">
                       <p class="card-text">{{ task.description }}</p>

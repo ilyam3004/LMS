@@ -16,27 +16,29 @@
       <div class="comment-container" #commentContainer [scrollTop]="commentContainer.scrollHeight">
         @for (comment of uploadedTask.comments;track comment.taskCommentId) {
           @if (authenticationService.userValue?.userId == comment.userId) {
-            <div class="card mb-3">
-              <div class="card-header">
-                {{ comment.username }}
+            <div class="card mb-3 border border-2">
+              <div class="card-header d-flex justify-content-between">
+                <div>{{ comment.username }}</div>
                 <small class="text-muted">
                   {{ dateTimeService.convertDateToReadableFormat(comment.createdAt) }}
                 </small>
               </div>
               <div class="card-body">
-                <p class="card-text">{{ comment.comment }}</p>
+                <p class="card-text text-secondary">{{ comment.comment }}</p>
               </div>
             </div>
           } @else {
-            <div class="card border-info mb-3">
-              <div class="card-header border-info">
-                {{ comment.username }}
+            <div class="card mb-3 border border-2">
+              <div class="card-header d-flex justify-content-between">
+                <div>
+                  {{ comment.username }}
+                </div>
                 <small class="text-muted">
                   {{ dateTimeService.convertDateToReadableFormat(comment.createdAt) }}
                 </small>
               </div>
               <div class="card-body">
-                <p class="card-text">{{ comment.comment }}</p>
+                <p class="card-text text-primary">{{ comment.comment }}</p>
               </div>
             </div>
           }

@@ -1,4 +1,4 @@
-﻿@host = http://localhost:5137/api
+﻿@host = http://localhost:8181/api
 @token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjVjYmE5YzkxLTliYzMtNDMwNy1hZGQxLTQyZGEzZWNjZWY1OSIsImdpdmVuX25hbWUiOiJQYXZsbyIsImZhbWlseV9uYW1lIjoiUGV0cm92IiwiZW1haWwiOiJsZWNlbWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiTGVjdHVyZXIiLCJleHAiOjE3MTE1NzE2NzksImlzcyI6IkxNUyIsImF1ZCI6IkxNUyJ9.W3-xyIme61u4vnQhbtA99Fu9URjQuMi-IWJpBt-hMrU
 
 ### Register Lecturer
@@ -35,7 +35,7 @@ POST {{host}}/users/login
 Content-Type: application/json
 
 {
-  "Email": "email@gmail.com",
+  "Email": "lecemail@gmail.com",
   "Password": "password1234"
 }
 

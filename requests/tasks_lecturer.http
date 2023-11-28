@@ -1,6 +1,6 @@
-﻿@host = http://localhost:5137/api
-@token = eyjhbgcioijiuzi1niisinr5cci6ikpxvcj9.eyj1bmlxdwvfbmftzsi6imnlzwezztqyltq3nzqtngzins1hztrkltm5n2m2njzlztnlosisimdpdmvux25hbwuioijgaxjzde5hbwuilcjmyw1pbhlfbmftzsi6ikxhc3royw1liiwizw1hawwioijszwn0dxjlcmvtywlsqgdtywlslmnvbsisinjvbguioijmzwn0dxjlciisimv4cci6mtcxmtmxmzgwnywiaxnzijoite1tiiwiyxvkijoite1tin0.1u6be0mihuzbwc0-m1t9tz84xw6cwu4mdw3aotspez0
-@taskid = 74fe810b-6580-45ef-88cd-5d6476d4a2f0
+﻿@host = http://localhost:8181/api
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjVjYmE5YzkxLTliYzMtNDMwNy1hZGQxLTQyZGEzZWNjZWY1OSIsImdpdmVuX25hbWUiOiJQYXZsbyIsImZhbWlseV9uYW1lIjoiUGV0cm92IiwiZW1haWwiOiJsZWNlbWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiTGVjdHVyZXIiLCJleHAiOjE3MTE2NDQ3MjUsImlzcyI6IkxNUyIsImF1ZCI6IkxNUyJ9.vzLLXXGALTtlwaHI5GsKJ0c7JEszJEhq6ux1-3isUbg
+@taskid = dc30dd38-f4ae-4965-b78f-96ba26298f46
 @subjectid = 8e279316-eb68-4709-8ccf-a9453122e303
 
 ### assign new task
@@ -21,5 +21,5 @@ delete {{host}}/tasks/{{taskid}}
 authorization: bearer {{token}}
 
 ### get lecturer task details
-get {{host}}/tasks/{{taskid}}
-authorization: bearer {{token}}
+GET {{host}}/tasks/lecturer/{{taskid}}
+Authorization: Bearer {{token}}

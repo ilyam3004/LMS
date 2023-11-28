@@ -15,7 +15,7 @@ public class GetLecturerSubjectQueryHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
-
+    
     public GetLecturerSubjectQueryHandler(IUnitOfWork unitOfWork,
         IJwtTokenReader jwtTokenReader)
     {

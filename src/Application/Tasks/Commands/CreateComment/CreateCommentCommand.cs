@@ -1,5 +1,5 @@
-﻿using Domain.Abstractions.Results;
-using Application.Models.Tasks;
+﻿using Application.Models.Tasks;
+using Domain.Abstractions.Results;
 using MediatR;
 
 namespace Application.Tasks.Commands.CreateComment;
@@ -7,4 +7,4 @@ namespace Application.Tasks.Commands.CreateComment;
 public record CreateCommentCommand(
     string Comment,
     Guid StudentTaskId,
-    string Token) : IRequest<Result<StudentTaskResult>>;
+    string Token) : IRequest<Result<UploadedTaskResult>>;

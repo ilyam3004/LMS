@@ -69,7 +69,7 @@ public class UploadTaskSolutionCommandHandler
 
     private async Task<StudentTaskResult> GetTaskResult(Guid taskId, Guid studentId)
     {
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithLecturerRelation(taskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
 
         var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
             studentTask.StudentId == studentId);

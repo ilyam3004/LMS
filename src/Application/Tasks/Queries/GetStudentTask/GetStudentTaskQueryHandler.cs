@@ -33,7 +33,7 @@ public class GetStudentTaskQueryHandler
         if (user is null)
             return Errors.User.UserNotFound;
 
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithLecturerRelation(query.TaskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(query.TaskId);
         
         if(task is null)
             return Errors.Task.TaskNotFound;

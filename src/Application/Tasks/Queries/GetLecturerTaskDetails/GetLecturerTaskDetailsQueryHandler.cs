@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
-using Application.Models;
 using Application.Models.Tasks;
 using Domain.Common;
 using MediatR;
@@ -20,7 +19,7 @@ public class GetLecturerTaskDetailsQueryHandler
     public async Task<Result<LecturerTaskResult>> Handle(GetLecturerTaskDetailsQuery query,
         CancellationToken cancellationToken)
     {
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithGroupRelation(query.TaskId);
+        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(query.TaskId);
 
         if (task is null)
             return Errors.Task.TaskNotFound;

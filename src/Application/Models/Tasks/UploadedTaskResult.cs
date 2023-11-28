@@ -1,6 +1,5 @@
-﻿namespace Application.Models.Tasks;
+﻿using Domain.Entities;
 
-public class UploadedTaskResult
-{
-    
-}
+namespace Application.Models.Tasks;
+
+public record UploadedTaskResult(StudentTask Task);
