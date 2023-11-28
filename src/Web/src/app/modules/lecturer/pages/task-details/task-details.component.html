@@ -75,7 +75,7 @@
                     Actions
                   </button>
                   <div ngbDropdownMenu>
-                    <button ngbDropdownItem (click)="openCommentsModal()">
+                    <button ngbDropdownItem (click)="openCommentsModal(studentTask)">
                       Open comments
                     </button>
                     <button ngbDropdownItem (click)="openGradeEntryModal(studentTask.studentTaskId)">
@@ -87,13 +87,36 @@
                   </div>
                 </div>
               } @else if (studentTask.status === StudentTaskStatus.Accepted) {
-                <button class="btn btn-outline-secondary" (click)="openGradeEntryModal(studentTask.studentTaskId)">
-                  Edit
-                </button>
+                <div ngbDropdown container="body">
+                  <button type="button" class="btn btn-outline-secondary" ngbDropdownToggle>
+                    Actions
+                  </button>
+                  <div ngbDropdownMenu>
+                    <button ngbDropdownItem (click)="openCommentsModal(studentTask)">
+                      Open comments
+                    </button>
+                    <button ngbDropdownItem (click)="openGradeEntryModal(studentTask.studentTaskId)">
+                      Edit
+                    </button>
+                  </div>
+                </div>
               } @else if (canReject(task, studentTask)) {
-                <button class="btn btn-outline-secondary"
-                        (click)="openRejectTaskConfirmationModal(studentTask.studentTaskId)">
-                  Reject
+                <div ngbDropdown container="body">
+                  <button type="button" class="btn btn-outline-secondary" ngbDropdownToggle>
+                    Actions
+                  </button>
+                  <div ngbDropdownMenu>
+                    <button ngbDropdownItem (click)="openCommentsModal(studentTask)">
+                      Open comments
+                    </button>
+                    <button ngbDropdownItem (click)="openRejectTaskConfirmationModal(studentTask.studentTaskId)">
+                      Reject
+                    </button>
+                  </div>
+                </div>
+              } @else {
+                <button class="btn btn-outline-secondary" (click)="openCommentsModal(studentTask)">
+                  Open comments
                 </button>
               }
             </td>

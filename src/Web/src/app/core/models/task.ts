@@ -29,7 +29,16 @@ export interface UploadedStudentTask {
   uploadedAt: Date | null,
   grade: number,
   status: StudentTaskStatus
-  student: Student
+  student: Student,
+  comments: TaskComment[],
+}
+
+export interface TaskComment {
+  taskCommentId: string,
+  userId: string,
+  comment: string,
+  createdAt: Date,
+  username: string
 }
 
 export interface AssignTaskRequest {

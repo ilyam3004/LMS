@@ -11,6 +11,7 @@ import {
 import {GradeEntryModalComponent} from "../../components/grade-entry-modal/grade-entry-modal.component";
 import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 import {CommentsModalComponent} from "../../components/comments-modal/comments-modal.component";
+import {update} from "@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker";
 
 @Component({
   selector: 'app-task-details',
@@ -26,8 +27,7 @@ export class TaskDetailsComponent implements OnInit {
               private route: ActivatedRoute,
               protected taskService: TaskService,
               protected modalService: NgbModal,
-              protected dateTimeService: DateTimeService) {
-  }
+              protected dateTimeService: DateTimeService) { }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -43,12 +43,13 @@ export class TaskDetailsComponent implements OnInit {
       .subscribe({
         next: task => {
           this.task = task;
-          console.log(task)
+          this.sortTaskCommentsByDate();
+
           this.fetchLoading = false;
         },
         error: err => {
-          this.alertService.error(err);
           this.fetchLoading = false;
+          this.alertService.error(err);
         }
       });
   }
@@ -128,8 +129,16 @@ export class TaskDetailsComponent implements OnInit {
     );
   }
 
-  openCommentsModal() {
-    const modalRef = this.modalService.open(CommentsModalComponent);
+  openCommentsModal(uploadedStudentTask: UploadedStudentTask) {
+    const modalRef = this.modalService.open(CommentsModalComponent, {size: 'lg'});
+    modalRef.componentInstance.uploadedTask = uploadedStudentTask;
+    modalRef.componentInstance.addCommentEvent.subscribe(
+      (updatedTask: UploadedStudentTask) => {
+        const index = this.task.studentTasks.findIndex(
+          t => t.studentTaskId === updatedTask.studentTaskId);
+        this.task.studentTasks[index] = updatedTask;
+        this.sortTaskCommentsByDate();
+      });
   }
 
   openRejectTaskConfirmationModal(studentTaskId: string): void {
@@ -214,6 +223,14 @@ export class TaskDetailsComponent implements OnInit {
       && new Date(task.deadline) < this.dateTimeService.getCurrentDateTime()
       || studentTask.status === StudentTaskStatus.Returned
       && task.deadline < this.dateTimeService.getCurrentDateTime();
+  }
+
+  private sortTaskCommentsByDate() {
+    for (let i = 0; i < this.task.studentTasks.length; i++) {
+      this.task.studentTasks[i].comments.sort((a, b) => {
+        return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+      });
+    }
   }
 
   protected readonly StudentTaskStatus = StudentTaskStatus;

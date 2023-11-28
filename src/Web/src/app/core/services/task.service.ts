@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from "@angular/common/http";
 import {environment} from "../../../environments/environment";
-import {AssignTaskRequest, LecturerTask, StudentTask, StudentTaskStatus} from "../models/task";
+import {AssignTaskRequest, LecturerTask, StudentTask, StudentTaskStatus, UploadedStudentTask} from "../models/task";
 import {Observable} from "rxjs";
 import {LecturerSubject} from "../models/subject";
 
@@ -11,8 +11,7 @@ import {LecturerSubject} from "../models/subject";
 export class TaskService {
   private taskApiUrl: string = `${environment.apiBaseUrl}/tasks`;
 
-  constructor(private http: HttpClient) {
-  }
+  constructor(private http: HttpClient) { }
 
   assignTask(request: AssignTaskRequest): Observable<LecturerSubject> {
     return this.http.post<LecturerSubject>(this.taskApiUrl, request);
@@ -55,6 +54,11 @@ export class TaskService {
       observe: 'response',
       responseType: 'blob'
     })
+  }
+
+  commentTask(studentTaskId: string, comment: string): Observable<UploadedStudentTask> {
+    return this.http.put<UploadedStudentTask>(`${this.taskApiUrl}/${studentTaskId}/comment`,
+      {comment: comment});
   }
 
   getTaskStatus(status: StudentTaskStatus): string {

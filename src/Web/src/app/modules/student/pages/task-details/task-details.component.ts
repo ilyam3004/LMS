@@ -1,11 +1,15 @@
-import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
-import {StudentTaskStatus, StudentTask} from "../../../../core/models/task";
+import {Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
+import {StudentTaskStatus, StudentTask, UploadedStudentTask} from "../../../../core/models/task";
 import {TaskService} from "../../../../core/services/task.service";
 import {AlertService} from "../../../../core/services/alert.service";
 import {ActivatedRoute} from "@angular/router";
-import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DateTimeService} from "../../../../core/services/datetime.service";
-import {ConfirmationModalComponent} from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
+import {
+  ConfirmationModalComponent
+} from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
+import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthenticationService} from "../../../../core/services/authentication.service";
 
 @Component({
   selector: 'app-task-details',
@@ -14,17 +18,23 @@ import {ConfirmationModalComponent} from "../../../../shared/components/confirma
 })
 export class TaskDetailsComponent implements OnInit {
   @ViewChild('fileUploader') fileUploader: ElementRef = {} as ElementRef;
-  fetchLoading: boolean = false;
   task: StudentTask = {} as StudentTask;
+  createTaskCommentForm!: FormGroup;
   file: File | null = null;
-
   taskId: string = '';
+
+  fetchLoading: boolean = false;
+  createTaskLoading: boolean = false;
+  submitted: boolean = false;
 
   constructor(protected taskService: TaskService,
               private alertService: AlertService,
               private route: ActivatedRoute,
+              private formBuilder: FormBuilder,
+              protected authenticationService: AuthenticationService,
               protected modalService: NgbModal,
-              protected dateTimeService: DateTimeService) { }
+              protected dateTimeService: DateTimeService) {
+  }
 
   ngOnInit(): void {
     this.route.queryParams.subscribe(params => {
@@ -32,6 +42,7 @@ export class TaskDetailsComponent implements OnInit {
     });
 
     this.fetchTaskData();
+    this.initializeForm();
   }
 
   private fetchTaskData() {
@@ -40,6 +51,7 @@ export class TaskDetailsComponent implements OnInit {
       .subscribe({
         next: task => {
           this.task = task;
+          this.sortTaskCommentsByDate();
           this.fetchLoading = false;
         },
         error: err => {
@@ -62,7 +74,8 @@ export class TaskDetailsComponent implements OnInit {
           this.resetFileInput();
         }
       },
-      () => { }
+      () => {
+      }
     );
   }
 
@@ -84,6 +97,51 @@ export class TaskDetailsComponent implements OnInit {
       this.fileUploader.nativeElement.value = '';
     }
     this.file = null;
+  }
+
+
+  initializeForm() {
+    this.createTaskCommentForm = this.formBuilder.group({
+      comment: ['', [Validators.required, Validators.maxLength(300)]],
+    });
+  }
+
+  get createTaskCommentFormControl() {
+    return this.createTaskCommentForm.controls;
+  }
+
+  onCreateCommentFormSubmit() {
+    this.submitted = true;
+    this.alertService.clear();
+
+    if (this.createTaskCommentForm.invalid) {
+      return;
+    }
+
+    this.createTaskLoading = true;
+
+    const comment: string = this.createTaskCommentForm.value.comment;
+
+    this.taskService.commentTask(this.task.uploadedTask.studentTaskId, comment)
+      .subscribe({
+        next: response => {
+          this.task.uploadedTask = response;
+          this.sortTaskCommentsByDate();
+          this.createTaskLoading = false;
+          this.submitted = false;
+          this.createTaskCommentForm.get('comment')?.reset();
+        },
+        error: err => {
+          this.alertService.error(err);
+          this.createTaskLoading = false;
+        }
+      })
+  }
+
+  private sortTaskCommentsByDate() {
+    this.task.uploadedTask.comments.sort((a, b) => {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
+    });
   }
 
   protected readonly StudentTaskStatus = StudentTaskStatus;
