@@ -1,5 +1,5 @@
 import {Group} from "./group";
-import {LecturerTask, StudentTask} from "./task";
+import {LecturerTask, StudentTask, StudentTasks, UploadedStudentTask} from "./task";
 
 export interface LecturerSubject {
   subjectId: string;
@@ -17,6 +17,13 @@ export interface StudentSubject {
   tasks: StudentTask[],
   totalGrade: number,
   averageGrade: number,
+}
+
+export interface SubjectGrades {
+  subjectId: string,
+  subjectName: string,
+  groupName: string,
+  studentTasks: StudentTasks[]
 }
 
 export interface CreateSubjectRequest {

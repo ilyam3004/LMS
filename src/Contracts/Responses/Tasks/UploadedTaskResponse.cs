@@ -2,7 +2,7 @@
 
 namespace Contracts.Responses.Tasks;
 
-public record UploadedStudentTaskResponse(
+public record UploadedTaskResponse(
     Guid StudentTaskId,
     Guid TaskId,
     string? FileUrl,

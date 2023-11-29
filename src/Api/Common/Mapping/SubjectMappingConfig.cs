@@ -1,8 +1,11 @@
+using Application.Models.Grades;
 using Application.Subjects.Commands.CreateSubject;
 using Contracts.Requests.Subjects;
 using Contracts.Responses.Subjects;
-using Application.Models;
 using Application.Models.Subjects;
+using Application.Models.Tasks;
+using Contracts.Responses.Grades;
+using Contracts.Responses.Students;
 using Mapster;
 
 namespace Api.Common.Mapping;
@@ -31,5 +34,10 @@ public class SubjectMappingConfig : IRegister
             .Map(dest => dest.Tasks, src => src.Tasks)
             .Map(dest => dest.AverageGrade, src => src.AverageGrade)
             .Map(dest => dest.TotalGrade, src => src.TotalGrade);
+        
+        config.NewConfig<SubjectGradesResult, SubjectGradesResponse>()
+            .Map(dest => dest.SubjectId, src => src.SubjectId)
+            .Map(dest => dest.SubjectName, src => src.SubjectId)
+            .Map(dest => dest.StudentTasks, src => src.StudentTasks);
     }
 }

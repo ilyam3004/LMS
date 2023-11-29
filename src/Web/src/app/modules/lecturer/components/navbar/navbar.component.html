@@ -4,9 +4,6 @@
 <nav class="navbar navbar-expand-sm bg-dark navbar-dark">
   <i class="bi-film"></i>
   <div class="container-fluid justify-content-center">
-    <!--    <div class="logo-container">-->
-    <!--      <div class="logo">W</div>-->
-    <!--    </div>-->
     <ul class="navbar-nav">
       <li class="nav-item">
         <a routerLink="./subjects"
@@ -27,6 +24,17 @@
           <i class="fs-4 bi-columns-gap"></i>
           <span class="ms-1 d-none d-sm-inline">
             Tasks
+        </span>
+        </a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="./grades"
+           routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }"
+           class="nav-link"
+           [class.active]="currentRoute === 'student/grades'">
+          <i class="fs-4 bi bi-graph-up"></i>
+          <span class="ms-1 d-none d-sm-inline">
+            Grades
         </span>
         </a>
       </li>

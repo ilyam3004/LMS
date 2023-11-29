@@ -1,18 +1,18 @@
-import {StudentSubject} from "../../../../core/models/subject";
+import {Component, OnInit} from '@angular/core';
+import {SubjectGrades} from "../../../../core/models/subject";
 import {SubjectService} from "../../../../core/services/subject.service";
 import {AlertService} from "../../../../core/services/alert.service";
-import {Component, OnInit} from '@angular/core';
-import {StudentTaskStatus} from "../../../../core/models/task";
 import {TaskService} from "../../../../core/services/task.service";
 import {DateTimeService} from "../../../../core/services/datetime.service";
+import { StudentTaskStatus } from '../../../../core/models/task';
 
 @Component({
-  selector: 'student-grades',
+  selector: 'app-grades',
   templateUrl: './grades.component.html',
   styleUrl: './grades.component.scss'
 })
 export class GradesComponent implements OnInit {
-  subjects: StudentSubject[] = [];
+  subjects: SubjectGrades[] = [];
   fetchLoading: boolean = false;
 
   constructor(private subjectService: SubjectService,
@@ -21,12 +21,12 @@ export class GradesComponent implements OnInit {
               protected dateTimeService: DateTimeService) { }
 
   ngOnInit() {
-    this.fetchSubjects();
+    this.fetchSubjectsGrades();
   }
 
-  fetchSubjects(): void {
+  fetchSubjectsGrades(): void {
     this.fetchLoading = true;
-    this.subjectService.getStudentSubjects()
+    this.subjectService.getLecturerGrades()
       .subscribe(
         {
           next: subjects => {

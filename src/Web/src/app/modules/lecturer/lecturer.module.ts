@@ -12,6 +12,7 @@ import {SubjectsComponent} from "./pages/subjects/subjects.component";
 import {NavbarComponent} from "./components/navbar/navbar.component";
 import { ProfileComponent } from './pages/profile/profile.component';
 import { CommentsModalComponent } from './components/comments-modal/comments-modal.component';
+import { GradesComponent } from './pages/grades/grades.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { CommentsModalComponent } from './components/comments-modal/comments-mod
     TaskDetailsComponent,
     GradeEntryModalComponent,
     ProfileComponent,
-    CommentsModalComponent
+    CommentsModalComponent,
+    GradesComponent
   ],
   imports: [
     CommonModule,

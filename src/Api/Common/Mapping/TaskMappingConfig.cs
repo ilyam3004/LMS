@@ -1,7 +1,10 @@
-﻿using Application.Tasks.Commands.CreateTask;
+﻿using Application.Models.Grades;
+using Application.Tasks.Commands.CreateTask;
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Tasks;
 using Application.Models.Tasks;
+using Contracts.Responses.Grades;
+using Contracts.Responses.Students;
 using Domain.Entities;
 using Mapster;
 
@@ -18,7 +21,7 @@ public class TaskMappingConfig : IRegister
             .Map(dest => dest.Deadline, src => src.Deadline)
             .Map(dest => dest.MaxGrade, src => src.MaxGrade);
 
-        config.NewConfig<StudentTask, UploadedStudentTaskResponse>()
+        config.NewConfig<StudentTask, UploadedTaskResponse>()
             .Map(dest => dest.StudentTaskId, src => src.StudentTaskId)
             .Map(dest => dest.TaskId, src => src.TaskId)
             .Map(dest => dest.FileUrl, src => src.FileUrl)
@@ -48,7 +51,7 @@ public class TaskMappingConfig : IRegister
             .Map(dest => dest.LecturerName, src => src.Task.Subject.Lecturer.FullName)
             .Map(dest => dest.UploadedTask, src => src.UploadedTask);
 
-        config.NewConfig<UploadedTaskResult, UploadedStudentTaskResponse>()
+        config.NewConfig<UploadedTaskResult, UploadedTaskResponse>()
             .Map(dest => dest.StudentTaskId, src => src.Task.StudentTaskId)
             .Map(dest => dest.TaskId, src => src.Task.TaskId)
             .Map(dest => dest.FileUrl, src => src.Task.FileUrl)
@@ -67,5 +70,10 @@ public class TaskMappingConfig : IRegister
                 src.User.Student != null
                     ? src.User.Student.FullName
                     : src.User.Lecturer!.FullName);
+        
+        config.NewConfig<StudentTasksResult, StudentTasksResponse>()
+            .Map(dest => dest.StudentId, src => src.StudentId)
+            .Map(dest => dest.FullName, src => src.FullName)
+            .Map(dest => dest.Tasks, src => src.Tasks);
     }
 }

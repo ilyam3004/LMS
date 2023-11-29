@@ -31,7 +31,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authenticati
         
         if (!BCrypt.Net.BCrypt.Verify(query.Password, user.Password))
         {
-            return Errors.User.InvalidPassword;
+            return Errors.User.InvalidCredentials;
         }
         
         var isStudent = user.Student is not null;

@@ -163,7 +163,7 @@ public class TaskController : ApiController
         var result = await _sender.Send(command);
 
         return result.Match(
-            value => Ok(_mapper.Map<UploadedStudentTaskResponse>(value)),
+            value => Ok(_mapper.Map<UploadedTaskResponse>(value)),
             Problem);
     }
 }

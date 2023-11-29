@@ -33,6 +33,12 @@ export interface UploadedStudentTask {
   comments: TaskComment[],
 }
 
+export interface StudentTasks {
+  studentId: string,
+  fullName: string,
+  tasks: UploadedStudentTask[]
+}
+
 export interface TaskComment {
   taskCommentId: string,
   userId: string,

@@ -9,7 +9,7 @@ public static class Errors
         public static Error InvalidToken => Error.Unauthorized("User.InvalidToken",
             description: "Invalid token");
         
-        public static Error InvalidPassword => Error.Unauthorized("User.InvalidPassword",
+        public static Error InvalidCredentials => Error.Unauthorized("User.InvalidPassword",
             description: "Invalid email or password");
         
         public static Error DuplicateEmail => Error.Conflict("User.DuplicateEmail",

@@ -8,4 +8,4 @@ public record LecturerTaskResponse(
     DateTime CreatedAt,
     int MaxGrade,
     string GroupName,
-    List<UploadedStudentTaskResponse> StudentTasks);
+    List<UploadedTaskResponse> StudentTasks);
