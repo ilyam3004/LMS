@@ -135,7 +135,7 @@ export class SubjectsComponent implements OnInit {
   private initializeForms() {
     this.createSubjectForm = this.formBuilder.group({
       name: ['', [Validators.required, Validators.maxLength(100)]],
-      description: ['', [Validators.required, Validators.maxLength(400)]],
+      description: ['', [Validators.required, Validators.maxLength(1000)]],
       groupName: ['', Validators.required],
     });
   }
