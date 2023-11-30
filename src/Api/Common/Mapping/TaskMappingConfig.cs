@@ -74,6 +74,8 @@ public class TaskMappingConfig : IRegister
         config.NewConfig<StudentTasksResult, StudentTasksResponse>()
             .Map(dest => dest.StudentId, src => src.StudentId)
             .Map(dest => dest.FullName, src => src.FullName)
+            .Map(dest => dest.TotalGrade, src => src.TotalGrade)
+            .Map(dest => dest.AverageGrade, src => src.AverageGrade)
             .Map(dest => dest.Tasks, src => src.Tasks);
     }
 }

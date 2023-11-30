@@ -37,20 +37,34 @@ public class GetLecturerGradesQueryHandler
 
         var subjectGradesResults = subjects.Select(subject =>
         {
-            var studentTasksResults = subject.Group.Students
-                .Select(student =>
-                    new StudentTasksResult(
-                        student.StudentId,
-                        student.FullName,
-                        student.Tasks.Select(task =>
-                            new UploadedTaskResult(task)).ToList())).ToList();
+            List<StudentTasksResult> studentSubjectTasksResults = [];
+
+            foreach (var student in subject.Group.Students)
+            {
+                var totalGrade = 0;
+                var studentTasks = student.Tasks.Where(t => 
+                        t.Task.SubjectId == subject.SubjectId)
+                    .Select(uploadedTask =>
+                    {
+                        totalGrade += uploadedTask.Grade;
+                        return new StudentTaskResult(uploadedTask.Task, uploadedTask);
+                    }).ToList();
+
+                var averageGrade = 0.0;
+
+                if (subject.Tasks.Count != 0)
+                    averageGrade = Convert.ToDouble(totalGrade) / subject.Tasks.Count;
+
+                studentSubjectTasksResults.Add(new StudentTasksResult(
+                    student.StudentId, student.FullName, totalGrade, averageGrade,
+                    studentTasks.ToList()));
+            }
 
             return new SubjectGradesResult(
                 subject.SubjectId,
                 subject.Name,
                 subject.Group.Name,
-                studentTasksResults);
-            
+                studentSubjectTasksResults);
         }).ToList();
 
         return subjectGradesResults;

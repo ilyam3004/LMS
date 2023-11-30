@@ -12,7 +12,7 @@ import { StudentTaskStatus } from '../../../../core/models/task';
   styleUrl: './grades.component.scss'
 })
 export class GradesComponent implements OnInit {
-  subjects: SubjectGrades[] = [];
+  subjectsGrades: SubjectGrades[] = [];
   fetchLoading: boolean = false;
 
   constructor(private subjectService: SubjectService,
@@ -30,7 +30,7 @@ export class GradesComponent implements OnInit {
       .subscribe(
         {
           next: subjects => {
-            this.subjects = subjects;
+            this.subjectsGrades = subjects;
             this.fetchLoading = false;
           },
           error: err => {

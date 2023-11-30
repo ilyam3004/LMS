@@ -3,8 +3,11 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ActivatedRoute, Router} from "@angular/router";
 import {AlertService} from "../../../core/services/alert.service";
 import {AuthenticationService} from "../../../core/services/authentication.service";
-import {first} from "rxjs";
 import {User} from "../../../core/models/user";
+import {Error} from "../../../core/models/error";
+import {catchError, first} from "rxjs";
+import {error} from "@angular/compiler-cli/src/transformers/util";
+import {HttpErrorResponse} from "@angular/common/http";
 
 @Component({
   selector: 'app-login',
@@ -48,7 +51,6 @@ export class LoginComponent implements OnInit {
     this.loading = true;
     this.authenticationService.login(this.loginFormControl['email'].value,
       this.loginFormControl['password'].value)
-      .pipe(first())
       .subscribe({
         next: (user: User) => {
           const role = this.authenticationService.getUserRole(user.token!);
@@ -58,8 +60,8 @@ export class LoginComponent implements OnInit {
             this.router.navigate(['/student/subjects'], { relativeTo: this.route });
           }
         },
-        error: error => {
-          this.alertService.error(error);
+        error: (error: Error) => {
+          this.alertService.error(error?.title)
           this.loading = false;
         }
       });

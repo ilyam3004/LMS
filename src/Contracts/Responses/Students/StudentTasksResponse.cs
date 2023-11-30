@@ -5,4 +5,6 @@ namespace Contracts.Responses.Students;
 public record StudentTasksResponse(
     Guid StudentId,
     string FullName,
-    List<UploadedTaskResponse> Tasks);
+    int TotalGrade,
+    double AverageGrade,
+    List<StudentTaskResponse> Tasks);

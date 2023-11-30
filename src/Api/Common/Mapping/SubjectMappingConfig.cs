@@ -37,7 +37,7 @@ public class SubjectMappingConfig : IRegister
         
         config.NewConfig<SubjectGradesResult, SubjectGradesResponse>()
             .Map(dest => dest.SubjectId, src => src.SubjectId)
-            .Map(dest => dest.SubjectName, src => src.SubjectId)
+            .Map(dest => dest.SubjectName, src => src.SubjectName)
             .Map(dest => dest.StudentTasks, src => src.StudentTasks);
     }
 }

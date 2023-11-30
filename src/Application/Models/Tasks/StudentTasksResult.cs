@@ -3,4 +3,6 @@
 public record StudentTasksResult(
     Guid StudentId,
     string FullName,
-    List<UploadedTaskResult> Tasks);
+    int TotalGrade,
+    double AverageGrade,
+    List<StudentTaskResult> Tasks);

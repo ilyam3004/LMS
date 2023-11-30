@@ -18,25 +18,20 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authenticati
         _unitOfWork = unitOfWork;
         _jwtTokenGenerator = jwtTokenGenerator;
     }
-    
+
     public async Task<Result<AuthenticationResult>> Handle(
         LoginQuery query, CancellationToken cancellationToken)
     {
         var user = await _unitOfWork.Users.GetUserByEmail(query.Email);
 
-        if (user is null) 
-        {
+        if (user is null)
             return Errors.User.UserNotFound;
-        }
-        
-        if (!BCrypt.Net.BCrypt.Verify(query.Password, user.Password))
-        {
-            return Errors.User.InvalidCredentials;
-        }
-        
-        var isStudent = user.Student is not null;
 
-        if (isStudent)
+        if (!BCrypt.Net.BCrypt.Verify(query.Password, user.Password))
+            return Errors.User.InvalidCredentials;
+
+
+        if (user.Student is not null)
         {
             var studentToken = _jwtTokenGenerator.GenerateToken(
                 user.UserId,
@@ -48,6 +43,9 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authenticati
                 user,
                 studentToken);
         }
+
+        if (user.Lecturer is null) 
+            return Errors.User.UserNotFound;
         
         var lecturerToken = _jwtTokenGenerator.GenerateToken(
             user.UserId,

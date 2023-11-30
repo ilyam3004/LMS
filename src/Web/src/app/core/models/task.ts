@@ -36,7 +36,9 @@ export interface UploadedStudentTask {
 export interface StudentTasks {
   studentId: string,
   fullName: string,
-  tasks: UploadedStudentTask[]
+  totalGrade: number,
+  averageGrade: number,
+  tasks: StudentTask[]
 }
 
 export interface TaskComment {
