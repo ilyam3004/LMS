@@ -13,7 +13,7 @@ public class CreateSubjectCommandValidator
 
         RuleFor(command => command.Description)
             .NotEmpty()
-            .MaximumLength(400);
+            .MaximumLength(1000);
 
         RuleFor(command => command.GroupName)
             .NotEmpty();

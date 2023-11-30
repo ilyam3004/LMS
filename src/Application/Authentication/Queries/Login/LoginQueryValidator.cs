@@ -16,6 +16,6 @@ public class LoginQueryValidator: AbstractValidator<LoginQuery>
             .Length(8, 64)
             .WithMessage("Password should be at least 8 characters long and at most 64 characters long.")
             .Matches(@"^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$")
-            .WithMessage("Password should contain only letters and numbers.");   
+            .WithMessage("Password should contain letters and numbers.");   
     }
 }
