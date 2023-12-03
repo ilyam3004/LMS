@@ -49,6 +49,10 @@ export class TaskService {
     return this.http.put<StudentTask>(`${this.taskApiUrl}/${studentTaskId}/upload`, formData);
   }
 
+  removeUploadedSolution(studentTaskId: string): Observable<StudentTask> {
+    return this.http.put<StudentTask>(`${this.taskApiUrl}/${studentTaskId}/remove`, null);
+  }
+
   downloadSolution(studentTaskId: string): Observable<any> {
     return this.http.get(`${this.taskApiUrl}/${studentTaskId}/download`, {
       observe: 'response',

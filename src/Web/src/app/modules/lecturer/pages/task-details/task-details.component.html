@@ -55,8 +55,8 @@
             <td>{{ studentTask.grade }}
             </td>
             <td>
-              @if (studentTask.fileUrl && studentTask.status === StudentTaskStatus.Uploaded ||
-              studentTask.fileUrl && studentTask.status == StudentTaskStatus.Accepted) {
+              @if (studentTask.fileName && studentTask.status === StudentTaskStatus.Uploaded ||
+              studentTask.fileName && studentTask.status == StudentTaskStatus.Accepted) {
                 <a class="link-primary download-link"
                    (click)="onDownload(studentTask.studentTaskId)">
                   Download

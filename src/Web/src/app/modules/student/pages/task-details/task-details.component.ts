@@ -24,6 +24,7 @@ export class TaskDetailsComponent implements OnInit {
   taskId: string = '';
 
   fetchLoading: boolean = false;
+  removeLoading: boolean = false;
   createTaskLoading: boolean = false;
   submitted: boolean = false;
 
@@ -84,6 +85,7 @@ export class TaskDetailsComponent implements OnInit {
       .subscribe({
         next: task => {
           this.task = task;
+          this.sortTaskCommentsByDate();
           this.alertService.success('Task solution uploaded successfully!');
         },
         error: err => {
@@ -91,6 +93,24 @@ export class TaskDetailsComponent implements OnInit {
         }
       });
   }
+
+  openRemoveUploadedTaskConfirmationModal(): void {
+    const modalRef = this.modalService.open(ConfirmationModalComponent);
+    modalRef.componentInstance.message = 'Are you sure you want to remove your uploaded solution?';
+    modalRef.componentInstance.isWarning = true;
+    modalRef.componentInstance.title = 'Remove uploaded task';
+
+    modalRef.result.then(
+      (result) => {
+        if (result) {
+          this.removeUploadedTask();
+        }
+      },
+      () => {
+      }
+    );
+  }
+
 
   resetFileInput(): void {
     if (this.fileUploader) {
@@ -135,7 +155,25 @@ export class TaskDetailsComponent implements OnInit {
           this.alertService.error(this.getErrorMessage(err));
           this.createTaskLoading = false;
         }
-      })
+      });
+  }
+
+  removeUploadedTask(): void {
+    this.removeLoading = true;
+
+    this.taskService.removeUploadedSolution(this.task.uploadedTask.studentTaskId)
+      .subscribe({
+        next: task => {
+          this.task = task;
+          this.sortTaskCommentsByDate();
+          this.alertService.success('Uploaded file remove successfully!');
+          this.removeLoading = false;
+        },
+        error: err => {
+          this.alertService.error(this.getErrorMessage(err));
+          this.removeLoading = false;
+        }
+      });
   }
 
   onDownload(studentTaskId: string): void {
@@ -192,8 +230,7 @@ export class TaskDetailsComponent implements OnInit {
       (this.task.uploadedTask.status === StudentTaskStatus.NotUploaded ||
         this.task.uploadedTask.status === StudentTaskStatus.Returned ||
         this.task.uploadedTask.status === StudentTaskStatus.Rejected) &&
-      !this.dateTimeService.isDateInFuture(this.task.deadline)
-    ) ? "red" : undefined;
+      !this.dateTimeService.isDateInFuture(this.task.deadline)) ? "red" : undefined;
   }
 
   getErrorMessage(error: any): string {

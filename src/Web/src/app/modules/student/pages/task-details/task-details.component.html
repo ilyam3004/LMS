@@ -25,24 +25,39 @@
         <div class="col-md-5">
           <div class="additional-info-container text-secondary">
             <div class="mb-3">
+              <p class="bi bi-exclamation-circle">
+                File name should be in Latin letters only.
+              </p>
               <input class="form-control" type="file" id="formFile"
                      accept=".txt, .pdf, .doc, .docx, .jpeg, .jpg, .csv, .json, .xls, .xlsx"
                      lang="en"
                      [disabled]="task.uploadedTask.status === StudentTaskStatus.Uploaded ||
-                     task.uploadedTask.status === StudentTaskStatus.Accepted"
+                     task.uploadedTask.status === StudentTaskStatus.Accepted ||
+                     task.uploadedTask.status === StudentTaskStatus.Rejected"
                      (change)="onFileSelected($event)" #fileUploader/>
             </div>
-            <p>Status: {{ taskService.getTaskStatus(task.uploadedTask.status) }}</p>
             <p class="text-primary">{{ task.uploadedTask.grade }}/{{ task.maxGrade }} points</p>
+            <p>Status: {{ taskService.getTaskStatus(task.uploadedTask.status) }}</p>
             @if (task.uploadedTask.status === StudentTaskStatus.Accepted && task.uploadedTask.uploadedAt
-            || task.uploadedTask.status !== StudentTaskStatus.Uploaded && task.uploadedTask.uploadedAt) {
-              <p>Uploaded: {{ dateTimeService.convertDateToReadableFormat(task.uploadedTask.uploadedAt!) }}</p>
-              <p>Uploaded file:
+            || task.uploadedTask.status === StudentTaskStatus.Uploaded && task.uploadedTask.uploadedAt) {
+              <p>Uploaded:
+
+                {{ dateTimeService.convertDateToReadableFormat(task.uploadedTask.uploadedAt!) }}
+              </p>
+              <p>File:
                 <a class="link-primary download-link"
                    (click)="onDownload(task.uploadedTask.studentTaskId)">
-                  {{ task.uploadedTask.fileName }}
-                </a>
+                  {{ task.uploadedTask.fileName }}</a>
               </p>
+              <hr>
+              <div class="d-flex justify-content-end">
+                <button type="button" class="btn btn-outline-danger"
+                        (click)="openRemoveUploadedTaskConfirmationModal()"
+                        [disabled]="removeLoading">
+                  <span *ngIf="removeLoading" class="spinner-border spinner-border-sm me-1"></span>
+                  Remove
+                </button>
+              </div>
             }
           </div>
         </div>

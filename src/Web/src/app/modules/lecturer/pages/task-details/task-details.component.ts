@@ -18,6 +18,9 @@ import {CommentsModalComponent} from "../../components/comments-modal/comments-m
 })
 export class TaskDetailsComponent implements OnInit {
   fetchLoading: boolean = false;
+  returnedLoading: boolean = false;
+  acceptedLoading: boolean = false;
+
   task: LecturerTask = {} as LecturerTask;
   taskId: string = '';
 
@@ -42,12 +45,12 @@ export class TaskDetailsComponent implements OnInit {
         next: task => {
           this.task = task;
           this.sortTaskCommentsByDate();
-
+          this.sortStudentWorksByName();
           this.fetchLoading = false;
         },
         error: err => {
+          this.alertService.error(this.getErrorMessage(err));
           this.fetchLoading = false;
-          this.alertService.error(err);
         }
       });
   }
@@ -168,12 +171,12 @@ export class TaskDetailsComponent implements OnInit {
           this.acceptStudentTask(result, studentTaskId);
         }
       },
-      () => {
-      }
+      () => { }
     );
   }
 
   private returnTaskToStudent(studentTaskId: string) {
+    this.returnedLoading = true;
     this.taskService.returnTaskToStudent(studentTaskId)
       .subscribe({
         next: task => {
@@ -181,7 +184,7 @@ export class TaskDetailsComponent implements OnInit {
           this.alertService.success('Task returned successfully', {keepAfterRouteChange: true});
         },
         error: err => {
-          this.alertService.error(err);
+          this.alertService.error(err.error.title);
         }
       });
   }
@@ -231,5 +234,16 @@ export class TaskDetailsComponent implements OnInit {
     }
   }
 
+  private sortStudentWorksByName() {
+    this.task.studentTasks.sort((a, b) =>
+      a.student.fullName.localeCompare(b.student.fullName));
+  }
+
   protected readonly StudentTaskStatus = StudentTaskStatus;
+
+  private getErrorMessage(error: any): string {
+    return error.status == 0
+      ? 'Unable to connect with the server. Please check your internet connection.'
+      : error.error.title;
+  }
 }
