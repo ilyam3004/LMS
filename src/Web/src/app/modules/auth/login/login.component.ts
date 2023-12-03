@@ -62,6 +62,9 @@ export class LoginComponent implements OnInit {
               ? error.error.errors?.Email[0]
               : error.error.errors?.Password[0]);
           }
+          else {
+            this.alertService.error(error.error.title);
+          }
           this.loading = false;
         }
       });

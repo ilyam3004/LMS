@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute} from "@angular/router";
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {LecturerTask, StudentTask, StudentTaskStatus, UploadedStudentTask} from "../../../../core/models/task";
+import {LecturerTask, StudentTaskStatus, UploadedStudentTask} from "../../../../core/models/task";
 import {TaskService} from "../../../../core/services/task.service";
 import {AlertService} from "../../../../core/services/alert.service";
 import {DateTimeService} from "../../../../core/services/datetime.service";
@@ -9,9 +9,7 @@ import {
   ConfirmationModalComponent
 } from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
 import {GradeEntryModalComponent} from "../../components/grade-entry-modal/grade-entry-modal.component";
-import {log} from "@angular-devkit/build-angular/src/builders/ssr-dev-server";
 import {CommentsModalComponent} from "../../components/comments-modal/comments-modal.component";
-import {update} from "@angular-devkit/build-angular/src/tools/esbuild/angular/compilation/parallel-worker";
 
 @Component({
   selector: 'app-task-details',

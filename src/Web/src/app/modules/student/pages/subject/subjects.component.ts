@@ -29,7 +29,7 @@ export class SubjectsComponent implements OnInit {
             this.fetchLoading = false;
           },
           error: err => {
-            this.alertService.error(err);
+            this.alertService.error(err.error.title);
             this.fetchLoading = false;
           }
         });

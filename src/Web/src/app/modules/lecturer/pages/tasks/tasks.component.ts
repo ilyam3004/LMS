@@ -30,7 +30,8 @@ export class TasksComponent implements OnInit {
               private alertService: AlertService,
               private modalService: NgbModal,
               private formBuilder: FormBuilder,
-              protected dateTimeService: DateTimeService) { }
+              protected dateTimeService: DateTimeService) {
+  }
 
   ngOnInit() {
     this.initializeForms();
@@ -59,7 +60,11 @@ export class TasksComponent implements OnInit {
             this.fetchLoading = false;
           },
           error: err => {
-            this.alertService.error(err);
+            if (err.status == 0) {
+              this.alertService.error("Server is not responding. Please try again later");
+            } else {
+              this.alertService.error(err.error.title);
+            }
             this.fetchLoading = false;
           }
         });
@@ -73,7 +78,6 @@ export class TasksComponent implements OnInit {
       return;
     }
 
-    this.createLoading = true;
 
     const request: AssignTaskRequest = {
       title: this.assignTaskForm.value.title,
@@ -84,11 +88,24 @@ export class TasksComponent implements OnInit {
     };
 
     if (this.dateModel !== null && this.dateModel.year !== 1) {
-      request.deadline = new Date(this.dateModel.year,
+      const deadlineDate = new Date(this.dateModel.year,
         this.dateModel.month - 1,
         this.dateModel.day, this.timeModel.hour,
-        this.timeModel.minute).toISOString();
+        this.timeModel.minute);
+
+      if (!this.dateTimeService.isDateValid(deadlineDate)) {
+        this.alertService.error("Deadline is not valid. Please try again");
+        return;
+      }
+
+      if (!this.dateTimeService.isDateInFuture(deadlineDate)) {
+        this.alertService.error("Deadline must be in future");
+        return;
+      }
+
+      request.deadline = deadlineDate.toISOString();
     }
+    this.createLoading = true;
 
     this.taskService.assignTask(request)
       .subscribe({
@@ -96,10 +113,11 @@ export class TasksComponent implements OnInit {
           this.alertService.success('Task added successfully', {keepAfterRouteChange: true});
           this.updateSubject(subject);
           this.createLoading = false;
+          this.assignTaskForm.reset();
           modal.close();
         },
         error: error => {
-          this.alertService.error(error);
+          this.alertService.error(this.getErrorMessage(error));
           this.createLoading = false;
         }
       });
@@ -121,7 +139,7 @@ export class TasksComponent implements OnInit {
           this.removeLoading = false;
         },
         error: err => {
-          this.alertService.error(err);
+          this.alertService.error(this.getErrorMessage(err));
           this.removeLoading = false;
         }
       });
@@ -138,5 +156,11 @@ export class TasksComponent implements OnInit {
 
   openModal(content: TemplateRef<any>) {
     this.modalService.open(content, {size: 'lg'});
+  }
+
+  getErrorMessage(error: any): string {
+    return error.status == 0
+      ? "Server is not responding. Please try again later"
+      : error.error.title;
   }
 }

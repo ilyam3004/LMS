@@ -1,7 +1,7 @@
-﻿using Application.Subjects.Queries.GetStudentSubjectsQuery;
-using Application.Subjects.Queries.GetLecturerSubjects;
-using Application.Subjects.Commands.CreateSubject;
-using Application.Subjects.Commands.RemoveSubject;
+﻿using Application.Features.Subjects.Commands.CreateSubject;
+using Application.Features.Subjects.Commands.RemoveSubject;
+using Application.Features.Subjects.Queries.GetLecturerSubjects;
+using Application.Features.Subjects.Queries.GetStudentSubjectsQuery;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Contracts.Requests.Subjects;
@@ -38,7 +38,7 @@ public class SubjectController : ApiController
             Problem);
     }
 
-    [HttpDelete("{subjectId}")]
+    [HttpDelete("{subjectId:guid}")]
     [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> RemoveSubject(Guid subjectId)
     {
@@ -70,7 +70,7 @@ public class SubjectController : ApiController
     [Authorize(Roles = Roles.Student)]
     public async Task<IActionResult> GetStudentSubjects()
     {
-        var token = Request.Headers["Authorization"].ToString().Split(" ")[1];
+        var token = Request.Headers.Authorization.ToString().Split(" ")[1];
         var command = new GetStudentSubjectsQuery(token);
 
         var result = await _sender.Send(command);

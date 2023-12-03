@@ -47,10 +47,9 @@ export class SubjectsComponent implements OnInit {
         {
           next: subjects => {
             this.subjects = subjects;
-            console.log(this.subjects)
           },
           error: err => {
-            this.alertService.error(err);
+            this.alertService.error(err.error.title);
             this.fetchLoading = false;
           }
         });
@@ -64,7 +63,7 @@ export class SubjectsComponent implements OnInit {
         this.fetchLoading = false;
       },
       error: (error) => {
-        this.alertService.error(error);
+        this.alertService.error(error.error.title)
         this.fetchLoading = false;
       }
     });
@@ -91,7 +90,7 @@ export class SubjectsComponent implements OnInit {
           modal.close();
         },
         error: error => {
-          this.alertService.error(error);
+          this.alertService.error(error.error.title);
           this.createLoading = false;
         }
       });
@@ -126,7 +125,7 @@ export class SubjectsComponent implements OnInit {
           this.removeLoading = false;
         },
         error: err => {
-          this.alertService.error(err);
+          this.alertService.error(err.error.title);
           this.removeLoading = false;
         }
       });

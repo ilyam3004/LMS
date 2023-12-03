@@ -1,4 +1,4 @@
-﻿using Application.Groups.Queries.GetAllGroups;
+﻿using Application.Features.Groups.Queries.GetAllGroups;
 using Contracts.Responses.Groups;
 using Microsoft.AspNetCore.Mvc;
 using MapsterMapper;

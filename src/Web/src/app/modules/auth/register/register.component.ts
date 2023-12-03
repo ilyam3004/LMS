@@ -29,7 +29,8 @@ export class RegisterComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
     private groupService: GroupService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.fetchGroups();
@@ -65,7 +66,14 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/student/subjects'], {relativeTo: this.route});
         },
         error: error => {
-          this.alertService.error(error);
+          if (error.status == 400) {
+            this.alertService.error(error.error.errors?.Email
+              ? error.error.errors?.Email[0]
+              : error.error.errors?.Password[0]);
+            this.studentForm.reset();
+          } else {
+            this.alertService.error(error.error.title);
+          }
           this.registerLoading = false;
         }
       });
@@ -91,9 +99,14 @@ export class RegisterComponent implements OnInit {
         next: () => {
           this.alertService.success('Registration successful', {keepAfterRouteChange: true});
           this.router.navigate(['/lecturer/subjects'], {relativeTo: this.route});
+          this.lecturerForm.reset();
         },
         error: error => {
-          this.alertService.error(error);
+          if (error.status == 400) {
+            this.alertService.error(this.getErrorMessage(error));
+          } else {
+            this.alertService.error(error.error.title);
+          }
           this.registerLoading = false;
         }
       });
@@ -108,7 +121,8 @@ export class RegisterComponent implements OnInit {
         this.groupLoading = false;
       },
       error: (error) => {
-        this.alertService.error(error);
+        this.alertService.error(error.error.title);
+        this.groupLoading = false;
       }
     });
   }
@@ -120,7 +134,7 @@ export class RegisterComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       address: ['', Validators.required],
-      course: [1, Validators.required],
+      course: [null, Validators.required],
       birthday: [null, Validators.required],
       groupName: ['', Validators.required]
     });
@@ -134,5 +148,19 @@ export class RegisterComponent implements OnInit {
       birthday: [null, Validators.required],
       address: ['', Validators.required]
     });
+  }
+
+  private getErrorMessage(error: any): string {
+    const errors = error.error.errors;
+
+    return errors?.Email[0] ? errors?.Email[0]
+      : errors?.Password[0] ? errors?.Password[0]
+        : errors?.FirstName[0] ? errors?.FirstName[0]
+          : errors?.LastName[0] ? errors?.LastName[0]
+            : errors?.Birthday[0] ? errors?.Birthday[0]
+              : errors?.Address[0] ? errors?.Address[0]
+                : errors?.Course[0] ? errors?.Course[0]
+                  : errors?.GroupName[0] ? errors?.GroupName[0]
+                    : error.error.title;
   }
 }

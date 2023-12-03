@@ -1,4 +1,4 @@
-﻿using Application.Grades.Queries;
+﻿using Application.Features.Grades.Queries;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Contracts.Responses.Grades;

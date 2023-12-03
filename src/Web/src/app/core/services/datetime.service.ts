@@ -6,8 +6,7 @@ import {DatePipe} from "@angular/common";
 })
 export class DateTimeService {
 
-  constructor(private datePipe: DatePipe) {
-  }
+  constructor(private datePipe: DatePipe) { }
 
   convertDateToReadableFormat(isoDate: Date): string {
     const date = new Date(isoDate);
@@ -36,6 +35,15 @@ export class DateTimeService {
       currentDate.getUTCSeconds(),
       currentDate.getUTCMilliseconds()
     ));
+  }
+
+  public isDateValid(date: Date): boolean {
+    return !isNaN(date.getTime());
+  }
+
+  public isDateInFuture(date: Date): boolean {
+    const currentDate = new Date();
+    return date > currentDate;
   }
 
   private isCreatedToday(date: Date): boolean {

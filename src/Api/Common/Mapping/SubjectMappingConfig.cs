@@ -1,11 +1,9 @@
+using Application.Features.Subjects.Commands.CreateSubject;
 using Application.Models.Grades;
-using Application.Subjects.Commands.CreateSubject;
 using Contracts.Requests.Subjects;
 using Contracts.Responses.Subjects;
 using Application.Models.Subjects;
-using Application.Models.Tasks;
 using Contracts.Responses.Grades;
-using Contracts.Responses.Students;
 using Mapster;
 
 namespace Api.Common.Mapping;

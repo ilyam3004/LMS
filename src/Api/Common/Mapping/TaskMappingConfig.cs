@@ -1,9 +1,7 @@
-﻿using Application.Models.Grades;
-using Application.Tasks.Commands.CreateTask;
+﻿using Application.Features.Tasks.Commands.CreateTask;
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Tasks;
 using Application.Models.Tasks;
-using Contracts.Responses.Grades;
 using Contracts.Responses.Students;
 using Domain.Entities;
 using Mapster;
@@ -24,7 +22,7 @@ public class TaskMappingConfig : IRegister
         config.NewConfig<StudentTask, UploadedTaskResponse>()
             .Map(dest => dest.StudentTaskId, src => src.StudentTaskId)
             .Map(dest => dest.TaskId, src => src.TaskId)
-            .Map(dest => dest.FileUrl, src => src.FileUrl)
+            .Map(dest => dest.FileName, src => src.OrdinalFileName)
             .Map(dest => dest.UploadedAt, src => src.UploadedAt)
             .Map(dest => dest.Grade, src => src.Grade)
             .Map(dest => dest.Student, src => src.Student)
@@ -54,7 +52,7 @@ public class TaskMappingConfig : IRegister
         config.NewConfig<UploadedTaskResult, UploadedTaskResponse>()
             .Map(dest => dest.StudentTaskId, src => src.Task.StudentTaskId)
             .Map(dest => dest.TaskId, src => src.Task.TaskId)
-            .Map(dest => dest.FileUrl, src => src.Task.FileUrl)
+            .Map(dest => dest.FileName, src => src.Task.OrdinalFileName)
             .Map(dest => dest.UploadedAt, src => src.Task.UploadedAt)
             .Map(dest => dest.Grade, src => src.Task.Grade)
             .Map(dest => dest.Student, src => src.Task.Student)

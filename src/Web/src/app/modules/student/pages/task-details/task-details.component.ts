@@ -3,7 +3,7 @@ import {StudentTaskStatus, StudentTask, UploadedStudentTask} from "../../../../c
 import {TaskService} from "../../../../core/services/task.service";
 import {AlertService} from "../../../../core/services/alert.service";
 import {ActivatedRoute} from "@angular/router";
-import {NgbActiveModal, NgbModal} from "@ng-bootstrap/ng-bootstrap";
+import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {DateTimeService} from "../../../../core/services/datetime.service";
 import {
   ConfirmationModalComponent
@@ -55,7 +55,7 @@ export class TaskDetailsComponent implements OnInit {
           this.fetchLoading = false;
         },
         error: err => {
-          this.alertService.error(err);
+          this.alertService.error(this.getErrorMessage(err));
           this.fetchLoading = false;
         }
       });
@@ -87,7 +87,7 @@ export class TaskDetailsComponent implements OnInit {
           this.alertService.success('Task solution uploaded successfully!');
         },
         error: err => {
-          this.alertService.error(err);
+          this.alertService.error(this.getErrorMessage(err));
         }
       });
   }
@@ -132,16 +132,74 @@ export class TaskDetailsComponent implements OnInit {
           this.createTaskCommentForm.get('comment')?.reset();
         },
         error: err => {
-          this.alertService.error(err);
+          this.alertService.error(this.getErrorMessage(err));
           this.createTaskLoading = false;
         }
       })
+  }
+
+  onDownload(studentTaskId: string): void {
+    this.taskService.downloadSolution(studentTaskId).subscribe({
+        next: (response) => {
+          const contentDispositionHeader = response.headers.get('Content-Disposition');
+
+          if (contentDispositionHeader) {
+            const matches = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/.exec(contentDispositionHeader);
+            const fileName = matches && matches.length > 1 ? matches[1] : null;
+
+            if (fileName) {
+              const data = response.body as Blob;
+
+              const a = document.createElement('a');
+              a.download = fileName;
+              a.href = URL.createObjectURL(data);
+              a.click();
+            } else {
+              this.alertService.error('Unable to extract filename from Content-Disposition header.');
+              this.downloadFileWithDefaultName(response);
+            }
+          } else {
+            this.alertService.error('Content-Disposition header not found in the response.' +
+              'Downloading file with default filename.');
+            this.downloadFileWithDefaultName(response);
+          }
+        },
+        error:
+          err => {
+            this.alertService.error(err);
+          }
+      }
+    );
+  }
+
+  downloadFileWithDefaultName(response: any): void {
+    const data = response.body as Blob;
+
+    const a = document.createElement('a');
+    a.download = 'file';
+    a.href = URL.createObjectURL(data);
+    a.click();
   }
 
   private sortTaskCommentsByDate() {
     this.task.uploadedTask.comments.sort((a, b) => {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime();
     });
+  }
+
+  protected getDeadlineColor() {
+    return (
+      (this.task.uploadedTask.status === StudentTaskStatus.NotUploaded ||
+        this.task.uploadedTask.status === StudentTaskStatus.Returned ||
+        this.task.uploadedTask.status === StudentTaskStatus.Rejected) &&
+      !this.dateTimeService.isDateInFuture(this.task.deadline)
+    ) ? "red" : undefined;
+  }
+
+  getErrorMessage(error: any): string {
+    return error.status == 0
+      ? "Server is not responding. Please try again later"
+      : error.error.title;
   }
 
   protected readonly StudentTaskStatus = StudentTaskStatus;

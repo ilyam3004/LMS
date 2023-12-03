@@ -1,13 +1,13 @@
-﻿using Application.Tasks.Queries.GetLecturerTaskDetails;
-using Application.Tasks.Commands.AcceptTask;
-using Application.Tasks.Commands.CreateComment;
-using Application.Tasks.Commands.CreateTask;
-using Application.Tasks.Commands.RejectTask;
-using Application.Tasks.Commands.RemoveTask;
-using Application.Tasks.Commands.ReturnTask;
-using Application.Tasks.Commands.UploadSolution;
-using Application.Tasks.Queries.DownloadTaskSolution;
-using Application.Tasks.Queries.GetStudentTask;
+﻿using Application.Features.Tasks.Commands.AcceptTask;
+using Application.Features.Tasks.Commands.CreateComment;
+using Application.Features.Tasks.Commands.CreateTask;
+using Application.Features.Tasks.Commands.RejectTask;
+using Application.Features.Tasks.Commands.RemoveTask;
+using Application.Features.Tasks.Commands.ReturnTask;
+using Application.Features.Tasks.Commands.UploadTaskSolution;
+using Application.Features.Tasks.Queries.DownloadTaskSolution;
+using Application.Features.Tasks.Queries.GetLecturerTaskDetails;
+using Application.Features.Tasks.Queries.GetStudentTask;
 using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Tasks;
 using Contracts.Responses.Subjects;
@@ -45,7 +45,7 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpDelete("{taskId}")]
+    [HttpDelete("{taskId:guid}")]
     [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> RemoveTask(Guid taskId)
     {
@@ -58,7 +58,7 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpGet("lecturer/{taskId}")]
+    [HttpGet("lecturer/{taskId:guid}")]
     [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> GetLecturerTaskDetails(Guid taskId)
     {
@@ -71,7 +71,7 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpGet("student/{taskId}")]
+    [HttpGet("student/{taskId:guid}")]
     [Authorize(Roles = Roles.Student)]
     public async Task<IActionResult> GetStudentTask(Guid taskId)
     {
@@ -85,7 +85,7 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpPut("{studentTaskId}/upload")]
+    [HttpPut("{studentTaskId:guid}/upload")]
     [Authorize(Roles = Roles.Student)]
     public async Task<IActionResult> UploadSolution([FromRoute] Guid studentTaskId,
         [FromForm] IFormFile file)
@@ -101,7 +101,7 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpGet("{studentTaskId}/download")]
+    [HttpGet("{studentTaskId:guid}/download")]
     [Authorize(Roles = $"{Roles.Lecturer},{Roles.Student}")]
     public async Task<IActionResult> DownloadSolution(Guid studentTaskId)
     {
@@ -115,7 +115,7 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpPut("{studentTaskId}/return")]
+    [HttpPut("{studentTaskId:guid}/return")]
     public async Task<IActionResult> ReturnTask(Guid studentTaskId)
     {
         var command = new ReturnTaskCommand(studentTaskId);
@@ -127,7 +127,7 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpPut("{studentTaskId}/accept")]
+    [HttpPut("{studentTaskId:guid}/accept")]
     public async Task<IActionResult> AcceptTask([FromRoute] Guid studentTaskId,
         [FromBody] AcceptTaskRequest request)
     {
@@ -140,7 +140,7 @@ public class TaskController : ApiController
             Problem);
     }
     
-    [HttpPut("{studentTaskId}/reject")]
+    [HttpPut("{studentTaskId:guid}/reject")]
     public async Task<IActionResult> RejectTask(Guid studentTaskId)
     {
         var command = new RejectTaskCommand(studentTaskId);
@@ -152,7 +152,7 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpPut("{studentTaskId}/comment")]
+    [HttpPut("{studentTaskId:guid}/comment")]
     public async Task<IActionResult> CreateComment([FromRoute] Guid studentTaskId,
         [FromBody] CreateCommentRequest request)
     {

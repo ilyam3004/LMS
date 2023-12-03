@@ -6,9 +6,7 @@
     </div>
   } @else {
     <div class="task-container flex-column">
-      <h2>
-        {{ task.title }}
-      </h2>
+      <h2>{{ task.title }}</h2>
     </div>
     <hr>
     <div class="mt-4">
@@ -19,7 +17,8 @@
             <p>{{ task.description }}</p>
             <div class="d-flex justify-content-between text-secondary">
               <p>{{ task.lecturerName }} at {{ dateTimeService.convertDateToReadableFormat(task.createdAt) }}</p>
-              <p>Due to: {{ dateTimeService.convertDateToReadableFormat(task.deadline) }}</p>
+              <p [style.color]="getDeadlineColor()">Due
+                to: {{ dateTimeService.convertDateToReadableFormat(task.deadline) }}</p>
             </div>
           </div>
         </div>
@@ -35,9 +34,15 @@
             </div>
             <p>Status: {{ taskService.getTaskStatus(task.uploadedTask.status) }}</p>
             <p class="text-primary">{{ task.uploadedTask.grade }}/{{ task.maxGrade }} points</p>
-            @if (task.uploadedTask.status !== StudentTaskStatus.Returned && task.uploadedTask.uploadedAt
-            || task.uploadedTask.status !== StudentTaskStatus.Returned && task.uploadedTask.uploadedAt) {
+            @if (task.uploadedTask.status === StudentTaskStatus.Accepted && task.uploadedTask.uploadedAt
+            || task.uploadedTask.status !== StudentTaskStatus.Uploaded && task.uploadedTask.uploadedAt) {
               <p>Uploaded: {{ dateTimeService.convertDateToReadableFormat(task.uploadedTask.uploadedAt!) }}</p>
+              <p>Uploaded file:
+                <a class="link-primary download-link"
+                   (click)="onDownload(task.uploadedTask.studentTaskId)">
+                  {{ task.uploadedTask.fileName }}
+                </a>
+              </p>
             }
           </div>
         </div>

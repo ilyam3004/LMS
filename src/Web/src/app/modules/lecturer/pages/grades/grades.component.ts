@@ -34,7 +34,7 @@ export class GradesComponent implements OnInit {
             this.fetchLoading = false;
           },
           error: err => {
-            this.alertService.error(err);
+            this.alertService.error(err.error.title);
             this.fetchLoading = false;
           }
         });
@@ -68,7 +68,7 @@ export class GradesComponent implements OnInit {
         },
         error:
           err => {
-            this.alertService.error(err);
+            this.alertService.error(err.error.title);
           }
       }
     );

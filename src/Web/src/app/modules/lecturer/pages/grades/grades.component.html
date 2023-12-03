@@ -52,7 +52,6 @@
                                       <th scope="col">Status</th>
                                       <th scope="col">Grade</th>
                                       <th scope="col">Uploaded at</th>
-                                      <th scope="col">File</th>
                                     </tr>
                                     </thead>
                                     <tbody>
@@ -69,17 +68,6 @@
                                               task.uploadedTask.uploadedAt ?
                                                 dateTimeService.convertDateToReadableFormat(task.uploadedTask.uploadedAt) : '-'
                                             }}
-                                          </td>
-                                          <td>
-                                            @if (task.uploadedTask.fileUrl && task.uploadedTask.status === StudentTaskStatus.Uploaded ||
-                                            task.uploadedTask.fileUrl && task.uploadedTask.status == StudentTaskStatus.Accepted) {
-                                              <a class="link-primary download-link"
-                                                 (click)="onDownload(task.uploadedTask.studentTaskId)">
-                                                Download
-                                              </a>
-                                            } @else {
-                                              -
-                                            }
                                           </td>
                                         </tr>
                                       }

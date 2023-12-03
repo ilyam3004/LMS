@@ -12,6 +12,7 @@ public class SubjectRepository : Repository<Subject>, ISubjectRepository
         => await DbContext.Subjects.Where(s => s.LecturerId == lecturerId)
             .Include(s => s.Group)
             .ThenInclude(g => g.Students)
+            .ThenInclude(s => s.Tasks)
             .Include(s => s.Tasks)
             .ThenInclude(t => t.StudentTasks)
             .ThenInclude(st => st.Comments)
