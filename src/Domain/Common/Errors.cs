@@ -59,6 +59,9 @@ public static class Errors
         
         public static Error RejectFailed => Error.Conflict("Task.RejectFailed",
             description: "You can't reject this task. Check the task status");
+        
+        public static Error InvalidTaskStatusToRemoveSolution => Error.Conflict("Task.InvalidTaskStatusToRemoveSolution",
+            description: "You can't remove solution. Check the task status");
 
         public static Error TaskDeadlineNotExpired => Error.Conflict("Task.TaskDeadlineNotExpired",
             description: "You cannot reject this task. Task deadline not expired");

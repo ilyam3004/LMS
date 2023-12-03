@@ -3,6 +3,7 @@ using Application.Features.Tasks.Commands.CreateComment;
 using Application.Features.Tasks.Commands.CreateTask;
 using Application.Features.Tasks.Commands.RejectTask;
 using Application.Features.Tasks.Commands.RemoveTask;
+using Application.Features.Tasks.Commands.RemoveUploadedSolution;
 using Application.Features.Tasks.Commands.ReturnTask;
 using Application.Features.Tasks.Commands.UploadTaskSolution;
 using Application.Features.Tasks.Queries.DownloadTaskSolution;
@@ -101,6 +102,21 @@ public class TaskController : ApiController
             Problem);
     }
 
+    [HttpPut("{studentTaskId:guid}/remove")]
+    [Authorize(Roles = Roles.Student)]
+    public async Task<IActionResult> RemoveUploadedSolution(Guid studentTaskId)
+    {
+        var token = Request.Headers.Authorization.ToString().Split(" ")[1];
+
+        var command = new RemoveUploadedSolutionCommand(studentTaskId, token);
+
+        var result = await _sender.Send(command);
+
+        return result.Match(
+            value => Ok(_mapper.Map<StudentTaskResponse>(value)),
+            Problem);
+    }
+
     [HttpGet("{studentTaskId:guid}/download")]
     [Authorize(Roles = $"{Roles.Lecturer},{Roles.Student}")]
     public async Task<IActionResult> DownloadSolution(Guid studentTaskId)
@@ -110,7 +126,7 @@ public class TaskController : ApiController
         var result = await _sender.Send(command);
 
         return result.Match(
-            value => 
+            value =>
                 File(value.FileContent, value.ContentType, value.FileName),
             Problem);
     }
@@ -139,7 +155,7 @@ public class TaskController : ApiController
             value => Ok(_mapper.Map<LecturerTaskResponse>(value)),
             Problem);
     }
-    
+
     [HttpPut("{studentTaskId:guid}/reject")]
     public async Task<IActionResult> RejectTask(Guid studentTaskId)
     {
