@@ -79,6 +79,7 @@ export class SubjectsComponent implements OnInit {
     this.createLoading = true;
 
     const request: CreateSubjectRequest = this.createSubjectForm.value;
+    console.log(request);
 
     this.subjectService.createSubject(request)
       .subscribe({
@@ -137,6 +138,8 @@ export class SubjectsComponent implements OnInit {
       description: ['', [Validators.required, Validators.maxLength(1000)]],
       groupName: ['', Validators.required],
     });
+
+    console.log(this.createSubjectForm)
   }
 
   openModal(content: TemplateRef<any>) {

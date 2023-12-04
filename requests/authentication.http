@@ -1,5 +1,5 @@
 ﻿@host = http://localhost:5137/api
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6IjVjYmE5YzkxLTliYzMtNDMwNy1hZGQxLTQyZGEzZWNjZWY1OSIsImdpdmVuX25hbWUiOiJQYXZsbyIsImZhbWlseV9uYW1lIjoiUGV0cm92IiwiZW1haWwiOiJsZWNlbWFpbEBnbWFpbC5jb20iLCJyb2xlIjoiTGVjdHVyZXIiLCJleHAiOjE3MTE1NzE2NzksImlzcyI6IkxNUyIsImF1ZCI6IkxNUyJ9.W3-xyIme61u4vnQhbtA99Fu9URjQuMi-IWJpBt-hMrU
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImM0MTJjNzY4LTRhMGItNGNmMi1iMmE0LTAxZGVmM2VjOTA5NyIsImdpdmVuX25hbWUiOiJUaG9tYXMiLCJmYW1pbHlfbmFtZSI6IldpbGxpYW1zIiwiZW1haWwiOiJsZWN0dXJlcmVtYWlsQGdtYWlsLmNvbSIsInJvbGUiOiJMZWN0dXJlciIsImV4cCI6MTcxMjI2MDUwMSwiaXNzIjoiTE1TIiwiYXVkIjoiTE1TIn0.EqJhHGycQe66Z95mZ2enCT5ADOJ4dX2o8UKip69ocE0
 
 ### Register Lecturer
 POST {{host}}/users/lecturers/register
@@ -35,7 +35,7 @@ POST {{host}}/users/login
 Content-Type: application/json
 
 {
-  "Email": "lecemail@gmail.com",
+  "Email": "lectureremail@gmail.com",
   "Password": "password1234"
 }
 

@@ -23,8 +23,10 @@ public class DownloadTaskSolutionQueryHandler
 
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
+        
+        if(!File.Exists(studentTask.FileUrl))
+            return Errors.File.FileNotFound;
 
-        //var filePath = Path.Combine("/app/uploads", studentTask.FileUrl);
         var fileContent = await File.ReadAllBytesAsync(studentTask.FileUrl, cancellationToken);
 
         if (studentTask.OrdinalFileName is null)

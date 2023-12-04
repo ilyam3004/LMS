@@ -46,7 +46,7 @@ public class UploadTaskSolutionCommandHandler
             return Errors.Task.StudentTaskNotFound;
 
         if (studentTask.Status == StudentTaskStatus.Rejected)
-            return Errors.Task.RejectFailed;
+            return Errors.Task.WrongTaskStatus;
 
         if (command.File == null || command.File.Length == 0)
             return Errors.File.FileNotFound;

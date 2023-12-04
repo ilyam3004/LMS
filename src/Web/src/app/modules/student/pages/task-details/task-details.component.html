@@ -53,7 +53,7 @@
               <div class="d-flex justify-content-end">
                 <button type="button" class="btn btn-outline-danger"
                         (click)="openRemoveUploadedTaskConfirmationModal()"
-                        [disabled]="removeLoading">
+                        [disabled]="removeLoading || task.uploadedTask.status === StudentTaskStatus.Accepted">
                   <span *ngIf="removeLoading" class="spinner-border spinner-border-sm me-1"></span>
                   Remove
                 </button>

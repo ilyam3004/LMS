@@ -1,9 +1,8 @@
-using Domain.Abstractions.Results;
-using Application.Models;
 using Application.Models.Authentication;
+using Domain.Abstractions.Results;
 using MediatR;
 
-namespace Application.Authentication.Commands.RegisterLecturer;
+namespace Application.Features.Authentication.Commands.RegisterLecturer;
 
 public record RegisterLecturerCommand(
     string Email,

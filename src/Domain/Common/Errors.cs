@@ -57,8 +57,8 @@ public static class Errors
         public static Error GradeTooHigh => Error.Conflict("Task.GradeTooHigh",
             description: "Grade is too high");
         
-        public static Error RejectFailed => Error.Conflict("Task.RejectFailed",
-            description: "You can't reject this task. Check the task status");
+        public static Error WrongTaskStatus => Error.Conflict("Task.WrongTaskStatus",
+            description: "You can't remove this task. Check the task status");
         
         public static Error InvalidTaskStatusToRemoveSolution => Error.Conflict("Task.InvalidTaskStatusToRemoveSolution",
             description: "You can't remove solution. Check the task status");

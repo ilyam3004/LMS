@@ -14,7 +14,7 @@ public class SubjectConfigurations : IEntityTypeConfiguration<Subject>
             .HasMaxLength(100);
 
         builder.Property(s => s.Description)
-            .HasMaxLength(400);
+            .HasMaxLength(1000);
 
         builder.HasOne(s => s.Lecturer)
             .WithMany(l => l.Subjects)

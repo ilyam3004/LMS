@@ -31,7 +31,7 @@ public class RejectTaskCommandHandler
         
         if(studentTask.Status is StudentTaskStatus.Rejected 
            or StudentTaskStatus.Accepted or StudentTaskStatus.Uploaded)
-            return Errors.Task.RejectFailed;
+            return Errors.Task.WrongTaskStatus;
 
         studentTask.Status = StudentTaskStatus.Rejected;
         studentTask.UploadedAt = null;

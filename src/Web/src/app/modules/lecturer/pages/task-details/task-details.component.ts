@@ -83,7 +83,7 @@ export class TaskDetailsComponent implements OnInit {
         },
         error:
           err => {
-            this.alertService.error(err);
+            this.alertService.error("Unable to download file. Seems like it doesn't exist.");
           }
       }
     );

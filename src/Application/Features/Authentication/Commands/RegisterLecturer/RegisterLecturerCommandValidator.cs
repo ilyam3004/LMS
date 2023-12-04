@@ -1,6 +1,6 @@
 using FluentValidation;
 
-namespace Application.Authentication.Commands.RegisterLecturer;
+namespace Application.Features.Authentication.Commands.RegisterLecturer;
 
 public class RegisterLecturerCommandValidator
     : AbstractValidator<RegisterLecturerCommand>

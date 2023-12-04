@@ -39,8 +39,11 @@ public class RemoveUploadedSolutionCommandHandler
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
 
-        if (studentTask.Status is not StudentTaskStatus.Uploaded and not StudentTaskStatus.Accepted)
-            return Errors.Task.RejectFailed;
+        if (studentTask.Status is not StudentTaskStatus.Uploaded)
+            return Errors.Task.WrongTaskStatus;
+        
+        if(!File.Exists(studentTask.FileUrl))
+            return Errors.File.FileNotFound;
 
         RemoveUploadedFile(studentTask.FileUrl);
         

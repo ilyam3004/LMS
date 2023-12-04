@@ -1,13 +1,12 @@
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Domain.Abstractions.Results;
-using Application.Models;
 using Application.Models.Authentication;
-using Domain.Entities;
+using Domain.Abstractions.Results;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
 
-namespace Application.Authentication.Commands.RegisterLecturer;
+namespace Application.Features.Authentication.Commands.RegisterLecturer;
 
 public class RegisterLecturerCommandHandler
     : IRequestHandler<RegisterLecturerCommand, Result<AuthenticationResult>>
