@@ -40,7 +40,7 @@ public class UploadTaskSolutionCommandHandler
             return Errors.User.UserNotFound;
 
         var studentTask = await _unitOfWork.StudentTasks
-            .GetByIdAsync(command.studentTaskId);
+            .GetByIdAsync(command.StudentTaskId);
 
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
@@ -48,13 +48,13 @@ public class UploadTaskSolutionCommandHandler
         if (studentTask.Status == StudentTaskStatus.Rejected)
             return Errors.Task.WrongTaskStatus;
 
-        if (command.File == null || command.File.Length == 0)
+        if (command.File?.Length == 0)
             return Errors.File.FileNotFound;
 
-        var filePath = await UploadFileAndGetFilePath(command.File);
+        var filePath = await UploadFileAndGetFilePath(command.File!);
 
         studentTask.FileUrl = filePath;
-        studentTask.OrdinalFileName = command.File.FileName;
+        studentTask.OrdinalFileName = command.File?.FileName;
         studentTask.Status = StudentTaskStatus.Uploaded;
         studentTask.UploadedAt = _dateTimeProvider.UtcNow;
 
@@ -62,17 +62,17 @@ public class UploadTaskSolutionCommandHandler
 
         await _unitOfWork.SaveChangesAsync();
 
-        return await GetTaskResult(studentTask.TaskId, user.Student.StudentId);
+        return await GetTaskResult(studentTask.TaskId, user.Student!.StudentId);
     }
 
     private async Task<StudentTaskResult> GetTaskResult(Guid taskId, Guid studentId)
     {
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
 
-        var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
+        var studentTask = task?.StudentTasks.FirstOrDefault(studentTask =>
             studentTask.StudentId == studentId);
 
-        return new StudentTaskResult(task, studentTask);
+        return new StudentTaskResult(task!, studentTask!);
     }
 
     private static async Task<string> UploadFileAndGetFilePath(IFormFile file)

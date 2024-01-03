@@ -43,12 +43,11 @@ public class GetStudentSubjectsQueryHandler
 
             var taskResults = subject.Tasks.Select(task =>
             {
-                float averageGrade = 0;
                 var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
                     studentTask.StudentId == user.Student!.StudentId);
 
                 if (studentTask is null)
-                    return new StudentTaskResult(task, studentTask);
+                    return new StudentTaskResult(task, studentTask!);
 
                 totalGrade += studentTask.Grade;
 

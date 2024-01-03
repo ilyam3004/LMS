@@ -1,20 +1,21 @@
-﻿namespace Api.Extensions;
+﻿using Api.Services;
+
+namespace Api.Extensions;
 
 public static class BuildExtensions
 {
-
     public static WebApplication BuildWithOptions(this WebApplicationBuilder builder)
     {
         var app = builder.Build();
        
         app.UseCors("CorsPolicy");
+        app.UseHttpsRedirection();
 
-        app.UseSwagger();
-        app.UseSwaggerUI();
-        
         app.UseAuthentication();
         app.UseAuthorization();
-        app.MapControllers();
+        
+        app.MapGrpcService<GreeterService>();
+        app.MapGrpcService<UserService>();
         
         return app;
     }

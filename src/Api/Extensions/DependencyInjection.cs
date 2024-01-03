@@ -1,4 +1,6 @@
-﻿namespace Api.Extensions;
+﻿using Api.Common.Mapping;
+
+namespace Api.Extensions;
 
 public static class DependencyInjection
 {
@@ -14,12 +16,10 @@ public static class DependencyInjection
                 .WithExposedHeaders("content-disposition"));
         });
 
+        services.AddMappings();
+
         services.AddAuthorization();
-
-        services.AddEndpointsApiExplorer();
-        services.AddSwaggerGen();
-
-        services.AddControllers();
+        services.AddGrpc().AddJsonTranscoding();    
 
         return services;
     }

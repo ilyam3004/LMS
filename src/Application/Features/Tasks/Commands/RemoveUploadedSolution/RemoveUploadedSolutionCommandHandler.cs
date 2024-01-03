@@ -45,7 +45,7 @@ public class RemoveUploadedSolutionCommandHandler
         if(!File.Exists(studentTask.FileUrl))
             return Errors.File.FileNotFound;
 
-        RemoveUploadedFile(studentTask.FileUrl);
+        await RemoveUploadedFile(studentTask.FileUrl);
         
         studentTask.FileUrl = null;
         studentTask.OrdinalFileName = null;
@@ -56,26 +56,25 @@ public class RemoveUploadedSolutionCommandHandler
 
         await _unitOfWork.SaveChangesAsync();
 
-        return await GetTaskResult(studentTask.TaskId, user.Student.StudentId);
+        return await GetTaskResult(studentTask.TaskId, user.Student!.StudentId);
     }
 
     private async Task<StudentTaskResult> GetTaskResult(Guid taskId, Guid studentId)
     {
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
 
-        var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
+        var studentTask = task!.StudentTasks.FirstOrDefault(studentTask =>
             studentTask.StudentId == studentId);
 
-        return new StudentTaskResult(task, studentTask);
+        return new StudentTaskResult(task, studentTask!);
     }
 
-    private static async Task RemoveUploadedFile(string filePath)
+    private static async Task RemoveUploadedFile(string? filePath)
     {
         if (filePath is null)
             return;
 
         await using var stream = new FileStream(filePath, FileMode.Open);
-        await stream.DisposeAsync();
 
         File.Delete(filePath);
     }

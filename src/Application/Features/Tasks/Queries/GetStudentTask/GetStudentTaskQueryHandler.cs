@@ -41,6 +41,6 @@ public class GetStudentTaskQueryHandler
         var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
             studentTask.StudentId == user.Student!.StudentId);
 
-        return new StudentTaskResult(task, studentTask);
+        return new StudentTaskResult(task, studentTask!);
     }
 }

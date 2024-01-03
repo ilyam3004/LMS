@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Api";
+import "google/api/annotations.proto";
+
+package greet;
+
+service Greeter {
+  rpc SayHello (HelloRequest) returns (HelloReply) {
+    option (google.api.http) = {
+      post: "/v1/greeter",
+      body: "*"
+    };
+  };
+}
+
+message HelloRequest {
+  string name = 1;
+//  string password = 2;
+//  string first_name = 3;
+//  string last_name = 4;
+//  string degree = 5;
+//  string birthday = 6;
+//  string address = 7;
+}
+
+message HelloReply {
+  string message = 1;
+}

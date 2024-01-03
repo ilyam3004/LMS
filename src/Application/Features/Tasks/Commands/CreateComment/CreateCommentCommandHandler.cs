@@ -60,9 +60,9 @@ public class CreateCommentCommandHandler
     {
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(studentTask.TaskId);
 
-        var uploadedStudentTask = task.StudentTasks.FirstOrDefault(studentTask =>
-            studentTask.StudentId == studentTask.StudentId);
+        var uploadedStudentTask = task!.StudentTasks.FirstOrDefault(studTaskFromDb =>
+            studTaskFromDb.StudentId == studentTask.StudentId);
 
-        return new UploadedTaskResult(uploadedStudentTask);
+        return new UploadedTaskResult(uploadedStudentTask!);
     }
 }

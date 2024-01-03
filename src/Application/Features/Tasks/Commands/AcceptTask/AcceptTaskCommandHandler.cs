@@ -1,18 +1,18 @@
 ﻿using Application.Common.Interfaces.Persistence;
-using Application.Models.Tasks;
 using Domain.Abstractions.Results;
+using Application.Models.Tasks;
 using Domain.Common;
 using Domain.Enums;
 using MediatR;
 
 namespace Application.Features.Tasks.Commands.AcceptTask;
 
-public class AcceptStatusCommandHandler
+public class AcceptTaskCommandHandler
     : IRequestHandler<AcceptTaskCommand, Result<LecturerTaskResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
 
-    public AcceptStatusCommandHandler(IUnitOfWork unitOfWork)
+    public AcceptTaskCommandHandler(IUnitOfWork unitOfWork)
     {
         _unitOfWork = unitOfWork;
     }

@@ -1,14 +1,14 @@
-﻿using Application.Authentication.Commands.RegisterStudent;
+﻿using Application.Features.Authentication.Commands.RegisterLecturer;
+using Application.Authentication.Commands.RegisterStudent;
 using Application.Authentication.Queries.GetStudentProfile;
 using Application.Authentication.Queries.Login;
-using Application.Features.Authentication.Commands.RegisterLecturer;
+using Contracts.Responses.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Contracts.Requests.Authentication;
 using Microsoft.AspNetCore.Mvc;
-using Contracts.Responses.Authentication;
 using Domain.Common;
 using MapsterMapper;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 
 namespace Api.Controllers;
 
@@ -25,7 +25,7 @@ public class UserController : ApiController
     }
 
     [HttpPost("lecturers/register")]
-    public async Task<IActionResult> Register(RegisterLecturerRequest request)
+    public async Task<IActionResult> RegisterLecturer(RegisterLecturerRequest request)
     {
         var command = _mapper.Map<RegisterLecturerCommand>(request);
 
@@ -62,7 +62,7 @@ public class UserController : ApiController
 
     [HttpGet("students/profile")]
     [Authorize(Roles = Roles.Student)]
-    public async Task<IActionResult> GetStudentProfileInformation()
+    public async Task<IActionResult> GetStudentProfile()
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
         var query = new GetStudentProfileQuery(token);
@@ -76,7 +76,7 @@ public class UserController : ApiController
 
     [HttpGet("lecturers/profile")]
     [Authorize(Roles = Roles.Lecturer)]
-    public async Task<IActionResult> GetLecturerProfileInformation()
+    public async Task<IActionResult> GetLecturerProfile()
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
         var query = new GetStudentProfileQuery(token);

@@ -1,4 +1,5 @@
-﻿using Contracts.Responses.Authentication;
+﻿using Application.Features.Authentication.Commands.RegisterLecturer;
+using Contracts.Responses.Authentication;
 using Application.Models.Authentication;
 using Mapster;
 
@@ -11,6 +12,10 @@ public class UserMappingConfig : IRegister
         config.NewConfig<AuthenticationResult, AuthenticationResponse>()
             .Map(dest => dest.UserId, src => src.User.UserId)
             .Map(dest => dest.Email, src => src.User.Email);
+        
+        // config.NewConfig<RegisterLecturerRequest, RegisterLecturerCommand>()
+        //     .Map(dest => dest.Birthday, 
+        //         src => src.Birthday.ToDateTime());
 
         config.NewConfig<ProfileResult, LecturerProfileResponse>()
             .Map(dest => dest.UserId, src => src.User.UserId)

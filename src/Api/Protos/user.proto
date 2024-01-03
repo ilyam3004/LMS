@@ -1,0 +1,69 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Api";
+
+import "google/api/annotations.proto";
+import "google/protobuf/timestamp.proto";
+
+package user;
+
+service User {
+  rpc RegisterLecturer (RegisterLecturerRequest) returns (AuthenticationResponse) {
+    option (google.api.http) = {
+      post: "/api/users/lecturers/register",
+      body: "*"
+    };
+  };
+
+  rpc RegisterStudent (RegisterStudentRequest) returns (AuthenticationResponse) {
+    option (google.api.http) = {
+      post: "/api/users/students/register",
+      body: "*"
+    };
+  };
+
+  rpc Login (LoginRequest) returns (AuthenticationResponse) {
+    option (google.api.http) = {
+      post: "/api/users/login",
+      body: "*"
+    };
+  };
+}
+
+message RegisterLecturerRequest {
+  string email = 1;
+  string password = 2;
+  string firstName = 3;
+  string lastName = 4;
+  string degree = 5;
+  string birthday = 6;
+  string address = 7;
+}
+
+message RegisterStudentRequest {
+  string email = 1;
+  string password = 2;
+  string first_name = 3;
+  string last_name = 4;
+  string group_name = 5;
+  int32 course = 6;
+  string birthday = 7;
+  string address = 8;
+}
+
+message LoginRequest {
+  string email = 1;
+  string password = 2;
+}
+
+message AuthenticationResponse {
+  string user_id = 1;
+  string email = 2;
+  string token = 3;
+}
+
+
+message ErrorDetail {
+  string code = 1;
+  string description = 2;
+}

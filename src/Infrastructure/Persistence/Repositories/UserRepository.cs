@@ -26,7 +26,7 @@ public class UserRepository : Repository<User>, IUserRepository
 
     public async Task<User?> GetUserByIdWithRelations(Guid userId)
         => await DbContext.Users.Include(u => u.Student)
-            .ThenInclude(s => s.Group)
+            .ThenInclude(s => s!.Group)
             .Include(u => u.Lecturer)
             .FirstOrDefaultAsync(u => u.UserId == userId);
 }

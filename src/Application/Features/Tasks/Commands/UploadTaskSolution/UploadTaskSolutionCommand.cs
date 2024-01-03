@@ -6,6 +6,6 @@ using Microsoft.AspNetCore.Http;
 namespace Application.Features.Tasks.Commands.UploadTaskSolution;
 
 public record UploadTaskSolutionCommand(
-    IFormFile File, 
-    Guid studentTaskId, 
+    IFormFile? File, 
+    Guid StudentTaskId, 
     string Token) : IRequest<Result<StudentTaskResult>>;
