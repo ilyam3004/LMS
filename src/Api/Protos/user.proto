@@ -3,7 +3,6 @@
 option csharp_namespace = "Api";
 
 import "google/api/annotations.proto";
-import "google/protobuf/timestamp.proto";
 
 package user;
 
@@ -28,13 +27,25 @@ service User {
       body: "*"
     };
   };
+  
+  rpc LecturerProfile (LecturerProfileRequest) returns (LecturerProfileResponse) {
+    option (google.api.http) = {
+      get: "/api/users/lecturers/profile"
+    };
+  };
+
+  rpc StudentProfile (StudentProfileRequest) returns (StudentProfileResponse) {
+    option (google.api.http) = {
+      get: "/api/users/students/profile"
+    };
+  };
 }
 
 message RegisterLecturerRequest {
   string email = 1;
   string password = 2;
-  string firstName = 3;
-  string lastName = 4;
+  string first_name = 3;
+  string last_name = 4;
   string degree = 5;
   string birthday = 6;
   string address = 7;
@@ -56,14 +67,31 @@ message LoginRequest {
   string password = 2;
 }
 
+message LecturerProfileRequest { }
+
+message StudentProfileRequest { }
+
+message LecturerProfileResponse {
+  string user_id = 1;
+  string email = 2;
+  string full_name = 3;
+  string degree = 4;
+  string birthday = 5;
+  string address = 6;
+}
+
+message StudentProfileResponse {
+  string user_id = 1;
+  string email = 2;
+  string full_name = 3;
+  string group = 4;
+  string course = 5;
+  string birthday = 6;
+  string address = 7;
+}
+
 message AuthenticationResponse {
   string user_id = 1;
   string email = 2;
   string token = 3;
-}
-
-
-message ErrorDetail {
-  string code = 1;
-  string description = 2;
 }

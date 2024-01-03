@@ -1,4 +1,5 @@
 ﻿using Domain.Abstractions.Errors;
+using System.Text;
 using Grpc.Core;
 
 namespace Api.Helpers;
@@ -9,7 +10,7 @@ public static class GrpcExceptionHelper
     {
         if (errors.All(error => error.Type == ErrorType.Validation))
         {
-            return ConvertToValidationValidationRpcException(errors);
+            return ConvertToValidationRpcException(errors);
         }
 
         return errors.Count is 0
@@ -32,9 +33,14 @@ public static class GrpcExceptionHelper
         return new RpcException(new Status(statusCode, error.Description));
     }
 
-    private static RpcException ConvertToValidationValidationRpcException(List<Error> errors)
+    private static RpcException ConvertToValidationRpcException(List<Error> errors)
     {
-        var status = new Status(StatusCode.InvalidArgument, "Validation failed");
+        StringBuilder builder = new();
+        
+        foreach (var error in errors)
+            builder.Append($"{error.Description} ");
+        
+        var status = new Status(StatusCode.InvalidArgument, $"Validation failed: {builder}");
 
         var metadata = new Metadata();
 

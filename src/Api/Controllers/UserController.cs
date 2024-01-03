@@ -1,10 +1,9 @@
 ﻿using Application.Features.Authentication.Commands.RegisterLecturer;
 using Application.Authentication.Commands.RegisterStudent;
+using Application.Authentication.Queries.GetLecturerProfile;
 using Application.Authentication.Queries.GetStudentProfile;
 using Application.Authentication.Queries.Login;
-using Contracts.Responses.Authentication;
 using Microsoft.AspNetCore.Authorization;
-using Contracts.Requests.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Domain.Common;
 using MapsterMapper;
@@ -79,7 +78,7 @@ public class UserController : ApiController
     public async Task<IActionResult> GetLecturerProfile()
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
-        var query = new GetStudentProfileQuery(token);
+        var query = new GetLecturerProfileQuery(token);
 
         var result = await _sender.Send(query);
 
