@@ -1,5 +1,4 @@
 ﻿using Application.Features.Groups.Queries.GetAllGroups;
-using Contracts.Responses.Groups;
 using Microsoft.AspNetCore.Mvc;
 using MapsterMapper;
 using MediatR;

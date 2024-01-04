@@ -1,6 +1,4 @@
-﻿using Application.Models;
-using Application.Models.Groups;
-using Contracts.Responses.Students;
+﻿using Application.Models.Groups;
 using Mapster;
 
 namespace Api.Common.Mapping;

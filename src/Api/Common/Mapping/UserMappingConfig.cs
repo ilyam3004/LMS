@@ -1,6 +1,4 @@
-﻿using Application.Features.Authentication.Commands.RegisterLecturer;
-using Contracts.Responses.Authentication;
-using Application.Models.Authentication;
+﻿using Application.Models.Authentication;
 using Mapster;
 
 namespace Api.Common.Mapping;

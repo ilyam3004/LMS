@@ -1,0 +1,136 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Api";
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+
+package subject;
+
+service Subject {
+  rpc CreateSubject (CreateSubjectRequest) returns (LecturerSubjectsResponse) {
+    option (google.api.http) = {
+      post: "/api/subjects",
+      body: "*"
+    };
+  };
+  
+  rpc RemoveSubject (RemoveSubjectRequest) returns (LecturerSubjectsResponse) {
+    option (google.api.http) = {
+      get: "/api/subjects/{subject_id}",
+    };
+  };
+  
+  rpc GetLecturerSubjects (google.protobuf.Empty) returns (LecturerSubjectsResponse) {
+    option (google.api.http) = {
+      get: "/api/subjects/lecturer",
+    };
+  };
+  
+  rpc GetStudentSubjects (google.protobuf.Empty) returns (StudentSubjectsResponse) {
+    option (google.api.http) = {
+      get: "/api/subjects/student",
+    };
+  };
+}
+
+message CreateSubjectRequest {
+  string name = 1;
+  string description = 2;
+  string group_name = 3;
+}
+
+message RemoveSubjectRequest {
+  string subject_id = 1;
+}
+
+message LecturerSubjectsResponse {
+  repeated LecturerSubjectResponse subjects = 1;
+}
+
+message LecturerSubjectResponse {
+  string subject_id = 1;
+  string name = 2;
+  string description = 3;
+  GroupResponse group = 4;
+  repeated LecturerTaskResponse tasks = 5;
+}
+
+message GroupResponse {
+  string group_id = 1;
+  string name = 2;
+  string department = 3;
+  repeated StudentResponse students = 4;
+}
+
+message StudentResponse {
+  string student_id = 1;
+  string user_id = 2;
+  string group_id = 3;
+  string full_name = 4;
+  string birthday = 5;
+  string address = 6;
+}
+
+message LecturerTaskResponse {
+  string task_id = 1;
+  string title = 2;
+  string description = 3;
+  string deadline = 4;
+  string created_at = 5;
+  int32 max_grade = 6;
+  string group_name = 7;
+  repeated UploadedTaskResponse student_tasks = 8;
+}
+
+message UploadedTaskResponse {
+  string student_task_id = 1;
+  string task_id = 2;
+  string file_name = 3;
+  string uploaded_at = 4;
+  int32 grade = 5;
+  StudentTaskStatus status = 6;
+  StudentResponse student = 7;
+  repeated TaskCommentResponse comments = 8;
+}
+
+message TaskCommentResponse {
+  string task_comment_id = 1;
+  string user_id = 2;
+  string comment = 3;
+  string created_at = 4;
+  string username = 5;
+}
+
+enum StudentTaskStatus {
+  UPLOADED = 0;
+  RETURNED = 1;
+  ACCEPTED = 2;
+  NOT_UPLOADED = 3;
+  REJECTED = 4;
+}
+
+message StudentSubjectsResponse {
+  repeated StudentSubjectResponse subjects = 1;
+}
+
+message StudentSubjectResponse {
+  string subject_id = 1;
+  string name = 2;
+  string description = 3;
+  string lecturer_name = 4;
+  repeated StudentTaskResponse tasks = 5;
+  double average_grade = 6;
+  int32 total_grade = 7;
+}
+
+message StudentTaskResponse {
+  string task_id = 1;
+  string title = 2;
+  string description = 3;
+  string deadline = 4;
+  string created_at = 5;
+  int32 max_grade = 6;
+  string lecturer_name = 7;
+  UploadedTaskResponse uploaded_task = 8;
+}

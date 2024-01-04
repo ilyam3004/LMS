@@ -1,0 +1,37 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Api";
+
+import "google/api/annotations.proto";
+
+package group;
+
+service Group {
+  rpc GetAllGroups (GetAllGroupsRequest) returns (GetAllGroupsResponse) {
+    option (google.api.http) = {
+      get: "/api/groups"
+    };
+  };
+}
+
+message GetAllGroupsRequest { }
+
+message GetAllGroupsResponse {
+  repeated GroupResponse Groups = 1;
+}
+
+message GroupResponse {
+  string group_id = 1;
+  string name = 2;
+  string department = 3;
+  repeated StudentResponse students = 4;
+}
+
+message StudentResponse {
+  string student_id = 1;
+  string user_id = 2;
+  string group_id = 3;
+  string full_name = 4;
+  string birthday = 5;
+  string address = 6; 
+}

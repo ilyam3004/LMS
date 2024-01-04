@@ -14,8 +14,8 @@ public static class BuildExtensions
         app.UseAuthentication();
         app.UseAuthorization();
         
-        app.MapGrpcService<GreeterService>();
         app.MapGrpcService<UserService>();
+        app.MapGrpcService<GroupService>();
         
         return app;
     }

@@ -1,5 +1,4 @@
 ﻿using Application.Models;
-using Contracts.Responses.Groups;
 using Mapster;
 
 namespace Api.Common.Mapping;
@@ -12,5 +11,8 @@ public class GroupMappingConfig : IRegister
             .Map(dest => dest.GroupId, src => src.group.GroupId)
             .Map(dest => dest.Name, src => src.group.Name)
             .Map(dest => dest.Department, src => src.group.Department);
+
+        config.NewConfig<List<GroupResult>, GetAllGroupsResponse>()
+            .Map(dest => dest.Groups, src => src);
     }
 }

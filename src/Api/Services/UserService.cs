@@ -3,8 +3,12 @@ using Application.Authentication.Queries.GetLecturerProfile;
 using Application.Authentication.Queries.GetStudentProfile;
 using Application.Authentication.Commands.RegisterStudent;
 using Application.Authentication.Queries.Login;
+using Microsoft.AspNetCore.Authorization;
+using Application.Models.Authentication;
+using Domain.Abstractions.Results;
 using MapsterMapper;
 using Api.Helpers;
+using Domain.Common;
 using Grpc.Core;
 using MediatR;
 
@@ -26,7 +30,7 @@ public class UserService : User.UserBase
     {
         var command = _mapper.Map<RegisterLecturerCommand>(request);
 
-        var result = await _sender.Send(command);
+        Result<AuthenticationResult> result = await _sender.Send(command);
 
         return result.Match(
             value => _mapper.Map<AuthenticationResponse>(value),
@@ -38,7 +42,7 @@ public class UserService : User.UserBase
     {
         var command = _mapper.Map<RegisterStudentCommand>(request);
 
-        var result = await _sender.Send(command);
+        Result<AuthenticationResult> result = await _sender.Send(command);
 
         return result.Match(
             value => _mapper.Map<AuthenticationResponse>(value),
@@ -50,37 +54,39 @@ public class UserService : User.UserBase
     {
         var query = _mapper.Map<LoginQuery>(request);
 
-        var result = await _sender.Send(query);
+        Result<AuthenticationResult> result = await _sender.Send(query);
 
         return result.Match(
             value => _mapper.Map<AuthenticationResponse>(value),
             errors => throw GrpcExceptionHelper.ConvertToRpcException(errors));
     }
 
+    [Authorize(Roles = Roles.Lecturer)]
     public override async Task<LecturerProfileResponse> LecturerProfile(LecturerProfileRequest request,
         ServerCallContext context)
     {
-        var token = context.GetHttpContext().Request.Headers.Authorization
+        string token = context.GetHttpContext().Request.Headers.Authorization
             .ToString().Split(" ")[1];
         
-        var query = new GetLecturerProfileQuery(token);
+        GetLecturerProfileQuery query = new(token);
 
-        var result = await _sender.Send(query);
+        Result<ProfileResult> result = await _sender.Send(query);
 
         return result.Match(
             value => _mapper.Map<LecturerProfileResponse>(value),
             errors => throw GrpcExceptionHelper.ConvertToRpcException(errors));
     }
 
+    [Authorize(Roles = Roles.Student)]
     public override async Task<StudentProfileResponse> StudentProfile(StudentProfileRequest request,
         ServerCallContext context)
     {
-        var token = context.GetHttpContext().Request.Headers.Authorization
+        string token = context.GetHttpContext().Request.Headers.Authorization
             .ToString().Split(" ")[1];
 
-        var query = new GetStudentProfileQuery(token);
+        GetStudentProfileQuery query = new(token);
 
-        var result = await _sender.Send(query);
+        Result<ProfileResult> result = await _sender.Send(query);
 
         return result.Match(
             value => _mapper.Map<StudentProfileResponse>(value),
