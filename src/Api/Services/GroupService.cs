@@ -3,6 +3,7 @@ using Domain.Abstractions.Results;
 using Application.Models;
 using MapsterMapper;
 using Api.Helpers;
+using Api.Protos;
 using Grpc.Core;
 using MediatR;
 
@@ -23,9 +24,9 @@ public class GroupService : Group.GroupBase
         ServerCallContext context)
     {
         GetAllGroupsQuery query = new();
-
+    
         Result<List<GroupResult>> result = await _sender.Send(query);
-
+    
         return result.Match(
             value => new GetAllGroupsResponse
             {

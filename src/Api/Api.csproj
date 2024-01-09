@@ -9,32 +9,38 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Grpc.AspNetCore" Version="2.59.0" />
+        <PackageReference Include="Grpc.AspNetCore" Version="2.59.0"/>
         <PackageReference Include="Grpc.Tools" Version="2.60.0">
-          <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-          <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+            <PrivateAssets>all</PrivateAssets>
         </PackageReference>
-        <PackageReference Include="Mapster" Version="7.4.0" />
-        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
-        <PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="8.0.0" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0-rc.2.23480.2" />
+        <PackageReference Include="Mapster" Version="7.4.0"/>
+        <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1"/>
+        <PackageReference Include="Microsoft.AspNetCore.Grpc.JsonTranscoding" Version="8.0.0"/>
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="8.0.0-rc.2.23480.2"/>
         <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.11">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="6.5.0"/>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Contracts\Contracts.csproj" />
-        <ProjectReference Include="..\Application\Application.csproj" />
-        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj" />
+        <ProjectReference Include="..\Contracts\Contracts.csproj"/>
+        <ProjectReference Include="..\Application\Application.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
     </ItemGroup>
 
     <ItemGroup>
-        <Protobuf Include="Protos\user.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\group.proto" GrpcServices="Server" />
-        <Protobuf Include="Protos\subject.proto" GrpcServices="Server" />
+        <Protobuf Include="Protos\users.proto" GrpcServices="Server"/>
+        <Protobuf Include="Protos\groups.proto" GrpcServices="Server"/>
+        <Protobuf Include="Protos\subjects.proto" GrpcServices="Server"/>
+        <Protobuf Include="Protos\tasks.proto" GrpcServices="Server"/>
+        <Protobuf Include="Protos\grades.proto" GrpcServices="Server" />
     </ItemGroup>
-    
+
+    <ItemGroup>
+        <Folder Include="obj\Debug\net8.0\Protos\"/>
+    </ItemGroup>
+
 </Project>

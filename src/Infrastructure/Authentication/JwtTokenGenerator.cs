@@ -48,7 +48,7 @@ public class JwtTokenGenerator : IJwtTokenGenerator
        return new JwtSecurityTokenHandler().WriteToken(securityToken);
     }
     
-    private (string, string) SplitFullName(string fullName)
+    private static (string, string) SplitFullName(string fullName)
     {
         string[] nameParts = fullName.Split(' ');
 

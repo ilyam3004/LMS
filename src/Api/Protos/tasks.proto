@@ -1,0 +1,111 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Api.Protos";
+
+package tasks;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Protos/groups.proto";
+import "Protos/subjects.proto";
+
+service Task {
+  rpc AssignTask (AssignTaskRequest) returns (.subjects.LecturerSubjectResponse) {
+    option (google.api.http) = {
+      post: "/api/tasks",
+      body: "*"
+    };
+  };
+
+  rpc RemoveTask (google.protobuf.Empty) returns (.subjects.LecturerSubjectResponse) {
+    option (google.api.http) = {
+      delete: "/api/tasks/{task_id}",
+    };
+  };
+
+  rpc GetLecturerTaskDetails(google.protobuf.Empty) returns (.subjects.LecturerSubjectResponse) {
+    option (google.api.http) = {
+      get: "/api/tasks/lecturer/{task_id}",
+    };
+  };
+
+  rpc GetStudentTaskDetails(google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+    option (google.api.http) = {
+      get: "/api/tasks/student/{task_id}",
+    };
+  };
+
+  rpc UploadSolution (UploadSolutionRequest) returns (.subjects.StudentTaskResponse) {
+    option (google.api.http) = {
+      post: "/api/tasks/{student_task_id}/upload",
+      body: "*"
+    };
+  };
+
+  rpc RemoveSolution (google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+    option (google.api.http) = {
+      delete: "/api/tasks/{student_task_id}/remove",
+    };
+  };
+
+  rpc DownloadSolution (google.protobuf.Empty) returns (DownloadSolutionResponse) {
+    option (google.api.http) = {
+      get: "/api/tasks/{student_task_id}/download",
+    };
+  };
+
+  rpc ReturnTask (google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+    option (google.api.http) = {
+      put: "/api/tasks/{student_task_id}/return",
+    };
+  };
+
+  rpc AcceptTask (google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+    option (google.api.http) = {
+      put: "/api/tasks/{student_task_id}/accept",
+    };
+  };
+
+  rpc RejectTask (google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+    option (google.api.http) = {
+      put: "/api/tasks/{student_task_id}/reject",
+    };
+  };
+
+  rpc CommentTask (CommentTaskRequest) returns (.subjects.UploadedTaskResponse) {
+    option (google.api.http) = {
+      post: "/api/tasks/{student_task_id}/comment",
+      body: "*"
+    };
+  }
+}
+
+message AssignTaskRequest {
+  string title = 1;
+  string description = 2;
+  string subject_id = 3;
+  string deadline = 4;
+  int32 max_grade = 5;
+}
+
+message UploadSolutionRequest {
+  string student_task_id = 1;
+  bytes file = 2;
+}
+
+message CommentTaskRequest {
+  string student_task_id = 1;
+  string comment = 2;
+}
+
+message DownloadSolutionResponse {
+ bytes file = 1;
+}
+
+message StudentTasksResponse {
+  string student_id = 1;
+  string full_name = 2;
+  int32 total_grade = 3;
+  double average_grade = 4;
+  repeated .subjects.StudentTaskResponse tasks = 5; 
+}

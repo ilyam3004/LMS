@@ -1,0 +1,29 @@
+﻿syntax = "proto3";
+
+option csharp_namespace = "Api.Protos";
+
+package grades;
+
+import "google/api/annotations.proto";
+import "google/protobuf/empty.proto";
+import "Protos/tasks.proto";
+
+service Grade {
+  rpc GetLecturerGrades (google.protobuf.Empty) returns (LecturerGradesResponse) {
+    option (google.api.http) = {
+      post: "/api/grades",
+      body: "*"
+    };
+  };
+}
+
+message LecturerGradesResponse {
+  repeated SubjectGradesResponse grades = 1;
+}
+
+message SubjectGradesResponse {
+  string subject_id = 1;
+  string subject_name = 2;
+  string group_name = 3;
+  repeated .tasks.StudentTasksResponse student_tasks = 4;
+}

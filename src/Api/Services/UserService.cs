@@ -6,9 +6,10 @@ using Application.Authentication.Queries.Login;
 using Microsoft.AspNetCore.Authorization;
 using Application.Models.Authentication;
 using Domain.Abstractions.Results;
+using Domain.Common;
 using MapsterMapper;
 using Api.Helpers;
-using Domain.Common;
+using Api.Protos;
 using Grpc.Core;
 using MediatR;
 
@@ -67,7 +68,7 @@ public class UserService : User.UserBase
     {
         string token = context.GetHttpContext().Request.Headers.Authorization
             .ToString().Split(" ")[1];
-        
+
         GetLecturerProfileQuery query = new(token);
 
         Result<ProfileResult> result = await _sender.Send(query);

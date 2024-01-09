@@ -1,4 +1,5 @@
-﻿using Application.Features.Authentication.Commands.RegisterLecturer;
+﻿using Api.Protos;
+using Application.Features.Authentication.Commands.RegisterLecturer;
 using Application.Authentication.Commands.RegisterStudent;
 using Application.Authentication.Queries.GetLecturerProfile;
 using Application.Authentication.Queries.GetStudentProfile;

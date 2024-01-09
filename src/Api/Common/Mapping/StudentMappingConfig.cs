@@ -1,4 +1,5 @@
-﻿using Application.Models.Groups;
+﻿using Api.Protos;
+using Application.Models.Groups;
 using Mapster;
 
 namespace Api.Common.Mapping;

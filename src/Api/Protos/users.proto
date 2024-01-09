@@ -1,10 +1,10 @@
-﻿syntax = "proto3";
+﻿syntax="proto3";
 
-option csharp_namespace = "Api";
+option csharp_namespace = "Api.Protos";
 
 import "google/api/annotations.proto";
 
-package user;
+package users;
 
 service User {
   rpc RegisterLecturer (RegisterLecturerRequest) returns (AuthenticationResponse) {
@@ -27,7 +27,7 @@ service User {
       body: "*"
     };
   };
-  
+
   rpc LecturerProfile (LecturerProfileRequest) returns (LecturerProfileResponse) {
     option (google.api.http) = {
       get: "/api/users/lecturers/profile"

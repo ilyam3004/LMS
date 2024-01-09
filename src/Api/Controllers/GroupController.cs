@@ -17,15 +17,15 @@ public class GroupController : ApiController
         _mapper = mapper;
     }
     
-    [HttpGet]
-    public async Task<IActionResult> GetAllGroups()
-    {
-        var query = new GetAllGroupsQuery();
-
-        var result = await _sender.Send(query);
-
-        return result.Match(
-            value => Ok(_mapper.Map<List<GroupResponse>>(value)),
-            Problem);
-    }
+    // [HttpGet]
+    // public async Task<IActionResult> GetAllGroups()
+    // {
+    //     var query = new GetAllGroupsQuery();
+    //
+    //     var result = await _sender.Send(query);
+    //
+    //     return result.Match(
+    //         value => Ok(_mapper.Map<List<GroupResponse>>(value)),
+    //         Problem);
+    // }
 }

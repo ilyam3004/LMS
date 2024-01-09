@@ -51,7 +51,7 @@ public class SubjectController : ApiController
             value => Ok(_mapper.Map<List<LecturerSubjectResponse>>(value)),
             Problem);
     }
-
+    
     [HttpGet("lecturer")]
     [Authorize(Roles = Roles.Lecturer)]
     public async Task<IActionResult> GetLecturerSubjects()

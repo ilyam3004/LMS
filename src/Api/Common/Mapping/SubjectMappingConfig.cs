@@ -1,10 +1,10 @@
 using Application.Features.Subjects.Commands.CreateSubject;
-using Application.Models.Grades;
-using Contracts.Requests.Subjects;
-using Contracts.Responses.Subjects;
 using Application.Models.Subjects;
 using Contracts.Responses.Grades;
+using Application.Models.Grades;
+using Api.Protos;
 using Mapster;
+using SubjectGradesResponse = Contracts.Responses.Grades.SubjectGradesResponse;
 
 namespace Api.Common.Mapping;
 
@@ -23,7 +23,7 @@ public class SubjectMappingConfig : IRegister
             .Map(dest => dest.Name, src => src.Subject.Name)
             .Map(dest => dest.Description, src => src.Subject.Description)
             .Map(dest => dest.Group, src => src.Group);
-
+        
         config.NewConfig<StudentSubjectResult, StudentSubjectResponse>()
             .Map(dest => dest.SubjectId, src => src.Subject.SubjectId)
             .Map(dest => dest.Name, src => src.Subject.Name)

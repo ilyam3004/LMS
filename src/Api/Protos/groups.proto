@@ -1,10 +1,10 @@
 ﻿syntax = "proto3";
 
-option csharp_namespace = "Api";
+option csharp_namespace = "Api.Protos";
 
 import "google/api/annotations.proto";
 
-package group;
+package groups;
 
 service Group {
   rpc GetAllGroups (GetAllGroupsRequest) returns (GetAllGroupsResponse) {
@@ -33,5 +33,5 @@ message StudentResponse {
   string group_id = 3;
   string full_name = 4;
   string birthday = 5;
-  string address = 6; 
+  string address = 6;
 }
