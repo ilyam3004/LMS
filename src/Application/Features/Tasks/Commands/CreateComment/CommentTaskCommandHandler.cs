@@ -9,14 +9,14 @@ using MediatR;
 
 namespace Application.Features.Tasks.Commands.CreateComment;
 
-public class CreateCommentCommandHandler
-    : IRequestHandler<CreateCommentCommand, Result<UploadedTaskResult>>
+public class CommentTaskCommandHandler
+    : IRequestHandler<CommentTaskCommand, Result<UploadedTaskResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
     private readonly IDateTimeProvider _dateTimeProvider;
 
-    public CreateCommentCommandHandler(IUnitOfWork unitOfWork,
+    public CommentTaskCommandHandler(IUnitOfWork unitOfWork,
         IJwtTokenReader jwtTokenReader,
         IDateTimeProvider dateTimeProvider)
     {
@@ -25,10 +25,10 @@ public class CreateCommentCommandHandler
         _dateTimeProvider = dateTimeProvider;
     }
 
-    public async Task<Result<UploadedTaskResult>> Handle(CreateCommentCommand command,
+    public async Task<Result<UploadedTaskResult>> Handle(CommentTaskCommand taskCommand,
         CancellationToken cancellationToken)
     {
-        var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
+        var userId = _jwtTokenReader.ReadUserIdFromToken(taskCommand.Token);
         if (userId is null)
             return Errors.User.InvalidToken;
 
@@ -36,7 +36,7 @@ public class CreateCommentCommandHandler
         if (user is null)
             return Errors.User.UserNotFound;
 
-        var studentTask = await _unitOfWork.StudentTasks.GetByIdAsyncWithRelations(command.StudentTaskId);
+        var studentTask = await _unitOfWork.StudentTasks.GetByIdAsyncWithRelations(taskCommand.StudentTaskId);
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
 
@@ -45,8 +45,8 @@ public class CreateCommentCommandHandler
             TaskCommentId = Guid.NewGuid(),
             CreatedAt = _dateTimeProvider.UtcNow,
             UserId = user.UserId,
-            Comment = command.Comment,
-            StudentTaskId = command.StudentTaskId
+            Comment = taskCommand.Comment,
+            StudentTaskId = taskCommand.StudentTaskId
         };
 
         await _unitOfWork.GetRepository<TaskComment>().AddAsync(taskComment);

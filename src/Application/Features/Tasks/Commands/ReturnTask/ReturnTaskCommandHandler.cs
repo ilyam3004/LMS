@@ -1,6 +1,6 @@
 ﻿using Application.Common.Interfaces.Persistence;
-using Application.Models.Tasks;
 using Domain.Abstractions.Results;
+using Application.Models.Tasks;
 using Domain.Common;
 using Domain.Enums;
 using MediatR;

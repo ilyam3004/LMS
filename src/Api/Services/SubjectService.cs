@@ -63,7 +63,8 @@ public class SubjectService : Subject.SubjectBase
     }
 
     [Authorize(Roles = Roles.Student)]
-    public override async Task<StudentSubjectsResponse> GetStudentSubjects(Empty request, ServerCallContext context)
+    public override async Task<StudentSubjectsResponse> GetStudentSubjects(Empty request, 
+        ServerCallContext context)
     {
         var token = context.GetHttpContext().Request.Headers.Authorization
             .ToString().Split(" ")[1];

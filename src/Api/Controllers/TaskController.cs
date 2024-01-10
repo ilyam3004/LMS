@@ -5,7 +5,6 @@ using Application.Features.Tasks.Commands.RejectTask;
 using Application.Features.Tasks.Commands.RemoveTask;
 using Application.Features.Tasks.Commands.RemoveUploadedSolution;
 using Application.Features.Tasks.Commands.ReturnTask;
-using Application.Features.Tasks.Commands.UploadTaskSolution;
 using Application.Features.Tasks.Queries.DownloadTaskSolution;
 using Application.Features.Tasks.Queries.GetLecturerTaskDetails;
 using Application.Features.Tasks.Queries.GetStudentTask;
@@ -74,7 +73,7 @@ public class TaskController : ApiController
 
     [HttpGet("student/{taskId:guid}")]
     [Authorize(Roles = Roles.Student)]
-    public async Task<IActionResult> GetStudentTask(Guid taskId)
+    public async Task<IActionResult> GetStudentTaskDetails(Guid taskId)
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
         var command = new GetStudentTaskQuery(taskId, token);
@@ -86,21 +85,21 @@ public class TaskController : ApiController
             Problem);
     }
 
-    [HttpPut("{studentTaskId:guid}/upload")]
-    [Authorize(Roles = Roles.Student)]
-    public async Task<IActionResult> UploadSolution([FromRoute] Guid studentTaskId,
-        [FromForm] IFormFile file)
-    {
-        var token = Request.Headers.Authorization.ToString().Split(" ")[1];
-
-        var command = new UploadTaskSolutionCommand(file, studentTaskId, token);
-
-        var result = await _sender.Send(command);
-
-        return result.Match(
-            value => Ok(_mapper.Map<StudentTaskResponse>(value)),
-            Problem);
-    }
+    // [HttpPut("{studentTaskId:guid}/upload")]
+    // [Authorize(Roles = Roles.Student)]
+    // public async Task<IActionResult> UploadSolution([FromRoute] Guid studentTaskId,
+    //     [FromForm] IFormFile file)
+    // {
+    //     var token = Request.Headers.Authorization.ToString().Split(" ")[1];
+    //
+    //     var command = new UploadTaskSolutionCommand(file, studentTaskId, token);
+    //
+    //     var result = await _sender.Send(command);
+    //
+    //     return result.Match(
+    //         value => Ok(_mapper.Map<StudentTaskResponse>(value)),
+    //         Problem);
+    // }
 
     [HttpPut("{studentTaskId:guid}/remove")]
     [Authorize(Roles = Roles.Student)]
@@ -174,7 +173,7 @@ public class TaskController : ApiController
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
 
-        var command = new CreateCommentCommand(request.Comment, studentTaskId, token);
+        var command = new CommentTaskCommand(request.Comment, studentTaskId, token);
 
         var result = await _sender.Send(command);
 

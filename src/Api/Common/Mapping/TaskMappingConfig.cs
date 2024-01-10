@@ -1,10 +1,17 @@
-﻿using Application.Features.Tasks.Commands.CreateTask;
-using Contracts.Requests.Tasks;
-using Contracts.Responses.Tasks;
+﻿using Api.Protos;
+using Application.Features.Tasks.Commands.CreateComment;
+using Application.Features.Tasks.Commands.CreateTask;
+using Application.Features.Tasks.Commands.RemoveUploadedSolution;
+using Application.Features.Tasks.Commands.UploadTaskSolution;
 using Application.Models.Tasks;
-using Contracts.Responses.Students;
 using Domain.Entities;
 using Mapster;
+using AssignTaskRequest = Contracts.Requests.Tasks.AssignTaskRequest;
+using LecturerTaskResponse = Contracts.Responses.Tasks.LecturerTaskResponse;
+using StudentTaskResponse = Contracts.Responses.Tasks.StudentTaskResponse;
+using StudentTasksResponse = Contracts.Responses.Students.StudentTasksResponse;
+using TaskCommentResponse = Contracts.Responses.Tasks.TaskCommentResponse;
+using UploadedTaskResponse = Contracts.Responses.Tasks.UploadedTaskResponse;
 
 namespace Api.Common.Mapping;
 
@@ -75,5 +82,16 @@ public class TaskMappingConfig : IRegister
             .Map(dest => dest.TotalGrade, src => src.TotalGrade)
             .Map(dest => dest.AverageGrade, src => src.AverageGrade)
             .Map(dest => dest.Tasks, src => src.Tasks);
+
+        config.NewConfig<(UploadTaskSolutionRequest, string), UploadTaskSolutionCommand>()
+            .Map(dest => dest.FileName, src => src.Item1.FileName)
+            .Map(dest => dest.FileContent, src => src.Item1.File.ToByteArray())
+            .Map(dest => dest.Token, src => src.Item2)
+            .Map(dest => dest.StudentTaskId, src => Guid.Parse(src.Item1.StudentTaskId));
+        
+        config.NewConfig<(CommentTaskRequest, string), CommentTaskCommand>()
+            .Map(dest => dest.Comment, src => src.Item1.Comment)
+            .Map(dest => dest.Token, src => src.Item2)
+            .Map(dest => dest.StudentTaskId, src => Guid.Parse(src.Item1.StudentTaskId));
     }
 }

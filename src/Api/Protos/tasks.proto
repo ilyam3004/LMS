@@ -6,7 +6,6 @@ package tasks;
 
 import "google/api/annotations.proto";
 import "google/protobuf/empty.proto";
-import "Protos/groups.proto";
 import "Protos/subjects.proto";
 
 service Task {
@@ -17,32 +16,32 @@ service Task {
     };
   };
 
-  rpc RemoveTask (google.protobuf.Empty) returns (.subjects.LecturerSubjectResponse) {
+  rpc RemoveTask (RemoveTaskRequest) returns (.subjects.LecturerSubjectResponse) {
     option (google.api.http) = {
       delete: "/api/tasks/{task_id}",
     };
   };
 
-  rpc GetLecturerTaskDetails(google.protobuf.Empty) returns (.subjects.LecturerSubjectResponse) {
+  rpc GetLecturerTaskDetails(GetLecturerTaskDetailsRequest) returns (.subjects.LecturerTaskResponse) {
     option (google.api.http) = {
       get: "/api/tasks/lecturer/{task_id}",
     };
   };
 
-  rpc GetStudentTaskDetails(google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+  rpc GetStudentTaskDetails(GetStudentTaskDetailsRequest) returns (.subjects.StudentTaskResponse) {
     option (google.api.http) = {
       get: "/api/tasks/student/{task_id}",
     };
   };
 
-  rpc UploadSolution (UploadSolutionRequest) returns (.subjects.StudentTaskResponse) {
+  rpc UploadTaskSolution (UploadTaskSolutionRequest) returns (.subjects.StudentTaskResponse) {
     option (google.api.http) = {
       post: "/api/tasks/{student_task_id}/upload",
       body: "*"
     };
   };
 
-  rpc RemoveSolution (google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+  rpc RemoveTaskSolution (RemoveTaskSolutionRequest) returns (.subjects.StudentTaskResponse) {
     option (google.api.http) = {
       delete: "/api/tasks/{student_task_id}/remove",
     };
@@ -54,19 +53,19 @@ service Task {
     };
   };
 
-  rpc ReturnTask (google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+  rpc ReturnTask (ReturnTaskRequest) returns (.subjects.LecturerTaskResponse) {
     option (google.api.http) = {
       put: "/api/tasks/{student_task_id}/return",
     };
   };
 
-  rpc AcceptTask (google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+  rpc AcceptTask (AcceptTaskRequest) returns (.subjects.LecturerTaskResponse) {
     option (google.api.http) = {
       put: "/api/tasks/{student_task_id}/accept",
     };
   };
 
-  rpc RejectTask (google.protobuf.Empty) returns (.subjects.StudentTaskResponse) {
+  rpc RejectTask (RejectTaskRequest) returns (.subjects.LecturerTaskResponse) {
     option (google.api.http) = {
       put: "/api/tasks/{student_task_id}/reject",
     };
@@ -88,9 +87,26 @@ message AssignTaskRequest {
   int32 max_grade = 5;
 }
 
-message UploadSolutionRequest {
+message RemoveTaskRequest {
+  string task_id = 1;
+}
+
+message RemoveTaskSolutionRequest {
+  string student_task_id = 1;
+}
+
+message GetLecturerTaskDetailsRequest {
+  string task_id = 1;
+}
+
+message GetStudentTaskDetailsRequest {
+  string task_id = 1;
+}
+
+message UploadTaskSolutionRequest {
   string student_task_id = 1;
   bytes file = 2;
+  string file_name = 3;
 }
 
 message CommentTaskRequest {
@@ -98,8 +114,21 @@ message CommentTaskRequest {
   string comment = 2;
 }
 
+message AcceptTaskRequest {
+  string student_task_id = 1;
+  int32 grade = 2;
+}
+
+message RejectTaskRequest {
+  string student_task_id = 1;
+}
+
+message ReturnTaskRequest {
+  string student_task_id = 1;
+}
+
 message DownloadSolutionResponse {
- bytes file = 1;
+  bytes file = 1;
 }
 
 message StudentTasksResponse {
@@ -107,5 +136,5 @@ message StudentTasksResponse {
   string full_name = 2;
   int32 total_grade = 3;
   double average_grade = 4;
-  repeated .subjects.StudentTaskResponse tasks = 5; 
+  repeated .subjects.StudentTaskResponse tasks = 5;
 }

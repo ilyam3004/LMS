@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
-using Microsoft.AspNetCore.Http;
 using Application.Models.Tasks;
 using Application.Services;
 using Domain.Common;
@@ -48,13 +47,13 @@ public class UploadTaskSolutionCommandHandler
         if (studentTask.Status == StudentTaskStatus.Rejected)
             return Errors.Task.WrongTaskStatus;
 
-        if (command.File?.Length == 0)
+        if (command.FileContent?.Length == 0)
             return Errors.File.FileNotFound;
 
-        var filePath = await UploadFileAndGetFilePath(command.File!);
+        var filePath = await UploadFileAndGetFilePath(command.FileContent!, command.FileName);
 
         studentTask.FileUrl = filePath;
-        studentTask.OrdinalFileName = command.File?.FileName;
+        studentTask.OrdinalFileName = command.FileName;
         studentTask.Status = StudentTaskStatus.Uploaded;
         studentTask.UploadedAt = _dateTimeProvider.UtcNow;
 
@@ -75,14 +74,14 @@ public class UploadTaskSolutionCommandHandler
         return new StudentTaskResult(task!, studentTask!);
     }
 
-    private static async Task<string> UploadFileAndGetFilePath(IFormFile file)
+    private static async Task<string> UploadFileAndGetFilePath(byte[] file, string fileName)
     {
-        var fileName = $"{file.FileName}_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
+        var uniqueFileName = $"{fileName}_{Guid.NewGuid()}{Path.GetExtension(fileName)}";
 
-        var filePath = Path.Combine("/app/uploads", fileName);
+        var filePath = Path.Combine("/app/uploads", uniqueFileName);
 
         await using var stream = new FileStream(filePath, FileMode.Create);
-        await file.CopyToAsync(stream);
+        await stream.WriteAsync(file);
 
         return filePath;
     }

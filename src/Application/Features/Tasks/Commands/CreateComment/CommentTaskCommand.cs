@@ -4,7 +4,7 @@ using MediatR;
 
 namespace Application.Features.Tasks.Commands.CreateComment;
 
-public record CreateCommentCommand(
+public record CommentTaskCommand(
     string Comment,
     Guid StudentTaskId,
     string Token) : IRequest<Result<UploadedTaskResult>>;

@@ -1,10 +1,10 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models;
-using Application.Models.Groups;
 using Application.Models.Subjects;
-using Application.Models.Tasks;
 using Domain.Abstractions.Results;
+using Application.Models.Groups;
+using Application.Models.Tasks;
+using Application.Models;
 using Domain.Common;
 using MediatR;
 

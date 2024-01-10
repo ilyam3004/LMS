@@ -2,9 +2,9 @@
 
 namespace Application.Features.Tasks.Commands.CreateComment;
 
-public class CreateCommentCommandValidator : AbstractValidator<CreateCommentCommand>
+public class CommentTaskValidator : AbstractValidator<CommentTaskCommand>
 {
-    public CreateCommentCommandValidator()
+    public CommentTaskValidator()
     {
         RuleFor(c => c.Comment)
             .NotEmpty()
