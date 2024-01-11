@@ -1,4 +1,5 @@
 ﻿using Application.Models;
+using Application.Models.Groups;
 using Domain.Abstractions.Results;
 using MediatR;
 

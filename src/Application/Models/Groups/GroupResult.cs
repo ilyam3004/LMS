@@ -1,6 +1,5 @@
-﻿using Application.Models.Groups;
-using Domain.Entities;
+﻿using Domain.Entities;
 
-namespace Application.Models;
+namespace Application.Models.Groups;
 
-public record GroupResult(Group group, List<StudentResult> Students);
+public record GroupResult(Group Group, List<StudentResult> Students);

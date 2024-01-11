@@ -5,7 +5,6 @@ option csharp_namespace = "Api.Protos";
 package tasks;
 
 import "google/api/annotations.proto";
-import "google/protobuf/empty.proto";
 import "Protos/subjects.proto";
 
 service Task {
@@ -47,7 +46,7 @@ service Task {
     };
   };
 
-  rpc DownloadSolution (google.protobuf.Empty) returns (DownloadSolutionResponse) {
+  rpc DownloadSolution (DownloadTaskSolutionRequest) returns (DownloadSolutionResponse) {
     option (google.api.http) = {
       get: "/api/tasks/{student_task_id}/download",
     };
@@ -107,6 +106,10 @@ message UploadTaskSolutionRequest {
   string student_task_id = 1;
   bytes file = 2;
   string file_name = 3;
+}
+
+message DownloadTaskSolutionRequest{
+  string student_task_id = 1;
 }
 
 message CommentTaskRequest {

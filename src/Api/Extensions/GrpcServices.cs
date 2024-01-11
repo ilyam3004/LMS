@@ -9,8 +9,8 @@ public static class GrpcServices
         app.MapGrpcService<UserService>();
         app.MapGrpcService<GroupService>();
         app.MapGrpcService<SubjectService>();
-        app.MapGrpcService<TaskService>();
         app.MapGrpcService<GradeService>();
+        app.MapGrpcService<TaskService>();
         
         return app;
     }

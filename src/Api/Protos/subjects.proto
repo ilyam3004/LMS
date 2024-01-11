@@ -18,7 +18,7 @@ service Subject {
 
   rpc RemoveSubject (RemoveSubjectRequest) returns (LecturerSubjectsResponse) {
     option (google.api.http) = {
-      get: "/api/subjects/{subject_id}",
+      delete: "/api/subjects/{subject_id}",
     };
   };
 
@@ -86,9 +86,6 @@ message UploadedTaskResponse {
   .groups.StudentResponse student = 7;
   repeated TaskCommentResponse comments = 8;
 }
-
-
-
 
 message TaskCommentResponse {
   string task_comment_id = 1;

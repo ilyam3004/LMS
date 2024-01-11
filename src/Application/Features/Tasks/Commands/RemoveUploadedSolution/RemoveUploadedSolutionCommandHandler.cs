@@ -1,7 +1,7 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models.Tasks;
 using Domain.Abstractions.Results;
+using Application.Models.Tasks;
 using Domain.Common;
 using Domain.Enums;
 using MediatR;
@@ -14,7 +14,8 @@ public class RemoveUploadedSolutionCommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
 
-    public RemoveUploadedSolutionCommandHandler(IUnitOfWork unitOfWork, IJwtTokenReader jwtTokenReader)
+    public RemoveUploadedSolutionCommandHandler(IUnitOfWork unitOfWork, 
+        IJwtTokenReader jwtTokenReader)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenReader;

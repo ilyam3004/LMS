@@ -4,6 +4,7 @@ using Application.Models;
 using MapsterMapper;
 using Api.Helpers;
 using Api.Protos;
+using Application.Models.Groups;
 using Grpc.Core;
 using MediatR;
 

@@ -1,17 +1,10 @@
-﻿using Api.Protos;
-using Application.Features.Tasks.Commands.CreateComment;
+﻿using Application.Features.Tasks.Commands.CreateComment;
 using Application.Features.Tasks.Commands.CreateTask;
-using Application.Features.Tasks.Commands.RemoveUploadedSolution;
 using Application.Features.Tasks.Commands.UploadTaskSolution;
 using Application.Models.Tasks;
 using Domain.Entities;
+using Api.Protos;
 using Mapster;
-using AssignTaskRequest = Contracts.Requests.Tasks.AssignTaskRequest;
-using LecturerTaskResponse = Contracts.Responses.Tasks.LecturerTaskResponse;
-using StudentTaskResponse = Contracts.Responses.Tasks.StudentTaskResponse;
-using StudentTasksResponse = Contracts.Responses.Students.StudentTasksResponse;
-using TaskCommentResponse = Contracts.Responses.Tasks.TaskCommentResponse;
-using UploadedTaskResponse = Contracts.Responses.Tasks.UploadedTaskResponse;
 
 namespace Api.Common.Mapping;
 

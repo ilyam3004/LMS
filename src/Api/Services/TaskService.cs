@@ -6,15 +6,18 @@ using Application.Features.Tasks.Commands.AcceptTask;
 using Application.Features.Tasks.Commands.ReturnTask;
 using Application.Features.Tasks.Commands.RemoveTask;
 using Application.Features.Tasks.Commands.CreateTask;
+using Application.Features.Tasks.Commands.CreateComment;
 using Microsoft.AspNetCore.Authorization;
 using Task = Api.Protos.Task;
 using Domain.Common;
 using MapsterMapper;
 using Api.Helpers;
 using Api.Protos;
-using Application.Features.Tasks.Commands.CreateComment;
+using Google.Protobuf.Collections;
 using Grpc.Core;
+using Mapster;
 using MediatR;
+using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Services;
 
@@ -98,6 +101,13 @@ public class TaskService : Task.TaskBase
         return result.Match(
             value => _mapper.Map<StudentTaskResponse>(value),
             errors => throw GrpcExceptionHelper.ConvertToRpcException(errors));
+    }
+
+    [Authorize(Roles = $"{Roles.Lecturer},{Roles.Student}")]
+    public override Task<DownloadSolutionResponse> DownloadSolution(DownloadTaskSolutionRequest request,
+        ServerCallContext context)
+    {
+        throw new NotImplementedException();
     }
 
     [Authorize(Roles = Roles.Student)]
