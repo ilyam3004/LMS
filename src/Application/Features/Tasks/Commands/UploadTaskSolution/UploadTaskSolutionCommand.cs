@@ -1,11 +1,11 @@
 ﻿using Application.Models.Tasks;
 using Domain.Abstractions.Results;
+using Microsoft.AspNetCore.Http;
 using MediatR;
 
 namespace Application.Features.Tasks.Commands.UploadTaskSolution;
 
 public record UploadTaskSolutionCommand(
-    string FileName,
-    byte[]? FileContent, 
-    Guid StudentTaskId,
+    IFormFile File, 
+    Guid StudentTaskId, 
     string Token) : IRequest<Result<StudentTaskResult>>;

@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
+using Microsoft.AspNetCore.Http;
 using Application.Models.Tasks;
 using Application.Services;
 using Domain.Common;
@@ -47,13 +48,13 @@ public class UploadTaskSolutionCommandHandler
         if (studentTask.Status == StudentTaskStatus.Rejected)
             return Errors.Task.WrongTaskStatus;
 
-        if (command.FileContent?.Length == 0)
+        if (command.File.Length == 0)
             return Errors.File.FileNotFound;
 
-        var filePath = await UploadFileAndGetFilePath(command.FileContent!, command.FileName);
+        var filePath = await UploadFileAndGetFilePath(command.File);
 
         studentTask.FileUrl = filePath;
-        studentTask.OrdinalFileName = command.FileName;
+        studentTask.OrdinalFileName = command.File.FileName;
         studentTask.Status = StudentTaskStatus.Uploaded;
         studentTask.UploadedAt = _dateTimeProvider.UtcNow;
 
@@ -68,20 +69,20 @@ public class UploadTaskSolutionCommandHandler
     {
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
 
-        var studentTask = task?.StudentTasks.FirstOrDefault(studentTask =>
+        var studentTask = task!.StudentTasks.FirstOrDefault(studentTask =>
             studentTask.StudentId == studentId);
 
-        return new StudentTaskResult(task!, studentTask!);
+        return new StudentTaskResult(task, studentTask!);
     }
 
-    private static async Task<string> UploadFileAndGetFilePath(byte[] file, string fileName)
+    private static async Task<string> UploadFileAndGetFilePath(IFormFile file)
     {
-        var uniqueFileName = $"{fileName}_{Guid.NewGuid()}{Path.GetExtension(fileName)}";
+        var fileName = $"{file.FileName}_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
 
-        var filePath = Path.Combine("/app/uploads", uniqueFileName);
+        var filePath = Path.Combine("/app/uploads", fileName);
 
         await using var stream = new FileStream(filePath, FileMode.Create);
-        await stream.WriteAsync(file);
+        await file.CopyToAsync(stream);
 
         return filePath;
     }

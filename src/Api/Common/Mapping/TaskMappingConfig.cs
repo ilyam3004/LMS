@@ -1,6 +1,5 @@
 ﻿using Application.Features.Tasks.Commands.CreateComment;
 using Application.Features.Tasks.Commands.CreateTask;
-using Application.Features.Tasks.Commands.UploadTaskSolution;
 using Application.Models.Tasks;
 using Domain.Entities;
 using Api.Protos;
@@ -27,7 +26,8 @@ public class TaskMappingConfig : IRegister
             .Map(dest => dest.Grade, src => src.Grade)
             .Map(dest => dest.Student, src => src.Student)
             .Map(dest => dest.Status, src => src.Status)
-            .Map(dest => dest.Comments, src => src.Comments);
+            .AfterMapping((src, dest) =>
+                dest.Comments.Add(src.Comments.Adapt<List<TaskCommentResponse>>()));
 
         config.NewConfig<LecturerTaskResult, LecturerTaskResponse>()
             .Map(dest => dest.TaskId, src => src.Task.TaskId)
@@ -37,7 +37,8 @@ public class TaskMappingConfig : IRegister
             .Map(dest => dest.Deadline, src => src.Task.Deadline)
             .Map(dest => dest.MaxGrade, src => src.Task.MaxGrade)
             .Map(dest => dest.GroupName, src => src.Task.Subject.Group.Name)
-            .Map(dest => dest.StudentTasks, src => src.Task.StudentTasks);
+            .AfterMapping((src, dest) =>
+                dest.StudentTasks.AddRange(src.Task.StudentTasks.Adapt<List<UploadedTaskResponse>>()));
 
         config.NewConfig<StudentTaskResult, StudentTaskResponse>()
             .Map(dest => dest.TaskId, src => src.Task.TaskId)
@@ -57,7 +58,9 @@ public class TaskMappingConfig : IRegister
             .Map(dest => dest.Grade, src => src.Task.Grade)
             .Map(dest => dest.Student, src => src.Task.Student)
             .Map(dest => dest.Status, src => src.Task.Status)
-            .Map(dest => dest.Comments, src => src.Task.Comments);
+            .Map(dest => dest.Comments, src => src.Task.Comments)
+            .AfterMapping((src, dest) =>
+                dest.Comments.AddRange(src.Task.Comments.Adapt<List<TaskCommentResponse>>()));
 
         config.NewConfig<TaskComment, TaskCommentResponse>()
             .Map(dest => dest.TaskCommentId, src => src.TaskCommentId)
@@ -68,20 +71,15 @@ public class TaskMappingConfig : IRegister
                 src.User.Student != null
                     ? src.User.Student.FullName
                     : src.User.Lecturer!.FullName);
-        
+
         config.NewConfig<StudentTasksResult, StudentTasksResponse>()
             .Map(dest => dest.StudentId, src => src.StudentId)
             .Map(dest => dest.FullName, src => src.FullName)
             .Map(dest => dest.TotalGrade, src => src.TotalGrade)
             .Map(dest => dest.AverageGrade, src => src.AverageGrade)
-            .Map(dest => dest.Tasks, src => src.Tasks);
+            .AfterMapping((src, dest) =>
+                dest.Tasks.AddRange(src.Tasks.Adapt<List<StudentTaskResponse>>()));
 
-        config.NewConfig<(UploadTaskSolutionRequest, string), UploadTaskSolutionCommand>()
-            .Map(dest => dest.FileName, src => src.Item1.FileName)
-            .Map(dest => dest.FileContent, src => src.Item1.File.ToByteArray())
-            .Map(dest => dest.Token, src => src.Item2)
-            .Map(dest => dest.StudentTaskId, src => Guid.Parse(src.Item1.StudentTaskId));
-        
         config.NewConfig<(CommentTaskRequest, string), CommentTaskCommand>()
             .Map(dest => dest.Comment, src => src.Item1.Comment)
             .Map(dest => dest.Token, src => src.Item2)

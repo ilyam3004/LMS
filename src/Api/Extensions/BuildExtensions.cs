@@ -1,6 +1,4 @@
-﻿using Api.Services;
-
-namespace Api.Extensions;
+﻿namespace Api.Extensions;
 
 public static class BuildExtensions
 {
@@ -15,6 +13,7 @@ public static class BuildExtensions
         app.UseAuthorization();
 
         app.AddGrpcServices();
+        app.MapControllers();
         
         return app;
     }

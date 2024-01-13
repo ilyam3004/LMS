@@ -25,6 +25,7 @@ public class SubjectRepository : Repository<Subject>, ISubjectRepository
             .Include(s => s.Lecturer)
             .Include(s => s.Tasks)
             .ThenInclude(st => st.StudentTasks)
+            .ThenInclude(st => st.Comments)
             .ToListAsync();
 
     public async Task<bool> SubjectExists(Guid subjectId)

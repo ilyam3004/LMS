@@ -33,22 +33,9 @@ service Task {
     };
   };
 
-  rpc UploadTaskSolution (UploadTaskSolutionRequest) returns (.subjects.StudentTaskResponse) {
-    option (google.api.http) = {
-      post: "/api/tasks/{student_task_id}/upload",
-      body: "*"
-    };
-  };
-
   rpc RemoveTaskSolution (RemoveTaskSolutionRequest) returns (.subjects.StudentTaskResponse) {
     option (google.api.http) = {
       delete: "/api/tasks/{student_task_id}/remove",
-    };
-  };
-
-  rpc DownloadSolution (DownloadTaskSolutionRequest) returns (DownloadSolutionResponse) {
-    option (google.api.http) = {
-      get: "/api/tasks/{student_task_id}/download",
     };
   };
 
@@ -102,12 +89,6 @@ message GetStudentTaskDetailsRequest {
   string task_id = 1;
 }
 
-message UploadTaskSolutionRequest {
-  string student_task_id = 1;
-  bytes file = 2;
-  string file_name = 3;
-}
-
 message DownloadTaskSolutionRequest{
   string student_task_id = 1;
 }
@@ -128,10 +109,6 @@ message RejectTaskRequest {
 
 message ReturnTaskRequest {
   string student_task_id = 1;
-}
-
-message DownloadSolutionResponse {
-  bytes file = 1;
 }
 
 message StudentTasksResponse {

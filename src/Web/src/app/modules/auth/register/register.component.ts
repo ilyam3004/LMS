@@ -66,15 +66,11 @@ export class RegisterComponent implements OnInit {
           this.router.navigate(['/student/subjects'], {relativeTo: this.route});
         },
         error: error => {
-          if (error.status == 400) {
-            this.alertService.error(error.error.errors?.Email
-              ? error.error.errors?.Email[0]
-              : error.error.errors?.Password[0]);
-            this.studentForm.reset();
-          } else {
-            this.alertService.error(error.error.title);
-          }
+          this.alertService.error(error.error.message);
           this.registerLoading = false;
+          if (error.status == 400) {
+            this.studentForm.reset();
+          }
         }
       });
   }
@@ -102,12 +98,12 @@ export class RegisterComponent implements OnInit {
           this.lecturerForm.reset();
         },
         error: error => {
-          if (error.status == 400) {
-            this.alertService.error(this.getErrorMessage(error));
-          } else {
-            this.alertService.error(error.error.title);
-          }
+          this.alertService.error(error.error.message);
           this.registerLoading = false;
+
+          if (error.status == 400) {
+            this.lecturerForm.reset();
+          }
         }
       });
   }
@@ -148,19 +144,5 @@ export class RegisterComponent implements OnInit {
       birthday: [null, Validators.required],
       address: ['', Validators.required]
     });
-  }
-
-  private getErrorMessage(error: any): string {
-    const errors = error.error.errors;
-
-    return errors?.Email[0] ? errors?.Email[0]
-      : errors?.Password[0] ? errors?.Password[0]
-        : errors?.FirstName[0] ? errors?.FirstName[0]
-          : errors?.LastName[0] ? errors?.LastName[0]
-            : errors?.Birthday[0] ? errors?.Birthday[0]
-              : errors?.Address[0] ? errors?.Address[0]
-                : errors?.Course[0] ? errors?.Course[0]
-                  : errors?.GroupName[0] ? errors?.GroupName[0]
-                    : error.error.title;
   }
 }

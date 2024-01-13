@@ -19,7 +19,9 @@ public static class DependencyInjection
         services.AddMappings();
 
         services.AddAuthorization();
+        
         services.AddGrpc().AddJsonTranscoding();    
+        services.AddControllers();
 
         return services;
     }

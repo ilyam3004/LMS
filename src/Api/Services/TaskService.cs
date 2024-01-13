@@ -1,6 +1,5 @@
 ﻿using Application.Features.Tasks.Queries.GetLecturerTaskDetails;
 using Application.Features.Tasks.Queries.GetStudentTask;
-using Application.Features.Tasks.Commands.UploadTaskSolution;
 using Application.Features.Tasks.Commands.RemoveUploadedSolution;
 using Application.Features.Tasks.Commands.AcceptTask;
 using Application.Features.Tasks.Commands.ReturnTask;
@@ -13,11 +12,8 @@ using Domain.Common;
 using MapsterMapper;
 using Api.Helpers;
 using Api.Protos;
-using Google.Protobuf.Collections;
 using Grpc.Core;
-using Mapster;
 using MediatR;
-using Microsoft.IdentityModel.Tokens;
 
 namespace Api.Services;
 
@@ -85,29 +81,6 @@ public class TaskService : Task.TaskBase
         return result.Match(
             value => _mapper.Map<StudentTaskResponse>(value),
             errors => throw GrpcExceptionHelper.ConvertToRpcException(errors));
-    }
-
-    [Authorize(Roles = Roles.Student)]
-    public override async Task<StudentTaskResponse> UploadTaskSolution(UploadTaskSolutionRequest request,
-        ServerCallContext context)
-    {
-        var token = context.GetHttpContext().Request.Headers.Authorization
-            .ToString().Split(" ")[1];
-
-        var command = _mapper.Map<UploadTaskSolutionCommand>((request, token));
-
-        var result = await _sender.Send(command);
-
-        return result.Match(
-            value => _mapper.Map<StudentTaskResponse>(value),
-            errors => throw GrpcExceptionHelper.ConvertToRpcException(errors));
-    }
-
-    [Authorize(Roles = $"{Roles.Lecturer},{Roles.Student}")]
-    public override Task<DownloadSolutionResponse> DownloadSolution(DownloadTaskSolutionRequest request,
-        ServerCallContext context)
-    {
-        throw new NotImplementedException();
     }
 
     [Authorize(Roles = Roles.Student)]

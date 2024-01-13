@@ -1,6 +1,5 @@
 ﻿export interface Error {
-  type: string;
-  title: string;
-  status: number;
-  traceId: string;
+  code: number;
+  message: string;
+  details: string[];
 }

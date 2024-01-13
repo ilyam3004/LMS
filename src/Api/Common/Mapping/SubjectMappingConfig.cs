@@ -21,20 +21,23 @@ public class SubjectMappingConfig : IRegister
             .Map(dest => dest.Name, src => src.Subject.Name)
             .Map(dest => dest.Description, src => src.Subject.Description)
             .Map(dest => dest.Group, src => src.Group)
-            .Map(dest => dest.Tasks, src => src.Tasks);
+            .AfterMapping((src, dest) =>
+                dest.Tasks.AddRange(src.Tasks.Adapt<List<LecturerTaskResponse>>()));
         
         config.NewConfig<StudentSubjectResult, StudentSubjectResponse>()
             .Map(dest => dest.SubjectId, src => src.Subject.SubjectId)
             .Map(dest => dest.Name, src => src.Subject.Name)
             .Map(dest => dest.Description, src => src.Subject.Description)
             .Map(dest => dest.LecturerName, src => src.Subject.Lecturer.FullName)
-            .Map(dest => dest.Tasks, src => src.Tasks)
             .Map(dest => dest.AverageGrade, src => src.AverageGrade)
-            .Map(dest => dest.TotalGrade, src => src.TotalGrade);
-        
+            .Map(dest => dest.TotalGrade, src => src.TotalGrade)
+            .AfterMapping((src, dest) =>
+                dest.Tasks.AddRange(src.Tasks.Adapt<List<StudentTaskResponse>>()));
+
         config.NewConfig<SubjectGradesResult, SubjectGradesResponse>()
             .Map(dest => dest.SubjectId, src => src.SubjectId)
             .Map(dest => dest.SubjectName, src => src.SubjectName)
-            .Map(dest => dest.StudentTasks, src => src.StudentTasks);
+            .AfterMapping((src, dest) =>
+                dest.StudentTasks.AddRange(src.StudentTasks.Adapt<List<StudentTasksResponse>>()));
     }
 }
