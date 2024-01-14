@@ -4,7 +4,7 @@ import {AlertService} from '../../../core/services/alert.service';
 import {GroupService} from "../../../core/services/group.service";
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {ActivatedRoute, Router} from '@angular/router';
-import {Group} from "../../../core/models/group";
+import {Group, GroupsResponse} from "../../../core/models/group";
 import {Component, OnInit} from '@angular/core';
 import {first} from 'rxjs';
 
@@ -111,8 +111,8 @@ export class RegisterComponent implements OnInit {
   private fetchGroups(): void {
     this.groupLoading = true;
     this.groupService.getAllGroups().subscribe({
-      next: (groupsResponse: Group[]) => {
-        this.groups = groupsResponse;
+      next: (groupsResponse: GroupsResponse) => {
+        this.groups = groupsResponse.groups;
         this.initializeForms();
         this.groupLoading = false;
       },

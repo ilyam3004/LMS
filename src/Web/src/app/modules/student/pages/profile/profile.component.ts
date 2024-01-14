@@ -1,8 +1,7 @@
-import {Component, OnInit} from '@angular/core';
 import {AuthenticationService} from "../../../../core/services/authentication.service";
-import {StudentProfile} from "../../../../core/models/user";
 import {AlertService} from "../../../../core/services/alert.service";
-import {group} from "@angular/animations";
+import {StudentProfile} from "../../../../core/models/user";
+import {Component, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-profile',
@@ -25,7 +24,6 @@ export class ProfileComponent implements OnInit {
     this.authenticationService.getStudentProfile().subscribe({
         next: (profile) => {
           this.profile = profile;
-          console.log(this.profile);
           this.fetchLoading = false;
         },
         error: (err) => {

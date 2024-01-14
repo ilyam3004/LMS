@@ -1,14 +1,12 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {NgbModal} from "@ng-bootstrap/ng-bootstrap";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {CreateSubjectRequest, LecturerSubject} from "../../../../core/models/subject";
-import {Group} from "../../../../core/models/group";
+import {CreateSubjectRequest, LecturerSubject, LecturerSubjectsResponse} from "../../../../core/models/subject";
+import {Group, GroupsResponse} from "../../../../core/models/group";
 import {SubjectService} from "../../../../core/services/subject.service";
 import {GroupService} from "../../../../core/services/group.service";
 import {AlertService} from "../../../../core/services/alert.service";
-import {
-  ConfirmationModalComponent
-} from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
+import { ConfirmationModalComponent} from "../../../../shared/components/confirmation-modal/confirmation-modal.component";
 
 @Component({
   selector: 'app-subject',
@@ -45,11 +43,11 @@ export class SubjectsComponent implements OnInit {
     this.subjectService.getLecturerSubjects()
       .subscribe(
         {
-          next: subjects => {
-            this.subjects = subjects;
+          next: response => {
+            this.subjects = response.subjects;
           },
           error: err => {
-            this.alertService.error(err.error.title);
+            this.alertService.error(err.error.message);
             this.fetchLoading = false;
           }
         });
@@ -57,13 +55,13 @@ export class SubjectsComponent implements OnInit {
 
   private fetchGroups(): void {
     this.groupService.getAllGroups().subscribe({
-      next: (groupsResponse: Group[]) => {
-        this.groups = groupsResponse;
+      next: (groupsResponse: GroupsResponse) => {
+        this.groups = groupsResponse.groups;
         this.initializeForms();
         this.fetchLoading = false;
       },
       error: (error) => {
-        this.alertService.error(error.error.title)
+        this.alertService.error(error.error.message)
         this.fetchLoading = false;
       }
     });
@@ -79,19 +77,18 @@ export class SubjectsComponent implements OnInit {
     this.createLoading = true;
 
     const request: CreateSubjectRequest = this.createSubjectForm.value;
-    console.log(request);
 
     this.subjectService.createSubject(request)
       .subscribe({
-        next: (subjectsResponse) => {
+        next: (subjectsResponse: LecturerSubjectsResponse) => {
           this.alertService.success('Subject created successfully',
             {keepAfterRouteChange: true});
-          this.subjects = subjectsResponse;
+          this.subjects = subjectsResponse.subjects;
           this.createLoading = false;
           modal.close();
         },
         error: error => {
-          this.alertService.error(error.error.title);
+          this.alertService.error(error.error.message);
           this.createLoading = false;
         }
       });
@@ -120,8 +117,8 @@ export class SubjectsComponent implements OnInit {
 
     this.subjectService.removeSubject(subjectId)
       .subscribe({
-        next: subjectResponse => {
-          this.subjects = subjectResponse
+        next: (subjectResponse: LecturerSubjectsResponse) => {
+          this.subjects = subjectResponse.subjects;
           this.alertService.success("Subject removed successfully");
           this.removeLoading = false;
         },
@@ -139,7 +136,6 @@ export class SubjectsComponent implements OnInit {
       groupName: ['', Validators.required],
     });
 
-    console.log(this.createSubjectForm)
   }
 
   openModal(content: TemplateRef<any>) {

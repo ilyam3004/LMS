@@ -1,7 +1,7 @@
 import {Component, OnInit, TemplateRef} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {NgbDateStruct, NgbModal} from "@ng-bootstrap/ng-bootstrap";
-import {LecturerSubject} from '../../../../core/models/subject';
+import {LecturerSubject, LecturerSubjectsResponse} from '../../../../core/models/subject';
 import {TaskService} from "../../../../core/services/task.service";
 import {SubjectService} from "../../../../core/services/subject.service";
 import {AlertService} from "../../../../core/services/alert.service";
@@ -55,8 +55,8 @@ export class TasksComponent implements OnInit {
     this.subjectService.getLecturerSubjects()
       .subscribe(
         {
-          next: subjects => {
-            this.subjects = subjects;
+          next: (subjects: LecturerSubjectsResponse)=> {
+            this.subjects = subjects.subjects;
             this.fetchLoading = false;
           },
           error: err => {

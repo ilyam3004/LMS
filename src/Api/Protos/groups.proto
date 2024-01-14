@@ -17,7 +17,7 @@ service Group {
 message GetAllGroupsRequest { }
 
 message GetAllGroupsResponse {
-  repeated GroupResponse Groups = 1;
+  repeated GroupResponse groups = 1;
 }
 
 message GroupResponse {

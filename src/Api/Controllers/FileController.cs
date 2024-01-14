@@ -1,5 +1,4 @@
-﻿using Application.Features.Tasks.Commands.RemoveUploadedSolution;
-using Application.Features.Tasks.Queries.DownloadTaskSolution;
+﻿using Application.Features.Tasks.Queries.DownloadTaskSolution;
 using Application.Features.Tasks.Commands.UploadTaskSolution;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -12,12 +11,12 @@ namespace Api.Controllers;
 
 [ApiController]
 [Route("api/tasks")]
-public class TaskController : ApiController
+public class FileController : ApiController
 {
     private readonly ISender _sender;
     private readonly IMapper _mapper;
 
-    public TaskController(ISender sender, IMapper mapper)
+    public FileController(ISender sender, IMapper mapper)
     {
         _sender = sender;
         _mapper = mapper;
@@ -25,7 +24,7 @@ public class TaskController : ApiController
 
     [HttpPut("{studentTaskId:guid}/upload")]
     [Authorize(Roles = Roles.Student)]
-    public async Task<IActionResult> UploadSolution([FromRoute] Guid studentTaskId,
+    public async Task<IActionResult> UploadTaskSolutionFile([FromRoute] Guid studentTaskId,
         [FromForm] IFormFile file)
     {
         var token = Request.Headers.Authorization.ToString().Split(" ")[1];
@@ -41,7 +40,7 @@ public class TaskController : ApiController
 
     [HttpGet("{studentTaskId:guid}/download")]
     [Authorize(Roles = $"{Roles.Lecturer},{Roles.Student}")]
-    public async Task<IActionResult> DownloadSolution(Guid studentTaskId)
+    public async Task<IActionResult> DownloadTaskSolutionFile(Guid studentTaskId)
     {
         var command = new DownloadTaskSolutionQuery(studentTaskId);
         

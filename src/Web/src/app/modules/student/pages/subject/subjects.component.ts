@@ -24,12 +24,12 @@ export class SubjectsComponent implements OnInit {
     this.subjectService.getStudentSubjects()
       .subscribe(
         {
-          next: subjects => {
-            this.subjects = subjects;
+          next: response => {
+            this.subjects = response.subjects;
             this.fetchLoading = false;
           },
           error: err => {
-            this.alertService.error(err.error.title);
+            this.alertService.error(err.error.message);
             this.fetchLoading = false;
           }
         });

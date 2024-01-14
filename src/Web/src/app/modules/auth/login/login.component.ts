@@ -35,7 +35,6 @@ export class LoginComponent implements OnInit {
   }
 
   onSubmit() {
-    console.log(this.loginForm.errors)
     this.submitted = true;
 
     this.alertService.clear();

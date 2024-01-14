@@ -30,8 +30,8 @@ export class TasksComponent implements OnInit {
     this.subjectService.getStudentSubjects()
       .subscribe(
         {
-          next: subjects => {
-            this.subjects = subjects;
+          next: response => {
+            this.subjects = response.subjects;
             this.fetchLoading = false;
           },
           error: err => {
