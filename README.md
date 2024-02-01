@@ -83,7 +83,9 @@ The infrastructure layer refers to the layer that handles low-level tasks such a
 
 ## Presentation
 Finally, the Presentation layer is an ASP.NET Web API which gives us an opportunity to build SPA applications, Mobile apps or Desktop clients and so far. This layer is responsible for all user interface logic and depends on the Application layer.
-
+<div align="center">
+<img src="assets/architecture.jpg">
+</div>
 # Other patterns and principles📚
 In software design and architecture, various patterns and principles are essential for creating well-structured systems. Let's explore these concepts to grasp how they contribute to building modular, testable, and maintainable software.
 
