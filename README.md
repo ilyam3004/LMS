@@ -27,9 +27,10 @@
     - [Unit of Work](#unit-of-work)
     - [Generic Repository](#generic-repository)
     - [Result](#result)
-7. [Installation🏗️](#installation)
-8. [Contributing🖐](#contributing)
-9. [License🧾](#license)
+7. [Database Schema📊](#database-schema)
+8. [Installation🏗️](#installation)
+9. [Contributing🖐](#contributing)
+10. [License🧾](#license)
 
 
 # Overview📖
@@ -39,25 +40,47 @@ Simple task management solution designed using Angular 16 and ASP.NET 8. This ap
 If you like this project please consider giving it a ⭐ Star ⭐ at the top right of this page. Thanks a lot!
 
 # Use cases / Features⚙️
+This application provides a comprehensive set of features for managing subjects, tasks, and student works. The system is designed to facilitate effective communication and collaboration between lecturers and students, enabling seamless task assignment, submission, feedback, and grading.
 
-Discover the versatility of this application with the following use cases and features:
+## Lecturer Features
+1. **Manage Subjects**
+   - Lecturers can create subjects for different student groups.
+   - Lecturers can remove subjects as needed.
 
-## Todo Lists Management
-- Create and delete Todo Lists for organized task structuring.
+2. **Task Management**
+   - Assign Tasks: Lecturers have the ability to assign tasks to specific subjects.
+   - Download Student Works: Lecturers can view and download the works uploaded by students.
+   - View Group Statistics: Lecturers can access statistics for the entire group related to tasks and uploads.
 
-## Task Management
-- Add, edit, and delete tasks within Todo Lists, ensuring flexible task management.
+3. **Feedback and Grading**
+   - Write Comments: Lecturers can provide feedback by writing comments on student task solutions.
+   - Grade Solutions: Lecturers can assign grades to student task solutions.
 
-## Deadline and Priority Management
-- Set deadlines for tasks to manage time effectively.
-- Assign priorities to tasks for a clear focus on critical activities.
+4. **Subject Statistics**
+   - Overview: Lecturers can view comprehensive statistics for all their subjects.
+   - Task Uploads: Lecturers can see what tasks students have uploaded and which ones are pending.
+   - Average and Total Grades: Lecturers can view the average and total grades for every student in a subject.
 
-## Today's tasks
-- View a dedicated list of tasks scheduled for the current day.
+## Student Features
+1. **Subject Information**
+   - View Subjects: Students can access information about the subjects they are enrolled in.
+   - Task Details: Students can see details about tasks assigned for each subject, including deadlines.
+
+2. **Task Submission**
+   - Upload Task Solution: Students can upload their solutions for assigned tasks.
+   - Add Comments: Students have the option to write comments when submitting task solutions.
+   - Resubmit Solution: If the wrong file was uploaded, students can remove and re-upload their solutions.
+
+3. **Personal Statistics**
+   - Task Details: Students can view detailed information for every task, including grades and comments.
+   - Subject Summary: Students can see the total and average grades for each subject.
+
+These features collectively create a comprehensive Learning Management System, facilitating effective communication and management between lecturers and students.
 
 # Technologies🛠️
-- [ASP.NET 8](https://dotnet.microsoft.com/en-us/apps/aspnet) - for building the REST API.
-- [Angular 16](https://angular.io/) - for building the client-side application.
+- [gRPC](https://grpc.io/) - for efficient and high-performance Remote Procedure Calls (RPCs), allowing seamless communication between a client and a server.
+- [ASP.NET 8](https://dotnet.microsoft.com/en-us/apps/aspnet) - for building gRPC Services.
+- [Angular 17](https://angular.io/) - for building the client-side application.
 - [MediatR](https://github.com/jbogard/MediatR) - for implementing Mediator pattern.
 - [Entity Framework Core](https://github.com/dotnet/efcore) - ORM
 - [Mapster](https://github.com/MapsterMapper/Mapster) - for mapping between entities and DTOs.
@@ -66,7 +89,14 @@ Discover the versatility of this application with the following use cases and fe
 - [Moq](https://github.com/moq/moq4) - for isolating dependencies in unit tests.
 
 # Architecture📐
-This application follows Clean Architecture principles, which allows for a highly decoupled, testable, and maintainable codebase. As you can see on the picture the architecture of the system is divided into four layers: Domain, Application, Infrastructure, and Presentation:
+
+Our system operates on a client-server model, utilizing gRPC for efficient communication. To enhance compatibility, we've incorporated JSON transcoding, allowing seamless data exchange in JSON format between the client and server. This simplifies integration and ensures a smooth interaction. Explore the diagram below to visualize the key components and their interactions within the system:
+
+<div align="center">
+<img src="assets/architecture.jpg">
+</div>
+
+AS you can see on the backend of our application follows Clean Architecture principles, which allows for a highly decoupled, testable, and maintainable codebase. The architecture of the system is divided into four layers: Domain, Application, Infrastructure, and Presentation:
 
 <div align="center">
 <img src="assets/clean_architecture.png" width="500">
@@ -83,11 +113,9 @@ The infrastructure layer refers to the layer that handles low-level tasks such a
 
 ## Presentation
 Finally, the Presentation layer is an ASP.NET Web API which gives us an opportunity to build SPA applications, Mobile apps or Desktop clients and so far. This layer is responsible for all user interface logic and depends on the Application layer.
-<div align="center">
-<img src="assets/architecture.jpg">
-</div>
+
 # Other patterns and principles📚
-In software design and architecture, various patterns and principles are essential for creating well-structured systems. Let's explore these concepts to grasp how they contribute to building modular, testable, and maintainable software.
+As you may have noticed in the preceding diagram, there are several other patterns used in building this architecture. Let's explore these concepts to grasp how they contribute to building modular, testable, and maintainable software.
 
 ## Mediator
 Mediator provides a simple and elegant way to implement communication between different components of a system without directly coupling them together. In this pattern, each component sends messages to a mediator, which then distributes those messages to other components that have registered to handle them. This approach allows for a decoupled and loosely coupled architecture, where components do not need to know about each other's existence, promoting scalability and maintainability. Overall, MediatR promotes the Single Responsibility Principle (SRP) and enhances the modularity and testability of the system.
@@ -105,16 +133,21 @@ The Generic Repository pattern provides a standardized interface for data access
 The Result pattern enhances error handling and response generation in an application. It provides a structured way to handle success and failure scenarios, allowing for better communication of outcomes between components. The Result pattern contributes to the overall robustness of the system by promoting clear and consistent handling of results.
 These patterns collectively contribute to a well-architected system, promoting modularity, testability, and maintainability in software development.
 
+# Database Schema📊
+Check out the schema diagram below to see how tables are organized and connected.
+
+<img src="assets/db_diagram.png">
+
 # Installation🏗️
-This section provides step-by-step instructions for launching **Radiant** using Docker Compose for managing containers.
+This section provides step-by-step instructions for launching **LMS** using Docker Compose for managing containers.
 
 1. Clone the Repository:
 ```bash
-   git clone https://github.com/ilyam3004/Radiant.git
-   cd Radiant
+   git clone https://github.com/ilyam3004/LMS.git
+   cd LMS
 ```
 
-2. Set the connection string for your PostgreSQL Database in [docker-compose.yml](https://github.com/ilyam3004/Radiant/blob/4147982adcbf3e1df9550c7a0226ab85ecc6c996/docker-compose.yml#L12) file. The database schema will be configured automatically when you run the application:
+2. Set the connection string for your PostgreSQL Database in [docker-compose.yml](https://github.com/ilyam3004/LMS/blob/bc509976ced65aaaa56be717c02cd592322700fd/docker-compose.yml#L12) file. The database schema will be configured automatically when you run the application:
 ```yml
    environment:
       - ConnectionStrings__DefaultConnection={{YOUR_CONNECTION_STRING}}
@@ -145,8 +178,8 @@ To start contributing, follow these steps:
 2. **Clone the Repository**: Clone the repository to your local machine using `git clone`.
 
 ```bash
-git clone https://github.com/ilyam3004/Radiant.git
-cd Radiant
+git clone https://github.com/ilyam3004/LMS.git
+cd LMS
 ```
 
 3. **Create a New Branch**: Before making any changes, create a new branch for your work.
