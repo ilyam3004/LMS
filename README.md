@@ -34,7 +34,7 @@
 
 
 # Overview📖
-Simple task management solution designed using Angular 16 and ASP.NET 8. This application, following Clean Architecture principles, serves as more than just a task organizer—it can be utilized as a clean architecture template project, providing a solid foundation for scalable and maintainable applications.
+This application is a comprehensive platform developed using Angular 17 and ASP.NET 8 with gRPC service and JSON transcoding. It incorporates Jwt Role-based authorization, Clean Architecture and other patterns which you can find down below. The system is designed to facilitate effective communication and collaboration between lecturers and students, enabling seamless task assignment, submission, feedback, and grading. The application provides a comprehensive set of features for managing subjects, tasks, and student works. 
 
 # Give a Star!⭐
 If you like this project please consider giving it a ⭐ Star ⭐ at the top right of this page. Thanks a lot!
