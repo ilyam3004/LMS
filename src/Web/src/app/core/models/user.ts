@@ -1,3 +1,5 @@
+import {Group, GroupProfile, GroupsResponse} from "./group";
+
 export class User {
   userId?: string;
   email?: string;
@@ -28,8 +30,7 @@ export interface StudentProfile {
   userId: string,
   email: string,
   fullName: string,
-  group: string,
-  course: string,
+  groupProfile: GroupProfile,
   birthday: string,
   address: string
 }

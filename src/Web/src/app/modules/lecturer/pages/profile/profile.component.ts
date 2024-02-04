@@ -13,8 +13,7 @@ export class ProfileComponent {
   fetchLoading: boolean = false;
 
   constructor(private authenticationService: AuthenticationService,
-              private alertService: AlertService) {
-  }
+              private alertService: AlertService) { }
 
   ngOnInit(): void {
     this.fetchProfile();
