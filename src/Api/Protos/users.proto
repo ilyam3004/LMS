@@ -57,7 +57,6 @@ message RegisterStudentRequest {
   string first_name = 3;
   string last_name = 4;
   string group_name = 5;
-  int32 course = 6;
   string birthday = 7;
   string address = 8;
 }

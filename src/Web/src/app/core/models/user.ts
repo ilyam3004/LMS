@@ -20,8 +20,8 @@ export interface RegisterStudentRequest {
   firstName: string,
   lastName: string,
   groupName: string,
-  course: number,
   birthday: string,
+  address: string
 }
 
 export interface StudentProfile {

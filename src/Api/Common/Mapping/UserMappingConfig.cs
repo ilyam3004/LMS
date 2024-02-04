@@ -25,7 +25,6 @@ public class UserMappingConfig : IRegister
             .Map(dest => dest.Email, src => src.User.Email)
             .Map(dest => dest.FullName, src => src.User.Student!.FullName)
             .Map(dest => dest.Group, src => src.User.Student!.Group.Name)
-            .Map(dest => dest.Course, src => src.User.Student!.Course)
             .Map(dest => dest.Address, src => src.User.Student!.Address)
             .Map(dest => dest.Birthday, src => src.User.Student!.Birthday.ToString("dd.MM.yyyy"));
     }

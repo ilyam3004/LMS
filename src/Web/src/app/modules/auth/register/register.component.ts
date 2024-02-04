@@ -1,12 +1,12 @@
-import {RegisterLecturerRequest, RegisterStudentRequest} from "../../../core/models/user";
-import {AuthenticationService} from '../../../core/services/authentication.service';
-import {AlertService} from '../../../core/services/alert.service';
-import {GroupService} from "../../../core/services/group.service";
-import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {ActivatedRoute, Router} from '@angular/router';
-import {Group, GroupsResponse} from "../../../core/models/group";
-import {Component, OnInit} from '@angular/core';
-import {first} from 'rxjs';
+import { RegisterLecturerRequest, RegisterStudentRequest } from "../../../core/models/user";
+import { AuthenticationService } from '../../../core/services/authentication.service';
+import { AlertService } from '../../../core/services/alert.service';
+import { GroupService } from "../../../core/services/group.service";
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Group, GroupsResponse } from "../../../core/models/group";
+import { Component, OnInit } from '@angular/core';
+import { first } from 'rxjs';
 
 @Component({
   selector: 'app-register',
@@ -29,8 +29,7 @@ export class RegisterComponent implements OnInit {
     private authenticationService: AuthenticationService,
     private alertService: AlertService,
     private groupService: GroupService
-  ) {
-  }
+  ) { }
 
   ngOnInit() {
     this.fetchGroups();
@@ -58,12 +57,14 @@ export class RegisterComponent implements OnInit {
     request.birthday = new Date(selectedDate.year,
       selectedDate.month - 1, selectedDate.day).toISOString();
 
+    console.log(request);
+
     this.authenticationService.registerStudent(request)
       .pipe(first())
       .subscribe({
         next: () => {
-          this.alertService.success('Registration successful', {keepAfterRouteChange: true});
-          this.router.navigate(['/student/subjects'], {relativeTo: this.route});
+          this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+          this.router.navigate(['/student/subjects'], { relativeTo: this.route });
         },
         error: error => {
           this.alertService.error(error.error.message);
@@ -93,8 +94,8 @@ export class RegisterComponent implements OnInit {
       .pipe(first())
       .subscribe({
         next: () => {
-          this.alertService.success('Registration successful', {keepAfterRouteChange: true});
-          this.router.navigate(['/lecturer/subjects'], {relativeTo: this.route});
+          this.alertService.success('Registration successful', { keepAfterRouteChange: true });
+          this.router.navigate(['/lecturer/subjects'], { relativeTo: this.route });
           this.lecturerForm.reset();
         },
         error: error => {
@@ -130,7 +131,6 @@ export class RegisterComponent implements OnInit {
       firstName: ['', Validators.required],
       lastName: ['', Validators.required],
       address: ['', Validators.required],
-      course: [null, Validators.required],
       birthday: [null, Validators.required],
       groupName: ['', Validators.required]
     });

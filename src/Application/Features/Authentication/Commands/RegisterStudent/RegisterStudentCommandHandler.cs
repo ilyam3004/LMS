@@ -47,7 +47,6 @@ public class RegisterStudentCommandHandler(
             FullName = $"{command.FirstName} {command.LastName}",
             Address = command.Address,
             Birthday = command.Birthday.ToUniversalTime(),
-            Course = command.Course
         };
 
         await unitOfWork.GetRepository<Student>().AddAsync(student);

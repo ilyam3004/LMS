@@ -10,6 +10,5 @@ public record RegisterStudentCommand(
     string FirstName,
     string LastName,
     string GroupName,
-    int Course,
     DateTime Birthday,
     string Address) : IRequest<Result<AuthenticationResult>>;

@@ -37,10 +37,5 @@ public class RegisterStudentCommandValidator
 
         RuleFor(x => x.GroupName)
             .NotEmpty();
-
-        RuleFor(x => x.Course)
-            .NotEmpty()
-            .InclusiveBetween(1, 6)
-            .WithMessage("Course must be between 1 and 6.");
     }
 }
