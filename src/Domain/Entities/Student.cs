@@ -7,7 +7,6 @@ public class Student
     public Guid GroupId { get; set; }
     public string FullName { get; set; } = null!;
     public DateTime Birthday { get; set; }
-    public int Course { get; set; }
     public string Address { get; set; } = null!;
     public User User { get; set; } = null!;
     public Group Group { get; set; } = null!;

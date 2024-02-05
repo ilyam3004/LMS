@@ -24,7 +24,8 @@ message GroupResponse {
   string group_id = 1;
   string name = 2;
   string department = 3;
-  repeated StudentResponse students = 4;
+  int32 course = 4;
+  repeated StudentResponse students = 5;
 }
 
 message StudentResponse {

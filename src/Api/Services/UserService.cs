@@ -10,6 +10,7 @@ using Domain.Common;
 using MapsterMapper;
 using Api.Helpers;
 using Api.Protos;
+using Application.Features.Authentication.Queries.GetStudentProfile;
 using Grpc.Core;
 using MediatR;
 

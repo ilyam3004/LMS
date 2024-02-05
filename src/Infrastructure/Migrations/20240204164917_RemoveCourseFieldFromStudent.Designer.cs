@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Persistence;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(LmsDbContext))]
-    partial class LmsDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240204164917_RemoveCourseFieldFromStudent")]
+    partial class RemoveCourseFieldFromStudent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,9 +30,6 @@ namespace Infrastructure.Migrations
                     b.Property<Guid>("GroupId")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uuid");
-
-                    b.Property<int>("Course")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Department")
                         .IsRequired()
@@ -48,43 +48,37 @@ namespace Infrastructure.Migrations
                     b.HasData(
                         new
                         {
-                            GroupId = new Guid("20e6f083-b6f9-4969-984b-91fb0652d697"),
-                            Course = 1,
+                            GroupId = new Guid("ef812d23-3574-4285-a897-2458578c2a24"),
                             Department = "Computer Science",
                             Name = "Group A"
                         },
                         new
                         {
-                            GroupId = new Guid("94da5209-b330-427f-a5f9-326fe1562a2d"),
-                            Course = 2,
+                            GroupId = new Guid("13171360-85ed-488c-872d-158064608da6"),
                             Department = "Electrical Engineering",
                             Name = "Group B"
                         },
                         new
                         {
-                            GroupId = new Guid("0515b5ba-9353-49fc-b571-05cbef8badbe"),
-                            Course = 3,
+                            GroupId = new Guid("d99d97a7-604c-4271-adf3-8e07f2959442"),
                             Department = "Mechanical Engineering",
                             Name = "Group C"
                         },
                         new
                         {
-                            GroupId = new Guid("c81e88f2-fa84-4304-93ed-2999ea23e95e"),
-                            Course = 4,
+                            GroupId = new Guid("797bde11-43d8-40a9-9216-3ac335237835"),
                             Department = "Physics",
                             Name = "Group D"
                         },
                         new
                         {
-                            GroupId = new Guid("5847b5f3-9002-4cf8-995e-61046f1d0ec8"),
-                            Course = 5,
+                            GroupId = new Guid("1d6ccd8f-3b8b-438b-b0a2-c69c088cb062"),
                             Department = "Mathematics",
                             Name = "Group E"
                         },
                         new
                         {
-                            GroupId = new Guid("23f02866-16a5-41d0-bdcf-ce5d9538c1e9"),
-                            Course = 6,
+                            GroupId = new Guid("9d97fef4-d588-494a-86c8-275e6826b963"),
                             Department = "Chemistry",
                             Name = "Group F"
                         });

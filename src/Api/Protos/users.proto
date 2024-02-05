@@ -57,8 +57,8 @@ message RegisterStudentRequest {
   string first_name = 3;
   string last_name = 4;
   string group_name = 5;
-  string birthday = 7;
-  string address = 8;
+  string birthday = 6;
+  string address = 7;
 }
 
 message LoginRequest {
@@ -83,14 +83,20 @@ message StudentProfileResponse {
   string user_id = 1;
   string email = 2;
   string full_name = 3;
-  string group = 4;
-  string course = 5;
-  string birthday = 6;
-  string address = 7;
+  GroupProfileResponse groupProfile = 4;
+  string birthday = 5;
+  string address = 6;
 }
 
 message AuthenticationResponse {
   string user_id = 1;
   string email = 2;
   string token = 3;
+}
+
+message GroupProfileResponse {
+  string group_id = 1;
+  string name = 2;
+  string department = 3;
+  int32 course = 4;
 }

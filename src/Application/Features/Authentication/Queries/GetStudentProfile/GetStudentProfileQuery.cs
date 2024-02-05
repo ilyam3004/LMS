@@ -2,7 +2,7 @@
 using Domain.Abstractions.Results;
 using MediatR;
 
-namespace Application.Authentication.Queries.GetStudentProfile;
+namespace Application.Features.Authentication.Queries.GetStudentProfile;
 
 public record GetStudentProfileQuery(
     string Token) : IRequest<Result<ProfileResult>>;

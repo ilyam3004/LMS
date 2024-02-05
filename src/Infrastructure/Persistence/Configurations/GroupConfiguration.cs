@@ -26,37 +26,43 @@ public class GroupConfiguration : IEntityTypeConfiguration<Group>
             {
                 GroupId = Guid.NewGuid(),
                 Name = "Group A",
-                Department = "Computer Science"
+                Department = "Computer Science",
+                Course = 1
             },
             new Group
             {
                 GroupId = Guid.NewGuid(), 
                 Name = "Group B", 
-                Department = "Electrical Engineering"
+                Department = "Electrical Engineering",
+                Course = 2
             },
             new Group
             {
                 GroupId = Guid.NewGuid(), 
                 Name = "Group C", 
-                Department = "Mechanical Engineering"
+                Department = "Mechanical Engineering",
+                Course = 3
             },
             new Group
             {
                 GroupId = Guid.NewGuid(), 
                 Name = "Group D", 
-                Department = "Physics"
+                Department = "Physics",
+                Course = 4
             },
             new Group
             {
                 GroupId = Guid.NewGuid(), 
                 Name = "Group E", 
-                Department = "Mathematics"
+                Department = "Mathematics",
+                Course = 5
             },
             new Group
             {
                 GroupId = Guid.NewGuid(), 
                 Name = "Group F", 
-                Department = "Chemistry"
+                Department = "Chemistry",
+                Course = 6
             }
         );
     }

@@ -8,6 +8,7 @@ public class Result<TValue> : IResult
     private readonly TValue _value;
     
     public List<Error> Errors => !IsSuccess ? _errors : [];
+    public TValue Value => IsSuccess ? _value : default!;
     public bool IsSuccess { get; }
 
     private Result(TValue value)
