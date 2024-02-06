@@ -7,8 +7,8 @@ using Application.UnitTests.TestUtils.Authentication.Extensions;
 using Application.UnitTests.TestUtils.TestConstants;
 using Domain.Common;
 using FluentAssertions;
-using NSubstitute;
 using NSubstitute.ReturnsExtensions;
+using NSubstitute;
 
 namespace Application.UnitTests.Authentication.Queries.GetLecturerProfile;
 

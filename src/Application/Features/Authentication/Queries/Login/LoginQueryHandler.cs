@@ -1,6 +1,5 @@
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models;
 using Application.Models.Authentication;
 using Domain.Abstractions.Results;
 using Domain.Common;
@@ -13,7 +12,8 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authenticati
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
 
-    public LoginQueryHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jwtTokenGenerator)
+    public LoginQueryHandler(IUnitOfWork unitOfWork, 
+        IJwtTokenGenerator jwtTokenGenerator)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenGenerator = jwtTokenGenerator;
@@ -29,7 +29,6 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authenticati
 
         if (!BCrypt.Net.BCrypt.Verify(query.Password, user.Password))
             return Errors.User.InvalidCredentials;
-
 
         if (user.Student is not null)
         {

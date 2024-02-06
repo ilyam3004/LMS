@@ -10,7 +10,7 @@ public static class AuthenticationsExtensions
     {
         result.User.UserId.Should().Be(Constants.Authentication.UserIdFromToken);
         result.User.Email.Should().Be(Constants.Authentication.Email);
-        result.User.Password.Should().Be(Constants.Authentication.Password);
+        result.User.Password.Should().Be(Constants.Authentication.ValidPassword);
 
         result.User.Student.Should().NotBeNull();
         result.User.Lecturer.Should().BeNull();
@@ -32,7 +32,7 @@ public static class AuthenticationsExtensions
     {
         result.User.UserId.Should().Be(Constants.Authentication.UserIdFromToken);
         result.User.Email.Should().Be(Constants.Authentication.Email);
-        result.User.Password.Should().Be(Constants.Authentication.Password);
+        result.User.Password.Should().Be(Constants.Authentication.ValidPassword);
 
         result.User.Student.Should().BeNull();
         result.User.Lecturer.Should().NotBeNull();
@@ -41,6 +41,36 @@ public static class AuthenticationsExtensions
         result.User.Lecturer!.FullName.Should().Be(Constants.Authentication.FullName);
         result.User.Lecturer!.Address.Should().Be(Constants.Authentication.Address);
         result.User.Lecturer!.Degree.Should().Be(Constants.Authentication.Degree);
+        result.User.Lecturer!.Birthday.Should().Be(Constants.Authentication.Birthday);
+    }
+
+    public static void ValidateRetrievedStudentUser(this AuthenticationResult result)
+    {
+        result.User.UserId.Should().Be(Constants.Authentication.UserId);
+        result.User.Email.Should().Be(Constants.Authentication.Email);
+
+        result.User.Student.Should().NotBeNull();
+        result.User.Lecturer.Should().BeNull();
+
+        result.User.Student!.StudentId.Should().Be(Constants.Authentication.StudentId);
+        result.User.Student!.GroupId.Should().Be(Constants.Group.GroupId);
+        result.User.Student!.FullName.Should().Be(Constants.Authentication.FullName);
+        result.User.Student!.Address.Should().Be(Constants.Authentication.Address);
+        result.User.Student!.Birthday.Should().Be(Constants.Authentication.Birthday);
+    }
+
+
+    public static void ValidateRetrievedLecturerUser(this AuthenticationResult result)
+    {
+        result.User.UserId.Should().Be(Constants.Authentication.UserId);
+        result.User.Email.Should().Be(Constants.Authentication.Email);
+
+        result.User.Student.Should().BeNull();
+        result.User.Lecturer.Should().NotBeNull();
+
+        result.User.Lecturer!.LecturerId.Should().Be(Constants.Authentication.LecturerId);
+        result.User.Lecturer!.FullName.Should().Be(Constants.Authentication.FullName);
+        result.User.Lecturer!.Address.Should().Be(Constants.Authentication.Address);
         result.User.Lecturer!.Birthday.Should().Be(Constants.Authentication.Birthday);
     }
 }

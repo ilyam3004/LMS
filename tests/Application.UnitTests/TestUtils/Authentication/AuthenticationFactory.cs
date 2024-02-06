@@ -16,7 +16,7 @@ public static class AuthenticationFactory
         {
             UserId = generatedUserId,
             Email = email ?? Constants.Authentication.Email,
-            Password = password ?? Constants.Authentication.Password,
+            Password = password ?? Constants.Authentication.ValidPassword,
             Lecturer = lecturer ?? CreateLecturer(generatedUserId)
         };
     }
@@ -32,7 +32,7 @@ public static class AuthenticationFactory
         {
             UserId = generatedUserId,
             Email = email ?? Constants.Authentication.Email,
-            Password = password ?? Constants.Authentication.Password,
+            Password = password ?? Constants.Authentication.ValidPassword,
             Student = student ?? CreateStudent(generatedUserId)
         };
     }
