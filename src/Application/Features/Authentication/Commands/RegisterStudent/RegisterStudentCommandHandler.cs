@@ -1,33 +1,39 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Domain.Abstractions.Results;
+using Task = System.Threading.Tasks.Task;
 using Application.Models.Authentication;
+using Domain.Abstractions.Results;
 using Domain.Entities;
 using Domain.Common;
 using Domain.Enums;
 using MediatR;
-using Task = System.Threading.Tasks.Task;
 
 namespace Application.Authentication.Commands.RegisterStudent;
 
-public class RegisterStudentCommandHandler(
-    IJwtTokenGenerator jwtTokenGenerator,
-    IUnitOfWork unitOfWork)
-    : IRequestHandler<RegisterStudentCommand, Result<AuthenticationResult>>
+public class RegisterStudentCommandHandler : IRequestHandler<RegisterStudentCommand, Result<AuthenticationResult>>
 {
+    private readonly IUnitOfWork _unitOfWork;
+    private readonly IJwtTokenGenerator _jwtTokenGenerator;
+    
+    public RegisterStudentCommandHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jwtTokenGenerator)
+    {
+        _unitOfWork = unitOfWork;
+        _jwtTokenGenerator = jwtTokenGenerator;
+    }
+    
     public async Task<Result<AuthenticationResult>> Handle(
         RegisterStudentCommand command, CancellationToken cancellationToken)
     {
-        if (await unitOfWork.Users.UserExistsByEmail(command.Email))
+        if (await _unitOfWork.Users.UserExistsByEmail(command.Email))
         {
             return Errors.User.DuplicateEmail;
         }
 
-        var group = await unitOfWork.Groups.GetGroupByName(command.GroupName);
+        var group = await _unitOfWork.Groups.GetGroupByName(command.GroupName);
 
         if (group is null)
         {
-            return Errors.Group.NotFound;
+            return Errors.Group.GroupNotFound;
         }
 
         var user = new User
@@ -37,7 +43,7 @@ public class RegisterStudentCommandHandler(
             Password = BCrypt.Net.BCrypt.HashPassword(command.Password)
         };
 
-        await unitOfWork.Users.AddAsync(user);
+        await _unitOfWork.Users.AddAsync(user);
 
         var student = new Student
         {
@@ -49,12 +55,12 @@ public class RegisterStudentCommandHandler(
             Birthday = command.Birthday.ToUniversalTime(),
         };
 
-        await unitOfWork.GetRepository<Student>().AddAsync(student);
-        await unitOfWork.SaveChangesAsync();
+        await _unitOfWork.GetRepository<Student>().AddAsync(student);
+        await _unitOfWork.SaveChangesAsync();
 
         await AddAllTasksToStudent(student, group);
 
-        var token = jwtTokenGenerator.GenerateToken(
+        var token = _jwtTokenGenerator.GenerateToken(
             user.UserId,
             student.FullName,
             command.Email,
@@ -82,10 +88,10 @@ public class RegisterStudentCommandHandler(
                     Grade = 0
                 };
 
-                await unitOfWork.StudentTasks.AddAsync(studentTask);
+                await _unitOfWork.StudentTasks.AddAsync(studentTask);
             });
         });
         
-        await unitOfWork.SaveChangesAsync();
+        await _unitOfWork.SaveChangesAsync();
     }
 }

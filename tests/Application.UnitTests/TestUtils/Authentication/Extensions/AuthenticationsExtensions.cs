@@ -73,4 +73,10 @@ public static class AuthenticationsExtensions
         result.User.Lecturer!.Address.Should().Be(Constants.Authentication.Address);
         result.User.Lecturer!.Birthday.Should().Be(Constants.Authentication.Birthday);
     }
+
+    public static void ValidateCreatedUser(this AuthenticationResult result)
+    {
+        result.User.Email.Should().Be(Constants.Authentication.Email);
+        result.Token.Should().Be(Constants.Authentication.Token);
+    }
 }

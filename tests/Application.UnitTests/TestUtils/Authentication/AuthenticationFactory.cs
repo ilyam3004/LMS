@@ -1,4 +1,5 @@
-﻿using Application.UnitTests.TestUtils.TestConstants;
+﻿using Application.UnitTests.TestUtils.Groups;
+using Application.UnitTests.TestUtils.TestConstants;
 using Domain.Entities;
 
 namespace Application.UnitTests.TestUtils.Authentication;
@@ -27,7 +28,7 @@ public static class AuthenticationFactory
         Student? student = null)
     {
         Guid generatedUserId = userId ?? Constants.Authentication.UserId;
-        
+
         return new User
         {
             UserId = generatedUserId,
@@ -36,6 +37,16 @@ public static class AuthenticationFactory
             Student = student ?? CreateStudent(generatedUserId)
         };
     }
+
+    public static User CreateUserWithoutLectureOrStudentObjects(Guid? userId = null,
+        string? email = null,
+        string? password = null)
+        => new User
+        {
+            UserId = userId ?? Constants.Authentication.UserId,
+            Email = email ?? Constants.Authentication.Email,
+            Password = password ?? Constants.Authentication.InvalidPassword
+        };
 
     public static Lecturer CreateLecturer(Guid userId)
         => new Lecturer
@@ -60,16 +71,7 @@ public static class AuthenticationFactory
             FullName = Constants.Authentication.FullName,
             Birthday = Constants.Authentication.Birthday,
             Address = Constants.Authentication.Address,
-            Group = CreateGroup(groupId)
+            Group = GroupFactory.CreateGroup(groupId)
         };
     }
-
-    public static Group CreateGroup(Guid groupId)
-        => new Group
-        {
-            GroupId = groupId,
-            Name = Constants.Group.GroupName,
-            Department = Constants.Group.Department,
-            Course = Constants.Group.Course
-        };
 }

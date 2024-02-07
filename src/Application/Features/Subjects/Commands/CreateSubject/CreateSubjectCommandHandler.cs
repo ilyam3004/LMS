@@ -28,7 +28,7 @@ public class CreateSubjectCommandHandler
     {
         var group = await _unitOfWork.Groups.GetGroupByName(command.GroupName);
         if (group is null)
-            return Errors.Group.NotFound;
+            return Errors.Group.GroupNotFound;
 
         if (SubjectExistsInGroup(command.Name, group))
             return Errors.Subject.SubjectAlreadyExists;

@@ -2,8 +2,8 @@ using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Models.Authentication;
 using Domain.Abstractions.Results;
-using Domain.Common;
 using Domain.Entities;
+using Domain.Common;
 using MediatR;
 
 namespace Application.Features.Authentication.Commands.RegisterLecturer;
@@ -21,8 +21,7 @@ public class RegisterLecturerCommandHandler
         _jwtTokenGenerator = jwtTokenGenerator;
     }
     
-    public async Task<Result<AuthenticationResult>> Handle(
-        RegisterLecturerCommand command, 
+    public async Task<Result<AuthenticationResult>> Handle(RegisterLecturerCommand command, 
         CancellationToken cancellationToken)
     {
         if (await _unitOfWork.Users.UserExistsByEmail(command.Email))

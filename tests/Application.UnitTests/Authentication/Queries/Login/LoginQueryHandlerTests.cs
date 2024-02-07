@@ -48,7 +48,7 @@ public class LoginQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.ValidateRetrievedStudentUser();
-        _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
+        await _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
         _mockJwtTokenGenerator.Received(1).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,
@@ -57,7 +57,7 @@ public class LoginQueryHandlerTests
 
     [Fact]
     public async Task
-        Handler_WhenUserExistsAndPasswordIsCorrectAndUserIsLecturer_ShouldGeneratTokenAndReturnAuthenticationResult()
+        Handler_WhenUserExistsAndPasswordIsCorrectAndUserIsLecturer_ShouldGenerateTokenAndReturnAuthenticationResult()
     {
         // Arrange
         var query = LoginQueryUtils.CreateLoginQueryWithValidPassword();
@@ -78,7 +78,7 @@ public class LoginQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.ValidateRetrievedLecturerUser();
-        _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
+        await _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
         _mockJwtTokenGenerator.Received(1).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,
@@ -100,7 +100,7 @@ public class LoginQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
-        _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
+        await _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
         _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,
@@ -123,7 +123,30 @@ public class LoginQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidCredentials);
-        _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
+        await _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
+        _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
+            Constants.Authentication.FullName,
+            Constants.Authentication.Email,
+            Constants.Authentication.LecturerRole);
+    }
+
+    [Fact]
+    public async Task Handler_WhenUserExistsByGivenEmailAndPasswordIsCorrectButStudentAndLecturerObjectsAreNull_ShouldReturnUserNotFound()
+    {
+        // Arrange
+        var query = LoginQueryUtils.CreateLoginQueryWithValidPassword();
+
+        _mockUnitOfWork.Users.GetUserByEmail(query.Email)
+            .Returns(AuthenticationFactory.CreateUserWithoutLectureOrStudentObjects(
+                password: Constants.Authentication.HashForValidPassword));
+
+        // Act
+        var result = await _sut.Handle(query, default);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        await _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
         _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,

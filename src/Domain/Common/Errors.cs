@@ -30,7 +30,7 @@ public static class Errors
 
     public static class Group
     {
-        public static Error NotFound => Error.NotFound("Group.NotFound",
+        public static Error GroupNotFound => Error.NotFound("Group.NotFound",
             description: "Group not found");
     }
 
