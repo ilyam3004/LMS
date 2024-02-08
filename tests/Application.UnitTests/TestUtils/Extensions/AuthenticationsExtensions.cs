@@ -2,7 +2,7 @@
 using Application.Models.Authentication;
 using FluentAssertions;
 
-namespace Application.UnitTests.TestUtils.Authentication.Extensions;
+namespace Application.UnitTests.TestUtils.Extensions;
 
 public static class AuthenticationsExtensions
 {
@@ -15,16 +15,16 @@ public static class AuthenticationsExtensions
         result.User.Student.Should().NotBeNull();
         result.User.Lecturer.Should().BeNull();
 
-        result.User.Student!.StudentId.Should().Be(Constants.Authentication.StudentId);
+        result.User.Student!.StudentId.Should().Be(Constants.Student.StudentId);
         result.User.Student!.GroupId.Should().Be(Constants.Group.GroupId);
         result.User.Student!.FullName.Should().Be(Constants.Authentication.FullName);
         result.User.Student!.Address.Should().Be(Constants.Authentication.Address);
         result.User.Student!.Birthday.Should().Be(Constants.Authentication.Birthday);
 
         result.User.Student!.Group.Should().NotBeNull();
-        result.User.Student!.Group!.GroupId.Should().Be(Constants.Group.GroupId);
-        result.User.Student!.Group!.Name.Should().Be(Constants.Group.GroupName);
-        result.User.Student!.Group!.Course.Should().Be(Constants.Group.Course);
+        result.User.Student!.Group.GroupId.Should().Be(Constants.Group.GroupId);
+        result.User.Student!.Group.Name.Should().Be(Constants.Group.GroupName);
+        result.User.Student!.Group.Course.Should().Be(Constants.Group.Course);
         result.User.Student!.Group.Department.Should().Be(Constants.Group.Department);
     }
 
@@ -37,10 +37,10 @@ public static class AuthenticationsExtensions
         result.User.Student.Should().BeNull();
         result.User.Lecturer.Should().NotBeNull();
 
-        result.User.Lecturer!.LecturerId.Should().Be(Constants.Authentication.LecturerId);
+        result.User.Lecturer!.LecturerId.Should().Be(Constants.Lecturer.LecturerId);
         result.User.Lecturer!.FullName.Should().Be(Constants.Authentication.FullName);
         result.User.Lecturer!.Address.Should().Be(Constants.Authentication.Address);
-        result.User.Lecturer!.Degree.Should().Be(Constants.Authentication.Degree);
+        result.User.Lecturer!.Degree.Should().Be(Constants.Lecturer.Degree);
         result.User.Lecturer!.Birthday.Should().Be(Constants.Authentication.Birthday);
     }
 
@@ -52,7 +52,7 @@ public static class AuthenticationsExtensions
         result.User.Student.Should().NotBeNull();
         result.User.Lecturer.Should().BeNull();
 
-        result.User.Student!.StudentId.Should().Be(Constants.Authentication.StudentId);
+        result.User.Student!.StudentId.Should().Be(Constants.Student.StudentId);
         result.User.Student!.GroupId.Should().Be(Constants.Group.GroupId);
         result.User.Student!.FullName.Should().Be(Constants.Authentication.FullName);
         result.User.Student!.Address.Should().Be(Constants.Authentication.Address);
@@ -68,7 +68,7 @@ public static class AuthenticationsExtensions
         result.User.Student.Should().BeNull();
         result.User.Lecturer.Should().NotBeNull();
 
-        result.User.Lecturer!.LecturerId.Should().Be(Constants.Authentication.LecturerId);
+        result.User.Lecturer!.LecturerId.Should().Be(Constants.Lecturer.LecturerId);
         result.User.Lecturer!.FullName.Should().Be(Constants.Authentication.FullName);
         result.User.Lecturer!.Address.Should().Be(Constants.Authentication.Address);
         result.User.Lecturer!.Birthday.Should().Be(Constants.Authentication.Birthday);

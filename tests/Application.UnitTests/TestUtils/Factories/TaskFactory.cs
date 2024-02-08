@@ -1,7 +1,7 @@
 ﻿using Application.UnitTests.TestUtils.TestConstants;
 using Task = Domain.Entities.Task;
 
-namespace Application.UnitTests.TestUtils.Tasks;
+namespace Application.UnitTests.TestUtils.Factories;
 
 public static class TaskFactory
 {

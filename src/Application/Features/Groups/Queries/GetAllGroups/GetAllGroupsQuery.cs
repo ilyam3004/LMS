@@ -1,6 +1,5 @@
-﻿using Application.Models;
+﻿using Domain.Abstractions.Results;
 using Application.Models.Groups;
-using Domain.Abstractions.Results;
 using MediatR;
 
 namespace Application.Features.Groups.Queries.GetAllGroups;

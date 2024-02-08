@@ -1,9 +1,9 @@
-﻿using TaskFactory = Application.UnitTests.TestUtils.Tasks.TaskFactory;
-using Application.UnitTests.TestUtils.TestConstants;
-using Task = Domain.Entities.Task;
+﻿using Application.UnitTests.TestUtils.TestConstants;
 using Domain.Entities;
+using TaskFactory = Application.UnitTests.TestUtils.Factories.TaskFactory;
+using Task = Domain.Entities.Task;
 
-namespace Application.UnitTests.TestUtils.Subjects;
+namespace Application.UnitTests.TestUtils.Factories;
 
 public static class SubjectFactory
 {
@@ -24,7 +24,7 @@ public static class SubjectFactory
                     Name = Constants.Subject.SubjectNameFromGivenIndex(index),
                     Description = Constants.Subject.SubjectDescriptionFromGivenIndex(index),
                     GroupId = generatedGroupId,
-                    LecturerId = Constants.Authentication.LecturerId,
+                    LecturerId = Constants.Lecturer.LecturerId,
                     Tasks = tasks ?? TaskFactory.CreateTasks(subjectId)
                 };
             }).ToList();

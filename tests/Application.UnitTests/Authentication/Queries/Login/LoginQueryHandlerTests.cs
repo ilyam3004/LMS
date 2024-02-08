@@ -1,14 +1,14 @@
 ﻿using Application.UnitTests.Authentication.Queries.TestUtils;
-using Application.UnitTests.TestUtils.Authentication;
-using Application.UnitTests.TestUtils.Authentication.Extensions;
 using Application.UnitTests.TestUtils.TestConstants;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Authentication.Queries.Login;
+using Application.UnitTests.TestUtils.Extensions;
+using Application.UnitTests.TestUtils.Factories;
 using NSubstitute.ReturnsExtensions;
-using NSubstitute;
 using FluentAssertions;
 using Domain.Common;
+using NSubstitute;
 
 namespace Application.UnitTests.Authentication.Queries.Login;
 
@@ -39,7 +39,7 @@ public class LoginQueryHandlerTests
         _mockJwtTokenGenerator.GenerateToken(Constants.Authentication.UserId,
                 Constants.Authentication.FullName,
                 Constants.Authentication.Email,
-                Constants.Authentication.StudentRole)
+                Constants.Student.StudentRole)
             .Returns(Constants.Authentication.Token);
 
         // Act
@@ -52,7 +52,7 @@ public class LoginQueryHandlerTests
         _mockJwtTokenGenerator.Received(1).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,
-            Constants.Authentication.StudentRole);
+            Constants.Student.StudentRole);
     }
 
     [Fact]
@@ -69,7 +69,7 @@ public class LoginQueryHandlerTests
         _mockJwtTokenGenerator.GenerateToken(Constants.Authentication.UserId,
                 Constants.Authentication.FullName,
                 Constants.Authentication.Email,
-                Constants.Authentication.LecturerRole)
+                Constants.Lecturer.LecturerRole)
             .Returns(Constants.Authentication.Token);
 
         // Act
@@ -82,7 +82,7 @@ public class LoginQueryHandlerTests
         _mockJwtTokenGenerator.Received(1).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,
-            Constants.Authentication.LecturerRole);
+            Constants.Lecturer.LecturerRole);
     }
 
     [Fact]
@@ -104,7 +104,7 @@ public class LoginQueryHandlerTests
         _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,
-            Constants.Authentication.LecturerRole);
+            Constants.Lecturer.LecturerRole);
     }
 
     [Fact]
@@ -127,11 +127,12 @@ public class LoginQueryHandlerTests
         _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,
-            Constants.Authentication.LecturerRole);
+            Constants.Lecturer.LecturerRole);
     }
 
     [Fact]
-    public async Task Handler_WhenUserExistsByGivenEmailAndPasswordIsCorrectButStudentAndLecturerObjectsAreNull_ShouldReturnUserNotFound()
+    public async Task
+        Handler_WhenUserExistsByGivenEmailAndPasswordIsCorrectButStudentAndLecturerObjectsAreNull_ShouldReturnUserNotFound()
     {
         // Arrange
         var query = LoginQueryUtils.CreateLoginQueryWithValidPassword();
@@ -150,6 +151,6 @@ public class LoginQueryHandlerTests
         _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
             Constants.Authentication.Email,
-            Constants.Authentication.LecturerRole);
+            Constants.Lecturer.LecturerRole);
     }
 }

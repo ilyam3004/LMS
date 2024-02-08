@@ -1,12 +1,10 @@
-﻿using TaskFactory = Application.UnitTests.TestUtils.Tasks.TaskFactory;
+﻿using TaskFactory = Application.UnitTests.TestUtils.Factories.TaskFactory;
 using Application.Features.Authentication.Commands.RegisterLecturer;
 using Application.UnitTests.Authentication.Commands.TestUtils;
-using Application.UnitTests.TestUtils.Authentication.Extensions;
-using Application.UnitTests.TestUtils.Groups;
-using Application.UnitTests.TestUtils.Subjects;
 using Application.UnitTests.TestUtils.TestConstants;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Application.UnitTests.TestUtils.Extensions;
 using Task = System.Threading.Tasks.Task;
 using NSubstitute.ReturnsExtensions;
 using FluentAssertions;
@@ -40,7 +38,7 @@ public class RegisterLecturerCommandHandlerTests
         _mockJwtTokenGenerator.GenerateToken(Arg.Any<Guid>(),
                 Constants.Authentication.FullName,
                 Constants.Authentication.Email,
-                Constants.Authentication.LecturerRole)
+                Constants.Lecturer.LecturerRole)
             .Returns(Constants.Authentication.Token);
 
         // Act

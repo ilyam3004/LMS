@@ -1,11 +1,16 @@
 ﻿using Application.UnitTests.TestUtils.TestConstants;
-using Application.UnitTests.TestUtils.Subjects;
 using Domain.Entities;
 
-namespace Application.UnitTests.TestUtils.Groups;
+namespace Application.UnitTests.TestUtils.Factories;
 
 public static class GroupFactory
 {
+    public static List<Group> CreateGroupList(List<Student>? students = null,
+        int groupsCount = 1)
+        => Enumerable.Range(0, groupsCount).Select(index =>
+                CreateGroup(students: students))
+            .ToList();
+
     public static Group CreateGroup(Guid? groupId = null,
         string? groupName = null,
         int? course = null,
@@ -21,7 +26,7 @@ public static class GroupFactory
             Name = groupName ?? Constants.Group.GroupName,
             Course = course ?? Constants.Group.Course,
             Department = department ?? Constants.Group.Department,
-            Students = students ?? [],
+            Students = students ?? StudentFactory.CreateStudentList(),
             Subjects = subjects ?? SubjectFactory.CreateSubjects(groupId: generatedGroupId)
         };
     }

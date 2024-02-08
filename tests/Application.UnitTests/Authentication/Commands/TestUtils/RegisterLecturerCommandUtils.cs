@@ -10,7 +10,7 @@ public class RegisterLecturerCommandUtils
             Constants.Authentication.ValidPassword,
             Constants.Authentication.Firstname,
             Constants.Authentication.Lastname,
-            Constants.Authentication.Degree,
+            Constants.Lecturer.Degree,
             Constants.Authentication.Birthday,
             Constants.Authentication.Address);
 }

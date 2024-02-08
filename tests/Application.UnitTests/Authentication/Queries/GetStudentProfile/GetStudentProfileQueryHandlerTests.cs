@@ -2,8 +2,8 @@
 using Application.Authentication.Queries.GetStudentProfile;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.UnitTests.TestUtils.Authentication;
-using Application.UnitTests.TestUtils.Authentication.Extensions;
+using Application.UnitTests.TestUtils.Extensions;
+using Application.UnitTests.TestUtils.Factories;
 using Application.UnitTests.TestUtils.TestConstants;
 using NSubstitute.ReturnsExtensions;
 using FluentAssertions;
@@ -44,7 +44,7 @@ public class GetStudentProfileQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.ValidateRetrievedStudentProfile();
-        _mockUnitOfWork.Users.Received(1)
+        await _mockUnitOfWork.Users.Received(1)
             .GetUserByIdWithRelations(Constants.Authentication.UserIdFromToken);
     }
 
@@ -63,7 +63,7 @@ public class GetStudentProfileQueryHandlerTests
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidToken);
-        _mockUnitOfWork.Users.DidNotReceiveWithAnyArgs()
+        await _mockUnitOfWork.Users.DidNotReceiveWithAnyArgs()
             .GetUserByIdWithRelations(default);
     }
 
@@ -85,7 +85,7 @@ public class GetStudentProfileQueryHandlerTests
         //Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
-        _mockUnitOfWork.Users.Received(1)
+        await _mockUnitOfWork.Users.Received(1)
             .GetUserByIdWithRelations(Constants.Authentication.UserIdFromToken);
     }
 }

@@ -1,8 +1,7 @@
-﻿using Application.UnitTests.TestUtils.Groups;
-using Application.UnitTests.TestUtils.TestConstants;
+﻿using Application.UnitTests.TestUtils.TestConstants;
 using Domain.Entities;
 
-namespace Application.UnitTests.TestUtils.Authentication;
+namespace Application.UnitTests.TestUtils.Factories;
 
 public static class AuthenticationFactory
 {
@@ -51,10 +50,10 @@ public static class AuthenticationFactory
     public static Lecturer CreateLecturer(Guid userId)
         => new Lecturer
         {
-            LecturerId = Constants.Authentication.LecturerId,
+            LecturerId = Constants.Lecturer.LecturerId,
             UserId = userId,
             FullName = Constants.Authentication.FullName,
-            Degree = Constants.Authentication.Degree,
+            Degree = Constants.Lecturer.Degree,
             Birthday = Constants.Authentication.Birthday,
             Address = Constants.Authentication.Address,
         };
@@ -65,7 +64,7 @@ public static class AuthenticationFactory
 
         return new Student
         {
-            StudentId = Constants.Authentication.StudentId,
+            StudentId = Constants.Student.StudentId,
             UserId = userId,
             GroupId = groupId,
             FullName = Constants.Authentication.FullName,

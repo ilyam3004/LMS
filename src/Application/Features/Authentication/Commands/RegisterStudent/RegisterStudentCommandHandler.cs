@@ -1,21 +1,24 @@
-﻿using Application.Common.Interfaces.Authentication;
+﻿using Application.Authentication.Commands.RegisterStudent;
+using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Task = System.Threading.Tasks.Task;
 using Application.Models.Authentication;
 using Domain.Abstractions.Results;
-using Domain.Entities;
 using Domain.Common;
+using Domain.Entities;
 using Domain.Enums;
 using MediatR;
+using Task = System.Threading.Tasks.Task;
 
-namespace Application.Authentication.Commands.RegisterStudent;
+namespace Application.Features.Authentication.Commands.RegisterStudent;
 
-public class RegisterStudentCommandHandler : IRequestHandler<RegisterStudentCommand, Result<AuthenticationResult>>
+public class RegisterStudentCommandHandler 
+    : IRequestHandler<RegisterStudentCommand, Result<AuthenticationResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenGenerator _jwtTokenGenerator;
     
-    public RegisterStudentCommandHandler(IUnitOfWork unitOfWork, IJwtTokenGenerator jwtTokenGenerator)
+    public RegisterStudentCommandHandler(IUnitOfWork unitOfWork, 
+        IJwtTokenGenerator jwtTokenGenerator)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenGenerator = jwtTokenGenerator;
