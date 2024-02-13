@@ -26,8 +26,7 @@ public class LoginQueryHandlerTests
     }
 
     [Fact]
-    public async Task
-        Handle_WhenUserExistsAndPasswordIsCorrectAndUserIsStudent_ShouldGenerateTokenAndReturnAuthenticationResult()
+    public async Task Handle_WhenUserExistsAndPasswordIsCorrectAndUserIsStudent_ShouldGenerateTokenAndReturnAuthenticationResult()
     {
         // Arrange
         var query = LoginQueryUtils.CreateLoginQueryWithValidPassword();

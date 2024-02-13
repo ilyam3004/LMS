@@ -3,8 +3,8 @@ using Application.Common.Interfaces.Persistence;
 using Application.UnitTests.TestUtils.Extensions;
 using Application.UnitTests.TestUtils.Factories;
 using Task = System.Threading.Tasks.Task;
-using Domain.Entities;
 using FluentAssertions;
+using Domain.Entities;
 using NSubstitute;
 
 namespace Application.UnitTests.Groups.Queries;
@@ -26,44 +26,36 @@ public class GetAllGetGroupsQueryHandlerTests
     {
         // Arrange 
         var query = new GetAllGroupsQuery();
-        
+
         _mockUnitOfWork.Groups.GetAllGroupsWithStudents()
             .Returns(groups);
-        
+
         // Act
         var result = await _sut.Handle(query, default);
-        
+
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.ValidateRetrievedGroups(groups);
         await _mockUnitOfWork.Groups.Received(1).GetAllGroupsWithStudents();
     }
-    
+
     public static IEnumerable<object[]> ValidRetrieveStudentGroupData()
     {
         yield return
-        [ 
+        [
             GroupFactory.CreateGroupList()
         ];
-        
+
         yield return
         [
-            GroupFactory.CreateGroupList( groupsCount: 4, 
+            GroupFactory.CreateGroupList(groupsCount: 4,
                 students: StudentFactory.CreateStudentList(studentsCount: 4))
         ];
-        
+
         yield return
         [
-            GroupFactory.CreateGroupList( groupsCount: 10, 
+            GroupFactory.CreateGroupList(groupsCount: 10,
                 students: StudentFactory.CreateStudentList(studentsCount: 10))
         ];
     }
-
-
-    // var groups = await _unitOfWork.Groups.GetAllGroupsWithStudents();
-    //         
-    //         return groups.Select(g => 
-    //             new GroupResult(g, g.Students.Select(s => 
-    //                 new StudentResult(s)).ToList()))
-    //             .ToList();
 }

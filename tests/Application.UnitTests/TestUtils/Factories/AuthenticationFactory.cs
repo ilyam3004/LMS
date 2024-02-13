@@ -70,7 +70,7 @@ public static class AuthenticationFactory
             FullName = Constants.Authentication.FullName,
             Birthday = Constants.Authentication.Birthday,
             Address = Constants.Authentication.Address,
-            Group = GroupFactory.CreateGroup(groupId)
+            Group = GroupFactory.CreateGroupWithSubjects(groupId)
         };
     }
 }

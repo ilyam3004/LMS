@@ -5,7 +5,7 @@ namespace Application.UnitTests.TestUtils.Factories;
 
 public static class StudentFactory
 {
-    public static List<Student> CreateStudentList(int studentsCount = 1, 
+    public static List<Student> CreateStudentList(int studentsCount = 1,
         Guid? groupId = null)
         => Enumerable.Range(0, studentsCount).Select(index =>
             CreateStudent(givenIndex: index, groupId: groupId)).ToList();
@@ -16,7 +16,8 @@ public static class StudentFactory
         string? fullName = null,
         DateTime? birthday = null,
         string? address = null,
-        int givenIndex = 0)
+        int givenIndex = 0,
+        List<StudentTask>? tasks = null)
         => new Student
         {
             StudentId = studentId ?? Constants.Student.StudentId,
@@ -25,5 +26,6 @@ public static class StudentFactory
             FullName = fullName ?? Constants.Authentication.FullNameFromGiveIndex(givenIndex),
             Birthday = birthday ?? Constants.Authentication.BirthdayFromGivenIndex(givenIndex),
             Address = address ?? Constants.Authentication.AddressFromGivenIndex(givenIndex),
+            Tasks = tasks ?? TaskFactory.CreateStudentTasks()
         };
 }

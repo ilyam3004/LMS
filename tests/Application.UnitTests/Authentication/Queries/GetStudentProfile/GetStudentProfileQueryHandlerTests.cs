@@ -30,14 +30,14 @@ public class GetStudentProfileQueryHandlerTests
     {
         // Arrange
         var query = GetStudentProfileQueryUtils.CreateGetStudentProfileQuery();
-        
+
         _mockJwtTokenReader.ReadUserIdFromToken(query.Token)
             .Returns(Constants.Authentication.UserIdFromToken.ToString());
 
         _mockUnitOfWork.Users.GetUserByIdWithRelations(Constants.Authentication.UserIdFromToken)
             .Returns(AuthenticationFactory.CreateStudentUser(
                 userId: Constants.Authentication.UserIdFromToken));
-        
+
         // Act
         var result = await _sut.Handle(query, default);
 
@@ -56,10 +56,10 @@ public class GetStudentProfileQueryHandlerTests
 
         _mockJwtTokenReader.ReadUserIdFromToken(query.Token)
             .ReturnsNull();
-        
+
         // Act
         var result = await _sut.Handle(query, default);
-        
+
         // Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidToken);
@@ -76,7 +76,8 @@ public class GetStudentProfileQueryHandlerTests
         _mockJwtTokenReader.ReadUserIdFromToken(Constants.Authentication.Token)
             .Returns(Constants.Authentication.UserIdFromToken.ToString());
 
-        _mockUnitOfWork.Users.GetUserByIdWithRelations(Constants.Authentication.UserIdFromToken)
+        _mockUnitOfWork.Users.GetUserByIdWithRelations(
+                Constants.Authentication.UserIdFromToken)
             .ReturnsNull();
 
         //Act

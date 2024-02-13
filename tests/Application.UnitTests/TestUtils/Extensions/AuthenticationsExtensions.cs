@@ -36,7 +36,7 @@ public static class AuthenticationsExtensions
 
         result.User.Student.Should().BeNull();
         result.User.Lecturer.Should().NotBeNull();
-
+    
         result.User.Lecturer!.LecturerId.Should().Be(Constants.Lecturer.LecturerId);
         result.User.Lecturer!.FullName.Should().Be(Constants.Authentication.FullName);
         result.User.Lecturer!.Address.Should().Be(Constants.Authentication.Address);

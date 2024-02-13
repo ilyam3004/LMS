@@ -97,17 +97,17 @@ public class RegisterStudentCommandHandlerTests
 
     public static IEnumerable<object[]> ValidRetrieveStudentGroupData()
     {
-        yield return [GroupFactory.CreateGroup()];
+        yield return [GroupFactory.CreateGroupWithSubjects()];
 
         yield return
         [
-            GroupFactory.CreateGroup(subjects:
+            GroupFactory.CreateGroupWithSubjects(subjects:
                 SubjectFactory.CreateSubjects(subjectsCount: 4))
         ];
 
         yield return
         [
-            GroupFactory.CreateGroup(subjects:
+            GroupFactory.CreateGroupWithSubjects(subjects:
                 SubjectFactory.CreateSubjects(subjectsCount: 4,
                     tasks: TaskFactory.CreateTasks(tasksCount: 4)))
         ];

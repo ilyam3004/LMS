@@ -16,7 +16,8 @@ public class CreateSubjectCommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
 
-    public CreateSubjectCommandHandler(IUnitOfWork unitOfWork, IJwtTokenReader jwtTokenReader)
+    public CreateSubjectCommandHandler(IUnitOfWork unitOfWork,
+        IJwtTokenReader jwtTokenReader)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenReader;

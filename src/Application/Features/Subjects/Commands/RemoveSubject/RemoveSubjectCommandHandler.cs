@@ -1,6 +1,5 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models;
 using Application.Models.Groups;
 using Application.Models.Subjects;
 using Domain.Abstractions.Results;

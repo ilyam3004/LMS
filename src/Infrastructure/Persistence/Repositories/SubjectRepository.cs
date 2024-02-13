@@ -6,7 +6,9 @@ namespace Infrastructure.Persistence.Repositories;
 
 public class SubjectRepository : Repository<Subject>, ISubjectRepository
 {
-    public SubjectRepository(LmsDbContext context) : base(context) { }
+    public SubjectRepository(LmsDbContext context) : base(context)
+    {
+    }
 
     public async Task<List<Subject>> GetLecturerSubjects(Guid lecturerId)
         => await DbContext.Subjects.Where(s => s.LecturerId == lecturerId)
