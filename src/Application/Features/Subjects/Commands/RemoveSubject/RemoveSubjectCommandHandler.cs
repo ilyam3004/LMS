@@ -2,7 +2,6 @@
 using Application.Common.Interfaces.Persistence;
 using Application.Models.Groups;
 using Application.Models.Subjects;
-using Domain.Abstractions.Errors;
 using Domain.Abstractions.Results;
 using Domain.Common;
 using MediatR;
@@ -42,7 +41,7 @@ public class RemoveSubjectCommandHandler
         if (user is null)
             return Errors.User.UserNotFound;
 
-        if (user.Lecturer.LecturerId != subject.LecturerId)
+        if (user.Lecturer?.LecturerId != subject.LecturerId)
             return Errors.Subject.LecturerNotOwnerOfSubject;
 
         _unitOfWork.Subjects.Remove(subject);

@@ -134,4 +134,33 @@ public class RemoveSubjectCommandHandlerTests
         _unitOfWork.Subjects.Received(0).Remove(Arg.Any<Subject>());
         await _unitOfWork.Received(0).SaveChangesAsync();
     }
+
+    [Fact]
+    public async Task Handler_WhenSubjectExistsTokenIsValidButUserNotExists_ShouldReturnUserNotFoundError()
+    {
+        // Arrange
+        var command = RemoveSubjectCommandUtils.CreateRemoveSubjectCommand();
+
+        _unitOfWork.Subjects
+            .GetSubjectByIdWithRelations(command.SubjectId)
+            .Returns(SubjectFactory.CreateSubject(
+                groupId: Constants.Group.GroupId,
+                subjectId: command.SubjectId,
+                lecturerId: Constants.Lecturer.LecturerId));
+
+        _jwtTokenReader.ReadUserIdFromToken(command.Token)
+            .Returns(Constants.Authentication.UserId.ToString());
+
+        _unitOfWork.Users.GetUserByIdWithRelations(Constants.Authentication.UserId)
+            .ReturnsNull();
+
+        // Act
+        var result = await _sut.Handle(command, default);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        _unitOfWork.Subjects.Received(0).Remove(Arg.Any<Subject>());
+        await _unitOfWork.Received(0).SaveChangesAsync();
+    }
 }
