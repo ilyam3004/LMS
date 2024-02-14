@@ -10,7 +10,7 @@ using FluentAssertions;
 using Domain.Common;
 using NSubstitute;
 
-namespace Application.UnitTests.Authentication.Queries.GetStudentProfile;
+namespace Application.UnitTests.Authentication.Queries;
 
 public class GetStudentProfileQueryHandlerTests
 {
