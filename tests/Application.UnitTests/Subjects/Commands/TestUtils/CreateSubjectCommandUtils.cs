@@ -5,7 +5,7 @@ namespace Application.UnitTests.Subjects.Commands.TestUtils;
 
 public static class CreateSubjectCommandUtils
 {
-    public static CreateSubjectCommand CreateSubjectCommand(
+    public static CreateSubjectCommand CreateCreateSubjectCommand(
         string subjectName = Constants.Subject.SubjectName)
         => new CreateSubjectCommand(subjectName,
             Constants.Subject.SubjectDescription,

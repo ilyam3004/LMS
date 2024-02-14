@@ -47,11 +47,12 @@ public static class AuthenticationFactory
             Password = password ?? Constants.Authentication.InvalidPassword
         };
 
-    public static Lecturer CreateLecturer(Guid userId)
+    public static Lecturer CreateLecturer(Guid? userId = null,
+        Guid? lecturerId = null)
         => new Lecturer
         {
-            LecturerId = Constants.Lecturer.LecturerId,
-            UserId = userId,
+            LecturerId = lecturerId ?? Constants.Lecturer.LecturerId,
+            UserId = userId ?? Constants.Authentication.UserId,
             FullName = Constants.Authentication.FullName,
             Degree = Constants.Lecturer.Degree,
             Birthday = Constants.Authentication.Birthday,

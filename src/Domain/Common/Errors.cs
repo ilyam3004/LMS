@@ -41,6 +41,9 @@ public static class Errors
         
         public static Error SubjectNotFound => Error.NotFound("Subject.SubjectNotFound",
             description: "Subject not found");
+
+        public static Error LecturerNotOwnerOfSubject => Error.Unauthorized("Subject.LecturerNotOwnerOfSubject",
+            description: "You are not an owner of this subject");
     }
     
     public static class Task

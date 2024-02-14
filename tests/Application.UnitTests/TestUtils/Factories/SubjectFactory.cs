@@ -13,20 +13,26 @@ public static class SubjectFactory
         Guid generatedGroupId = groupId ?? Constants.Group.GroupId;
 
         return Enumerable.Range(0, subjectsCount)
-            .Select(index =>
-            {
-                var subjectId = Constants.Subject.SubjectId;
-
-                return new Subject
-                {
-                    SubjectId = subjectId,
-                    Name = Constants.Subject.SubjectNameFromGivenIndex(index),
-                    Description = Constants.Subject.SubjectDescriptionFromGivenIndex(index),
-                    GroupId = generatedGroupId,
-                    LecturerId = Constants.Lecturer.LecturerId,
-                    Tasks = tasks ?? TaskFactory.CreateTasks(subjectId),
-                    Group = GroupFactory.CreateGroupWithOutSubjects()
-                };
-            }).ToList();
+            .Select(index => CreateSubject(
+                groupId: generatedGroupId,
+                subjectId: Constants.Subject.SubjectId,
+                index: index))
+            .ToList();
     }
+
+    public static Subject CreateSubject(List<Task>? tasks = null,
+        Guid? groupId = null,
+        Guid? subjectId = null,
+        Guid? lecturerId = null,
+        int index = 0)
+        => new Subject
+        {
+            SubjectId = subjectId ?? Constants.Subject.SubjectId,
+            Name = Constants.Subject.SubjectNameFromGivenIndex(index),
+            Description = Constants.Subject.SubjectDescriptionFromGivenIndex(index),
+            GroupId = groupId ?? Constants.Group.GroupId,
+            LecturerId = lecturerId ?? Constants.Lecturer.LecturerId,
+            Tasks = tasks ?? TaskFactory.CreateTasks(subjectId),
+            Group = GroupFactory.CreateGroupWithOutSubjects()
+        };
 }

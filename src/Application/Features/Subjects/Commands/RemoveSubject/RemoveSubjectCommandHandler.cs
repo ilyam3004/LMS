@@ -2,6 +2,7 @@
 using Application.Common.Interfaces.Persistence;
 using Application.Models.Groups;
 using Application.Models.Subjects;
+using Domain.Abstractions.Errors;
 using Domain.Abstractions.Results;
 using Domain.Common;
 using MediatR;
@@ -11,8 +12,8 @@ namespace Application.Features.Subjects.Commands.RemoveSubject;
 public class RemoveSubjectCommandHandler
     : IRequestHandler<RemoveSubjectCommand, Result<List<LecturerSubjectResult>>>
 {
-    private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
+    private readonly IUnitOfWork _unitOfWork;
 
     public RemoveSubjectCommandHandler(IUnitOfWork unitOfWork,
         IJwtTokenReader jwtTokenGenerator)
@@ -37,8 +38,12 @@ public class RemoveSubjectCommandHandler
 
         var user = await _unitOfWork.Users
             .GetUserByIdWithRelations(Guid.Parse(userId));
+
         if (user is null)
             return Errors.User.UserNotFound;
+
+        if (user.Lecturer.LecturerId != subject.LecturerId)
+            return Errors.Subject.LecturerNotOwnerOfSubject;
 
         _unitOfWork.Subjects.Remove(subject);
         await _unitOfWork.SaveChangesAsync();

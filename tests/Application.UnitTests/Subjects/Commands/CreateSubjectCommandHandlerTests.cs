@@ -36,7 +36,7 @@ public class CreateSubjectCommandHandlerTests
             List<Subject> subjects)
     {
         //Arrange
-        var command = CreateSubjectCommandUtils.CreateSubjectCommand();
+        var command = CreateSubjectCommandUtils.CreateCreateSubjectCommand();
 
         _unitOfWork.Groups.GetGroupByName(command.GroupName)
             .Returns(GroupFactory.CreateGroupWithSubjects(subjects: subjects));
@@ -86,7 +86,7 @@ public class CreateSubjectCommandHandlerTests
     public async Task Handler_WhenGroupIsNotExists_ShouldReturnGroupNotFoundError()
     {
         //Arrange
-        var command = CreateSubjectCommandUtils.CreateSubjectCommand();
+        var command = CreateSubjectCommandUtils.CreateCreateSubjectCommand();
 
         _unitOfWork.Groups.GetGroupByName(command.GroupName)
             .ReturnsNull();
@@ -105,7 +105,7 @@ public class CreateSubjectCommandHandlerTests
     public async Task Handler_WhenGroupExistsAndUserNotExists_ShouldReturnUserNotFound()
     {
         //Arrange
-        var command = CreateSubjectCommandUtils.CreateSubjectCommand();
+        var command = CreateSubjectCommandUtils.CreateCreateSubjectCommand();
 
         _unitOfWork.Groups.GetGroupByName(command.GroupName)
             .Returns(GroupFactory.CreateGroupWithSubjects());
@@ -134,7 +134,7 @@ public class CreateSubjectCommandHandlerTests
     {
         //Arrange
         var command = CreateSubjectCommandUtils
-            .CreateSubjectCommand(subjectName:
+            .CreateCreateSubjectCommand(subjectName:
                 Constants.Subject.SubjectNameFromGivenIndex(0));
 
         _unitOfWork.Groups.GetGroupByName(command.GroupName)
@@ -154,7 +154,7 @@ public class CreateSubjectCommandHandlerTests
     public async Task Handler_WhenTokenIsInvalid_ShouldReturnInvalidTokenError()
     {
         //Arrange
-        var command = CreateSubjectCommandUtils.CreateSubjectCommand();
+        var command = CreateSubjectCommandUtils.CreateCreateSubjectCommand();
 
         _unitOfWork.Groups.GetGroupByName(command.GroupName)
             .Returns(GroupFactory.CreateGroupWithSubjects());
