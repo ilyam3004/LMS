@@ -1,7 +1,7 @@
 ﻿using Application.Features.Subjects.Commands.RemoveSubject;
 using Application.UnitTests.TestUtils.TestConstants;
 
-namespace Application.UnitTests.Subjects.Commands.TestUtils;
+namespace Application.UnitTests.Subjects.TestUtils;
 
 public static class RemoveSubjectCommandUtils
 {

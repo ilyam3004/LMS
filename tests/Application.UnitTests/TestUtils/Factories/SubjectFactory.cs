@@ -16,7 +16,8 @@ public static class SubjectFactory
             .Select(index => CreateSubject(
                 groupId: generatedGroupId,
                 subjectId: Constants.Subject.SubjectId,
-                index: index))
+                index: index,
+                tasks: tasks))
             .ToList();
     }
 
@@ -33,6 +34,7 @@ public static class SubjectFactory
             GroupId = groupId ?? Constants.Group.GroupId,
             LecturerId = lecturerId ?? Constants.Lecturer.LecturerId,
             Tasks = tasks ?? TaskFactory.CreateTasks(subjectId),
-            Group = GroupFactory.CreateGroupWithOutSubjects()
+            Group = GroupFactory.CreateGroupWithOutSubjects(),
+            Lecturer = AuthenticationFactory.CreateLecturerUser().Lecturer
         };
 }

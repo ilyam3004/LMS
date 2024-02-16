@@ -3,7 +3,7 @@ using Task = System.Threading.Tasks.Task;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Features.Subjects.Commands.CreateSubject;
-using Application.UnitTests.Subjects.Commands.TestUtils;
+using Application.UnitTests.Subjects.TestUtils;
 using Application.UnitTests.TestUtils.Extensions;
 using Application.UnitTests.TestUtils.Factories;
 using Application.UnitTests.TestUtils.TestConstants;
@@ -57,7 +57,7 @@ public class CreateSubjectCommandHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.ValidateRetrievedSubjects(subjects);
+        result.Value.ValidateRetrievedLecturerSubjects(subjects);
         await _unitOfWork.Subjects.Received(1).AddAsync(Arg.Any<Subject>());
         await _unitOfWork.Received(1).SaveChangesAsync();
     }
@@ -129,8 +129,7 @@ public class CreateSubjectCommandHandlerTests
     }
 
     [Fact]
-    public async Task
-        Handler_WhenGroupExistsButSubjectWithTheSameNameAlreadyExistsInGroup_ShouldReturnSubjectAlreadyExists()
+    public async Task Handler_WhenGroupExistsButSubjectWithTheSameNameAlreadyExistsInGroup_ShouldReturnSubjectAlreadyExists()
     {
         //Arrange
         var command = CreateSubjectCommandUtils

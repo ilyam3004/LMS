@@ -20,7 +20,8 @@ public static class TaskFactory
                 SubjectId = generatedSubjectId,
                 CreatedAt = Constants.Task.CreatedAt,
                 Deadline = Constants.Task.Deadline,
-                MaxGrade = Constants.Task.MaxGrade
+                MaxGrade = Constants.Task.MaxGrade,
+                StudentTasks = CreateStudentTasks(Constants.Task.TaskId)
             }).ToList();
     }
 

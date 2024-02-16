@@ -1,8 +1,10 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Models.Subjects;
-using Application.Models.Tasks;
 using Domain.Abstractions.Results;
+using Task = Domain.Entities.Task;
+using Application.Models.Tasks;
+using Domain.Entities;
 using Domain.Common;
 using MediatR;
 
@@ -38,29 +40,42 @@ public class GetStudentSubjectsQueryHandler
             .GetStudentSubjectsWithRelations(user.Student!.GroupId);
 
         return studentSubjects.Select(subject =>
-        {
-            var totalGrade = 0;
-
-            var taskResults = subject.Tasks.Select(task =>
-            {
-                var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
-                    studentTask.StudentId == user.Student!.StudentId);
-
-                if (studentTask is null)
-                    return new StudentTaskResult(task, studentTask!);
-
-                totalGrade += studentTask.Grade;
-
-                return new StudentTaskResult(task, studentTask);
-            }).ToList();
-
-            var averageGrade = 0.0;
-
-            if (subject.Tasks.Count != 0)
-                averageGrade = Convert.ToDouble(totalGrade) / subject.Tasks.Count;
-
-            return new StudentSubjectResult(subject, taskResults,
-                Math.Round(averageGrade, 2), totalGrade);
-        }).ToList();
+            TransformSubjectToStudentSubjectResult(subject, user.Student.StudentId)).ToList();
     }
+
+    private StudentSubjectResult TransformSubjectToStudentSubjectResult(Subject subject,
+        Guid studentId)
+    {
+        if (subject.Tasks.Count == 0)
+            return new StudentSubjectResult(subject,
+                [], 0, 0);
+
+        var (taskResults, totalGrade) = TransformTasksToTaskResultsAndCalculateTotalGrade(
+            subject.Tasks, studentId);
+
+        var averageGrade = CalculateAverageGrade(subject.Tasks.Count, totalGrade);
+
+        return new StudentSubjectResult(subject, taskResults, averageGrade, totalGrade);
+    }
+
+    private (List<StudentTaskResult>, int) TransformTasksToTaskResultsAndCalculateTotalGrade(
+        List<Task> tasks, Guid studentId)
+    {
+        var totalGrade = 0;
+
+        var taskResults = tasks.Select(task =>
+        {
+            var studentTask = task.StudentTasks.FirstOrDefault(studentTask =>
+                studentTask.StudentId == studentId);
+
+            totalGrade += studentTask.Grade;
+
+            return new StudentTaskResult(task, studentTask);
+        }).ToList();
+
+        return (taskResults, totalGrade);
+    }
+
+    private double CalculateAverageGrade(int tasksCount, int totalGrade)
+        => Math.Round(Convert.ToDouble(totalGrade) / tasksCount, 2);
 }

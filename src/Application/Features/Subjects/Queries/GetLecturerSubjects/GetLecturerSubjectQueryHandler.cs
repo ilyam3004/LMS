@@ -5,6 +5,7 @@ using Application.Models.Subjects;
 using Application.Models.Tasks;
 using Domain.Abstractions.Results;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
 
 namespace Application.Features.Subjects.Queries.GetLecturerSubjects;
@@ -14,7 +15,7 @@ public class GetLecturerSubjectQueryHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
-    
+
     public GetLecturerSubjectQueryHandler(IUnitOfWork unitOfWork,
         IJwtTokenReader jwtTokenReader)
     {
@@ -38,17 +39,20 @@ public class GetLecturerSubjectQueryHandler
         var lecturerSubjects = await _unitOfWork.Subjects
             .GetLecturerSubjects(user.Lecturer!.LecturerId);
 
-        return lecturerSubjects.Select(subject =>
-        {
-            var studentResults = subject.Group.Students.Select(s =>
-                new StudentResult(s)).ToList();
+        return lecturerSubjects.Select(TransformSubjectToLecturerSubjectResult)
+            .ToList();
+    }
 
-            var groupResult = new GroupResult(subject.Group, studentResults);
+    private LecturerSubjectResult TransformSubjectToLecturerSubjectResult(Subject subject)
+    {
+        var studentResults = subject.Group.Students.Select(s =>
+            new StudentResult(s)).ToList();
 
-            var taskResults = subject.Tasks.Select(task =>
-                new LecturerTaskResult(task)).ToList();
+        var groupResult = new GroupResult(subject.Group, studentResults);
 
-            return new LecturerSubjectResult(subject, groupResult, taskResults);
-        }).ToList();
+        var taskResults = subject.Tasks.Select(task =>
+            new LecturerTaskResult(task)).ToList();
+
+        return new LecturerSubjectResult(subject, groupResult, taskResults);
     }
 }

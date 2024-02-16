@@ -1,7 +1,7 @@
 using Application.Features.Subjects.Commands.RemoveSubject;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.UnitTests.Subjects.Commands.TestUtils;
+using Application.UnitTests.Subjects.TestUtils;
 using Application.UnitTests.TestUtils.Factories;
 using Application.UnitTests.TestUtils.TestConstants;
 using Task = System.Threading.Tasks.Task;

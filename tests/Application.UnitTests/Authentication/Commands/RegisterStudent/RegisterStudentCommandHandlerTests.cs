@@ -31,7 +31,7 @@ public class RegisterStudentCommandHandlerTests
     [Theory]
     [MemberData(nameof(ValidRetrieveStudentGroupData))]
     public async Task Handler_WhenUserNotExistsByEmailAndGroupExistsByName_ShouldAddUserAndStudentToDatabaseCreateStudentTasksAndGenerateTheToken(
-            Group group)
+        Group group)
     {
         // Arrange
         var command = RegisterStudentCommandUtils.CreateRegisterStudentCommand();
