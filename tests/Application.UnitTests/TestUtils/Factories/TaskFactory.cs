@@ -12,18 +12,29 @@ public static class TaskFactory
         Guid generatedSubjectId = subjectId ?? Constants.Subject.SubjectId;
 
         return Enumerable.Range(0, tasksCount)
-            .Select(index => new Task
-            {
-                TaskId = Constants.Task.TaskId,
-                Title = Constants.Task.TaskTitleFromGivenIndex(index),
-                Description = Constants.Task.TaskDescriptionFromGivenIndex(index),
-                SubjectId = generatedSubjectId,
-                CreatedAt = Constants.Task.CreatedAt,
-                Deadline = Constants.Task.Deadline,
-                MaxGrade = Constants.Task.MaxGrade,
-                StudentTasks = CreateStudentTasks(Constants.Task.TaskId)
-            }).ToList();
+            .Select(index => CreateTask(subjectId, index))
+            .ToList();
     }
+
+    public static Task CreateTask(Guid? subjectId = null,
+        int index = 0)
+    {
+        Guid generatedSubjectId = subjectId ?? Constants.Subject.SubjectId;
+
+        return new Task
+        {
+            TaskId = Constants.Task.TaskId,
+            Title = Constants.Task.TaskTitleFromGivenIndex(index),
+            Description = Constants.Task.TaskDescriptionFromGivenIndex(index),
+            SubjectId = generatedSubjectId,
+            CreatedAt = Constants.Task.CreatedAt,
+            Deadline = Constants.Task.Deadline,
+            MaxGrade = Constants.Task.MaxGrade,
+            StudentTasks = CreateStudentTasks(Constants.Task.TaskId),
+            Subject = SubjectFactory.CreateSubjectWithOutTasks()
+        };
+    }
+
 
     public static List<StudentTask> CreateStudentTasks(Guid? taskId = null,
         int tasksCount = 1)

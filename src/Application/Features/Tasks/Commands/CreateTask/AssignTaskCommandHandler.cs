@@ -76,7 +76,7 @@ public class AssignTaskCommandHandler
     {
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(taskId);
         var group = await _unitOfWork.Groups.GetGroupByIdWithStudents(task!.Subject.GroupId);
-        
+
         group!.Students.ForEach(async s =>
         {
             var studentTask = new StudentTask
@@ -92,7 +92,7 @@ public class AssignTaskCommandHandler
 
             await _unitOfWork.StudentTasks.AddAsync(studentTask);
         });
-        
+
         await _unitOfWork.SaveChangesAsync();
     }
 }

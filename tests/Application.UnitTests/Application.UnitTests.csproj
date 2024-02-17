@@ -29,4 +29,8 @@
     <ProjectReference Include="..\..\src\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Tasks\Queries\TestUtils\" />
+  </ItemGroup>
+
 </Project>

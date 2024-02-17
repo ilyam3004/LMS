@@ -10,8 +10,8 @@ public static partial class Constants
         public static readonly Guid StudentTaskId = Guid.NewGuid();
         public static readonly Guid TaskCommentId = Guid.NewGuid();
 
-        public const string TaskTitle = "Title";
-        public const string TaskDescription = "Description";
+        public const string Title = "Title";
+        public const string Description = "Description";
         public const string Comment = "Comment";
 
         public static readonly DateTime CreatedAt = DateTime.Now;
@@ -27,10 +27,10 @@ public static partial class Constants
         public const int MaxGrade = 10;
 
         public static string TaskTitleFromGivenIndex(int index)
-            => $"{TaskTitle} {index}";
+            => $"{Title} {index}";
 
         public static string TaskDescriptionFromGivenIndex(int index)
-            => $"{TaskDescription} {index}";
+            => $"{Description} {index}";
         
         public static string CommentFromGivenIndex(int index)
             => $"{Comment} {index}";

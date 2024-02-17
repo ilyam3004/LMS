@@ -37,4 +37,20 @@ public static class SubjectFactory
             Group = GroupFactory.CreateGroupWithOutSubjects(),
             Lecturer = AuthenticationFactory.CreateLecturerUser().Lecturer
         };
+
+    public static Subject CreateSubjectWithOutTasks(Guid? groupId = null,
+        Guid? subjectId = null,
+        Guid? lecturerId = null,
+        int index = 0)
+        => new Subject
+        {
+            SubjectId = subjectId ?? Constants.Subject.SubjectId,
+            Name = Constants.Subject.SubjectNameFromGivenIndex(index),
+            Description = Constants.Subject.SubjectDescriptionFromGivenIndex(index),
+            GroupId = groupId ?? Constants.Group.GroupId,
+            LecturerId = lecturerId ?? Constants.Lecturer.LecturerId,
+            Tasks = [],
+            Group = GroupFactory.CreateGroupWithOutSubjects(),
+            Lecturer = AuthenticationFactory.CreateLecturerUser().Lecturer
+        };
 }
