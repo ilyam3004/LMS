@@ -1,11 +1,12 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models.Groups;
 using Application.Models.Subjects;
-using Application.Models.Tasks;
 using Domain.Abstractions.Results;
-using Domain.Common;
+using Task = Domain.Entities.Task;
+using Application.Models.Groups;
+using Application.Models.Tasks;
 using Domain.Entities;
+using Domain.Common;
 using MediatR;
 
 namespace Application.Features.Subjects.Queries.GetLecturerSubjects;
@@ -39,20 +40,24 @@ public class GetLecturerSubjectQueryHandler
         var lecturerSubjects = await _unitOfWork.Subjects
             .GetLecturerSubjects(user.Lecturer!.LecturerId);
 
-        return lecturerSubjects.Select(TransformSubjectToLecturerSubjectResult)
+        return lecturerSubjects.Select(MapSubjectToLecturerSubjectResult)
             .ToList();
     }
 
-    private LecturerSubjectResult TransformSubjectToLecturerSubjectResult(Subject subject)
+    private LecturerSubjectResult MapSubjectToLecturerSubjectResult(Subject subject)
     {
         var studentResults = subject.Group.Students.Select(s =>
             new StudentResult(s)).ToList();
 
         var groupResult = new GroupResult(subject.Group, studentResults);
 
-        var taskResults = subject.Tasks.Select(task =>
-            new LecturerTaskResult(task)).ToList();
+        var taskResults = MapTasksToLecturerTaskResults(
+            subject.Tasks);
 
         return new LecturerSubjectResult(subject, groupResult, taskResults);
     }
+
+    private List<LecturerTaskResult> MapTasksToLecturerTaskResults(
+        List<Task> tasks)
+        => tasks.Select(task => new LecturerTaskResult(task)).ToList();
 }

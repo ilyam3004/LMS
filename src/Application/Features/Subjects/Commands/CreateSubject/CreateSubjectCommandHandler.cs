@@ -1,6 +1,5 @@
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models;
 using Application.Models.Groups;
 using Application.Models.Subjects;
 using Domain.Abstractions.Results;
@@ -56,24 +55,25 @@ public class CreateSubjectCommandHandler
 
         await _unitOfWork.SaveChangesAsync();
 
-        return await GetLecturerSubjects(user.Lecturer.LecturerId);
+        return await GetLecturerSubjectsResults(user.Lecturer.LecturerId);
     }
 
-    private async Task<List<LecturerSubjectResult>> GetLecturerSubjects(Guid lecturerId)
+    private async Task<List<LecturerSubjectResult>> GetLecturerSubjectsResults(Guid lecturerId)
     {
         var lecturerSubjects = await _unitOfWork.Subjects
             .GetLecturerSubjects(lecturerId);
 
         return lecturerSubjects.Select(subject =>
         {
-            var studentResults = subject.Group.Students.Select(s =>
-                new StudentResult(s)).ToList();
-
-            var groupResult = new GroupResult(subject.Group, studentResults);
+            var groupResult = new GroupResult(subject.Group, 
+                CreateStudentResults(subject.Group.Students));
 
             return new LecturerSubjectResult(subject, groupResult, []);
         }).ToList();
     }
+
+    private List<StudentResult> CreateStudentResults(List<Student> students)
+        => students.Select(s => new StudentResult(s)).ToList();
 
     private bool SubjectExistsInGroup(string subjectName, Group group)
         => group.Subjects.Any(s => s.Name == subjectName);

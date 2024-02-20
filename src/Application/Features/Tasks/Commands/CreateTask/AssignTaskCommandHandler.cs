@@ -1,16 +1,15 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Models;
-using Application.Models.Groups;
+using Domain.Abstractions.Results;
+using Task = Domain.Entities.Task;
 using Application.Models.Subjects;
 using Application.Models.Tasks;
+using Application.Models.Groups;
 using Application.Services;
-using Domain.Abstractions.Results;
 using Domain.Common;
 using Domain.Entities;
 using Domain.Enums;
 using MediatR;
-using Task = Domain.Entities.Task;
 
 namespace Application.Features.Tasks.Commands.CreateTask;
 

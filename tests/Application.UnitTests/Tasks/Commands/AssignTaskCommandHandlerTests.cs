@@ -1,4 +1,5 @@
-﻿using System.Runtime.InteropServices.JavaScript;
+﻿using Task = System.Threading.Tasks.Task;
+using TaskFactory = Application.UnitTests.TestUtils.Factories.TaskFactory;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Features.Tasks.Commands.CreateTask;
@@ -7,9 +8,9 @@ using Application.UnitTests.Tasks.Commands.TestUtils;
 using Application.UnitTests.TestUtils.Factories;
 using Application.UnitTests.TestUtils.TestConstants;
 using Domain.Common;
+using Domain.Entities;
 using FluentAssertions;
 using NSubstitute;
-using TaskFactory = Application.UnitTests.TestUtils.Factories.TaskFactory;
 
 namespace Application.UnitTests.Tasks.Commands;
 
@@ -28,9 +29,11 @@ public class AssignTaskCommandHandlerTests
         _sut = new AssignTaskCommandHandler(_jwtTokenReader, _unitOfWork, _dateTimeProvider);
     }
 
-    [Fact]
+    [Theory]
+    [MemberData(nameof(ValidRetrieveGroupWithStudentList))]
     public async Task
-        Handler_WhenSubjectExists_ShouldAddAddNewTaskAddStudentTaskForEachStudentOfTheGroupAndReturnLecturerSubjectResult()
+        Handler_WhenSubjectExists_ShouldAddAddNewTaskAddStudentTaskForEachStudentOfTheGroupAndReturnLecturerSubjectResult(
+            Group group)
     {
         // Arrange
         var command = AssignTaskCommandUtils.CreateAssignTaskCommand();
@@ -45,7 +48,7 @@ public class AssignTaskCommandHandlerTests
             .Returns(SubjectFactory.CreateSubject());
 
         _unitOfWork.Groups.GetGroupByIdWithStudents(Constants.Group.GroupId)
-            .Returns(GroupFactory.CreateGroupWithOutSubjects());
+            .Returns(group);
 
         // Act
         var result = await _sut.Handle(command, default);
@@ -54,6 +57,30 @@ public class AssignTaskCommandHandlerTests
         result.IsSuccess.Should().BeTrue();
         await _unitOfWork.Tasks.Received(1).AddAsync(Arg.Any<Domain.Entities.Task>());
         await _unitOfWork.Received(2).SaveChangesAsync();
+        await _unitOfWork.Received(group.Students.Count)
+            .StudentTasks.AddAsync(Arg.Any<StudentTask>());
+    }
+
+
+    public static IEnumerable<object[]> ValidRetrieveGroupWithStudentList()
+    {
+        yield return
+        [
+            GroupFactory.CreateGroupWithOutSubjects(
+                students: StudentFactory.CreateStudentList())
+        ];
+
+        yield return
+        [
+            GroupFactory.CreateGroupWithOutSubjects(
+                students: StudentFactory.CreateStudentList(studentsCount: 5))
+        ];
+
+        yield return
+        [
+            GroupFactory.CreateGroupWithOutSubjects(
+                students: StudentFactory.CreateStudentList(studentsCount: 10))
+        ];
     }
 
     [Fact]

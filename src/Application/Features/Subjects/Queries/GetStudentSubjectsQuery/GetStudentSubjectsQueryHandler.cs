@@ -39,18 +39,24 @@ public class GetStudentSubjectsQueryHandler
         var studentSubjects = await _unitOfWork.Subjects
             .GetStudentSubjectsWithRelations(user.Student!.GroupId);
 
-        return studentSubjects.Select(subject =>
-            TransformSubjectToStudentSubjectResult(subject, user.Student.StudentId)).ToList();
+        return MapSubjectsToStudentSubjectResults(studentSubjects,
+            user.Student.StudentId);
     }
 
-    private StudentSubjectResult TransformSubjectToStudentSubjectResult(Subject subject,
+    private List<StudentSubjectResult> MapSubjectsToStudentSubjectResults(
+        List<Subject> subjects, Guid studentId)
+        => subjects.Select(subject =>
+                MapSubjectToStudentSubjectResult(subject, studentId))
+            .ToList();
+
+    private StudentSubjectResult MapSubjectToStudentSubjectResult(Subject subject,
         Guid studentId)
     {
         if (subject.Tasks.Count == 0)
             return new StudentSubjectResult(subject,
                 [], 0, 0);
 
-        var (taskResults, totalGrade) = TransformTasksToTaskResultsAndCalculateTotalGrade(
+        var (taskResults, totalGrade) = MapTasksToTaskResultsAndCalculateTotalGrade(
             subject.Tasks, studentId);
 
         var averageGrade = CalculateAverageGrade(subject.Tasks.Count, totalGrade);
@@ -58,7 +64,7 @@ public class GetStudentSubjectsQueryHandler
         return new StudentSubjectResult(subject, taskResults, averageGrade, totalGrade);
     }
 
-    private (List<StudentTaskResult>, int) TransformTasksToTaskResultsAndCalculateTotalGrade(
+    private (List<StudentTaskResult>, int) MapTasksToTaskResultsAndCalculateTotalGrade(
         List<Task> tasks, Guid studentId)
     {
         var totalGrade = 0;

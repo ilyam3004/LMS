@@ -4,9 +4,10 @@ using Application.Models.Subjects;
 using Domain.Abstractions.Results;
 using Application.Models.Groups;
 using Application.Models.Tasks;
-using Application.Models;
 using Domain.Common;
+using Domain.Entities;
 using MediatR;
+using Task = Domain.Entities.Task;
 
 namespace Application.Features.Tasks.Commands.RemoveTask;
 
@@ -40,14 +41,20 @@ public class RemoveTaskCommandHandler
         var subject = await _unitOfWork.Subjects
             .GetSubjectByIdWithRelations(subjectId);
 
-        var studentResults = subject!.Group.Students.Select(s =>
-            new StudentResult(s)).ToList();
+        var studentResults = MapStudentsToStudentResults(
+            subject.Group.Students);
 
         var groupResult = new GroupResult(subject.Group, studentResults);
-        
-        var taskResults = subject.Tasks.Select(task =>
-            new LecturerTaskResult(task)).ToList();
+
+        var taskResults = MapTasksToLecturerTaskResults(
+            subject.Tasks);
 
         return new LecturerSubjectResult(subject, groupResult, taskResults);
     }
+    
+    private List<StudentResult> MapStudentsToStudentResults(List<Student> students)
+        => students.Select(s => new StudentResult(s)).ToList();
+    
+    private List<LecturerTaskResult> MapTasksToLecturerTaskResults(List<Task> tasks)
+            => tasks.Select(t => new LecturerTaskResult(t)).ToList();
 }
