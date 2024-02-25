@@ -1,4 +1,5 @@
-﻿using Application.Common.Interfaces.Persistence;
+﻿using Application.Common.Interfaces.Authentication;
+using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
 using Application.Models.Tasks;
 using Domain.Common;
@@ -24,11 +25,11 @@ public class AcceptTaskCommandHandler
             .GetByIdAsyncWithRelations(command.StudentTaskId);
 
         if (studentTask is null)
-            return Errors.Task.TaskNotFound;
+            return Errors.Task.StudentTaskNotFound;
 
         if (studentTask.Status != StudentTaskStatus.Uploaded 
             && studentTask.Status != StudentTaskStatus.Accepted)
-            return Errors.Task.TaskNotUploaded;
+            return Errors.Task.StudentTaskNotUploaded;
 
         if (studentTask.Task.MaxGrade < command.Grade)
             return Errors.Task.GradeTooHigh;

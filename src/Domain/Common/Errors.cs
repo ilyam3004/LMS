@@ -54,8 +54,8 @@ public static class Errors
         public static Error StudentTaskNotFound => Error.NotFound("Task.StudentTaskNotFound",
             description: "Uploaded Student task not found");
         
-        public static Error TaskNotUploaded => Error.Conflict("Task.TaskNotUploaded",
-            description: "Task is not uploaded");
+        public static Error StudentTaskNotUploaded => Error.Conflict("Task.StudentTaskNotUploaded",
+            description: "Student Task is not uploaded");
         
         public static Error GradeTooHigh => Error.Conflict("Task.GradeTooHigh",
             description: "Grade is too high");

@@ -1,6 +1,7 @@
 ﻿using Application.UnitTests.TestUtils.TestConstants;
 using Task = Domain.Entities.Task;
 using Domain.Entities;
+using Domain.Enums;
 
 namespace Application.UnitTests.TestUtils.Factories;
 
@@ -8,13 +9,9 @@ public static class TaskFactory
 {
     public static List<Task> CreateTasks(Guid? subjectId = null,
         int tasksCount = 1)
-    {
-        Guid generatedSubjectId = subjectId ?? Constants.Subject.SubjectId;
-
-        return Enumerable.Range(0, tasksCount)
+        => Enumerable.Range(0, tasksCount)
             .Select(index => CreateTask(subjectId, index))
             .ToList();
-    }
 
     public static Task CreateTask(Guid? subjectId = null,
         int index = 0)
@@ -37,31 +34,49 @@ public static class TaskFactory
 
 
     public static List<StudentTask> CreateStudentTasks(Guid? taskId = null,
-        int tasksCount = 1)
+        int studentTasksCount = 1)
     {
         Guid generatedTaskId = taskId ?? Constants.Task.TaskId;
 
-        return Enumerable.Range(0, tasksCount)
-            .Select(index =>
-            {
-                Guid generatedStudentTaskId = taskId ?? Constants.Task.TaskId;
-
-                return new StudentTask
-                {
-                    StudentTaskId = generatedStudentTaskId,
-                    TaskId = generatedTaskId,
-                    StudentId = Constants.Student.StudentId,
-                    Grade = Constants.Task.Grade,
-                    Status = Constants.Task.Status,
-                    UploadedAt = Constants.Task.UploadedAt,
-                    OrdinalFileName = Constants.Task.OrdinalFileName,
-                    FileUrl = Constants.Task.FileUrl,
-                    Comments = CreateStudentTaskComments(studentTaskId: generatedTaskId)
-                };
-            }).ToList();
+        return Enumerable.Range(0, studentTasksCount)
+            .Select(_ => CreateStudentTaskWithoutTaskObject(taskId: generatedTaskId))
+            .ToList();
     }
 
-    public static List<TaskComment> CreateStudentTaskComments(Guid? studentTaskId = null,
+    public static StudentTask CreateStudentTaskWithoutTaskObject(Guid? taskId = null,
+        StudentTaskStatus status = StudentTaskStatus.Uploaded)
+        => new StudentTask
+        {
+            StudentTaskId = Constants.Task.StudentTaskId,
+            TaskId = taskId ?? Constants.Task.TaskId,
+            StudentId = Constants.Student.StudentId,
+            Grade = Constants.Task.Grade,
+            Status = status,
+            UploadedAt = Constants.Task.UploadedAt,
+            OrdinalFileName = Constants.Task.OrdinalFileName,
+            FileUrl = Constants.Task.FileUrl,
+            Comments = CreateStudentTaskComments(studentTaskId: taskId)
+        };
+    
+    
+    public static StudentTask CreateStudentTaskWithTaskObject(Guid? taskId = null,
+        StudentTaskStatus status = StudentTaskStatus.Uploaded)
+        => new StudentTask
+        {
+            StudentTaskId = Constants.Task.StudentTaskId,
+            TaskId = taskId ?? Constants.Task.TaskId,
+            StudentId = Constants.Student.StudentId,
+            Grade = Constants.Task.Grade,
+            Status = status,
+            UploadedAt = Constants.Task.UploadedAt,
+            OrdinalFileName = Constants.Task.OrdinalFileName,
+            FileUrl = Constants.Task.FileUrl,
+            Comments = CreateStudentTaskComments(studentTaskId: taskId),
+            Task = CreateTask()
+        };
+
+
+    private static List<TaskComment> CreateStudentTaskComments(Guid? studentTaskId = null,
         int commentsCount = 1)
     {
         Guid generatedStudentTaskId = studentTaskId ?? Constants.Task.StudentTaskId;

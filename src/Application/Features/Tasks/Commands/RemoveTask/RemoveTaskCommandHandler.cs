@@ -3,11 +3,11 @@ using Application.Common.Interfaces.Persistence;
 using Application.Models.Subjects;
 using Domain.Abstractions.Results;
 using Application.Models.Groups;
+using Task = Domain.Entities.Task;
 using Application.Models.Tasks;
 using Domain.Common;
 using Domain.Entities;
 using MediatR;
-using Task = Domain.Entities.Task;
 
 namespace Application.Features.Tasks.Commands.RemoveTask;
 
@@ -17,7 +17,8 @@ public class RemoveTaskCommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
 
-    public RemoveTaskCommandHandler(IUnitOfWork unitOfWork, IJwtTokenReader jwtTokenReader)
+    public RemoveTaskCommandHandler(IUnitOfWork unitOfWork,
+        IJwtTokenReader jwtTokenReader)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenReader;
@@ -26,6 +27,13 @@ public class RemoveTaskCommandHandler
     public async Task<Result<LecturerSubjectResult>> Handle(
         RemoveTaskCommand command, CancellationToken cancellationToken)
     {
+        var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
+        if (userId is null)
+            return Errors.User.InvalidToken;
+
+        if (!await _unitOfWork.Users.UserExistsById(Guid.Parse(userId)))
+            return Errors.User.UserNotFound;
+        
         var task = await _unitOfWork.Tasks.GetByIdAsync(command.TaskId);
         if (task is null)
             return Errors.Task.TaskNotFound;
@@ -42,7 +50,7 @@ public class RemoveTaskCommandHandler
             .GetSubjectByIdWithRelations(subjectId);
 
         var studentResults = MapStudentsToStudentResults(
-            subject.Group.Students);
+            subject!.Group.Students);
 
         var groupResult = new GroupResult(subject.Group, studentResults);
 
@@ -51,10 +59,10 @@ public class RemoveTaskCommandHandler
 
         return new LecturerSubjectResult(subject, groupResult, taskResults);
     }
-    
+
     private List<StudentResult> MapStudentsToStudentResults(List<Student> students)
         => students.Select(s => new StudentResult(s)).ToList();
-    
+
     private List<LecturerTaskResult> MapTasksToLecturerTaskResults(List<Task> tasks)
-            => tasks.Select(t => new LecturerTaskResult(t)).ToList();
+        => tasks.Select(t => new LecturerTaskResult(t)).ToList();
 }

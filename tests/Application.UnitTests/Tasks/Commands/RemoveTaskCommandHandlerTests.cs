@@ -2,27 +2,28 @@
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Features.Tasks.Commands.RemoveTask;
-using Application.Models.Subjects;
 using Application.UnitTests.Tasks.Commands.TestUtils;
 using Application.UnitTests.TestUtils.Factories;
 using Application.UnitTests.TestUtils.TestConstants;
+using NSubstitute.ReturnsExtensions;
+using Application.Models.Subjects;
+using Domain.Common;
 using FluentAssertions;
 using NSubstitute;
-using NSubstitute.ReturnsExtensions;
 
 namespace Application.UnitTests.Tasks.Commands;
 
 public class RemoveTaskCommandHandlerTests
 {
     private readonly RemoveTaskCommandHandler _sut;
-    private readonly IUnitOfWork _mockUnitOfWork;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
 
     public RemoveTaskCommandHandlerTests()
     {
-        _mockUnitOfWork = Substitute.For<IUnitOfWork>();
+        _unitOfWork = Substitute.For<IUnitOfWork>();
         _jwtTokenReader = Substitute.For<IJwtTokenReader>();
-        _sut = new RemoveTaskCommandHandler(_mockUnitOfWork, _jwtTokenReader);
+        _sut = new RemoveTaskCommandHandler(_unitOfWork, _jwtTokenReader);
     }
 
     [Fact]
@@ -31,10 +32,16 @@ public class RemoveTaskCommandHandlerTests
         // Arrange
         var command = RemoveTaskCommandUtils.CreateRemoveTaskCommand();
 
-        _mockUnitOfWork.Tasks.GetByIdAsync(command.TaskId)
+        _jwtTokenReader.ReadUserIdFromToken(command.Token).Returns(
+            Constants.Authentication.UserIdFromToken.ToString());
+        
+        _unitOfWork.Users.UserExistsById(Constants.Authentication.UserIdFromToken)
+            .Returns(true);
+
+        _unitOfWork.Tasks.GetByIdAsync(command.TaskId)
             .Returns(TaskFactory.CreateTask());
 
-        _mockUnitOfWork.Subjects.GetSubjectByIdWithRelations(Constants.Subject.SubjectId)
+        _unitOfWork.Subjects.GetSubjectByIdWithRelations(Constants.Subject.SubjectId)
             .Returns(SubjectFactory.CreateSubject());
 
         // Act
@@ -43,8 +50,8 @@ public class RemoveTaskCommandHandlerTests
         // Assert
         result.IsSuccess.Should().BeTrue();
         result.Value.Should().BeOfType<LecturerSubjectResult>();
-        _mockUnitOfWork.Tasks.Received(1).Remove(Arg.Any<Domain.Entities.Task>());
-        await _mockUnitOfWork.Received(1).SaveChangesAsync();
+        _unitOfWork.Tasks.Received(1).Remove(Arg.Any<Domain.Entities.Task>());
+        await _unitOfWork.Received(1).SaveChangesAsync();
     }
 
     [Fact]
@@ -53,15 +60,62 @@ public class RemoveTaskCommandHandlerTests
         // Arrange
         var command = RemoveTaskCommandUtils.CreateRemoveTaskCommand();
 
-        _mockUnitOfWork.Tasks.GetByIdAsync(command.TaskId)
+        _jwtTokenReader.ReadUserIdFromToken(command.Token).Returns(
+            Constants.Authentication.UserIdFromToken.ToString());
+        
+        _unitOfWork.Users.UserExistsById(Constants.Authentication.UserIdFromToken)
+            .Returns(true);
+
+        _unitOfWork.Tasks.GetByIdAsync(command.TaskId)
             .ReturnsNull();
+
+        // Act
+        var result = await _sut.Handle(command, default);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        _unitOfWork.Tasks.Received(0).Remove(Arg.Any<Domain.Entities.Task>());
+        await _unitOfWork.Received(0).SaveChangesAsync();
+    }
+
+    [Fact]
+    public async Task Handler_WhenUserDoesNotExists_ShouldReturnUserNotFoundError()
+    {
+        // Arrange
+        var command = RemoveTaskCommandUtils.CreateRemoveTaskCommand();
+
+        _jwtTokenReader.ReadUserIdFromToken(command.Token).Returns(
+            Constants.Authentication.UserIdFromToken.ToString());
+
+        _unitOfWork.Users.UserExistsById(Constants.Authentication.UserIdFromToken)
+            .Returns(false);
         
         // Act
         var result = await _sut.Handle(command, default);
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        _mockUnitOfWork.Tasks.Received(0).Remove(Arg.Any<Domain.Entities.Task>());
-        await _mockUnitOfWork.Received(0).SaveChangesAsync();
+        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        _unitOfWork.Tasks.Received(0).Remove(Arg.Any<Domain.Entities.Task>());
+        await _unitOfWork.Received(0).SaveChangesAsync();
+    }
+    
+    
+    [Fact]
+    public async Task Handler_WhenTokenIsInvalid_ShouldReturnInvalidTokenError()
+    {
+        // Arrange
+        var command = RemoveTaskCommandUtils.CreateRemoveTaskCommand();
+
+        _jwtTokenReader.ReadUserIdFromToken(command.Token).ReturnsNull();
+
+        // Act
+        var result = await _sut.Handle(command, default);
+
+        // Assert
+        result.IsSuccess.Should().BeFalse();
+        result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidToken);
+        _unitOfWork.Tasks.Received(0).Remove(Arg.Any<Domain.Entities.Task>());
+        await _unitOfWork.Received(0).SaveChangesAsync();
     }
 }

@@ -5,4 +5,5 @@ using MediatR;
 namespace Application.Features.Tasks.Commands.RemoveTask;
 
 public record RemoveTaskCommand(
-    Guid TaskId) : IRequest<Result<LecturerSubjectResult>>;
+    Guid TaskId,
+    string Token) : IRequest<Result<LecturerSubjectResult>>;

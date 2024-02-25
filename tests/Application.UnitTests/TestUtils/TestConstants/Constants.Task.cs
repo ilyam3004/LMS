@@ -25,6 +25,7 @@ public static partial class Constants
 
         public const int Grade = 5;
         public const int MaxGrade = 10;
+        public const int TooHighGrade = 11;
 
         public static string TaskTitleFromGivenIndex(int index)
             => $"{Title} {index}";

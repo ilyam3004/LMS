@@ -26,7 +26,7 @@ public class ReturnTaskCommandHandler
             return Errors.Task.TaskNotFound;
         
         if(studentTask.Status != StudentTaskStatus.Uploaded)
-            return Errors.Task.TaskNotUploaded;
+            return Errors.Task.StudentTaskNotUploaded;
 
         studentTask.Status = StudentTaskStatus.Returned;
         studentTask.UploadedAt = null;

@@ -45,7 +45,11 @@ public class TaskService : Task.TaskBase
     public override async Task<LecturerSubjectResponse> RemoveTask(RemoveTaskRequest request,
         ServerCallContext context)
     {
-        var command = new RemoveTaskCommand(Guid.Parse(request.TaskId));
+        
+        var token = context.GetHttpContext().Request.Headers.Authorization
+            .ToString().Split(" ")[1];
+        
+        var command = new RemoveTaskCommand(Guid.Parse(request.TaskId), token);
 
         var result = await _sender.Send(command);
 
