@@ -16,6 +16,7 @@ public static partial class Constants
 
         public static readonly DateTime CreatedAt = DateTime.Now;
         public static readonly DateTime? Deadline = DateTime.Now.AddDays(7);
+        public static readonly DateTime? ExpiredDeadline = DateTime.Now.AddDays(-7);
         public static readonly DateTime UploadedAt = DateTime.Now;
 
         public static readonly StudentTaskStatus Status = StudentTaskStatus.Accepted;

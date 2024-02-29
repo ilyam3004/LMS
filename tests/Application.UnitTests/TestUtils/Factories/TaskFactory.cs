@@ -10,10 +10,12 @@ public static class TaskFactory
     public static List<Task> CreateTasks(Guid? subjectId = null,
         int tasksCount = 1)
         => Enumerable.Range(0, tasksCount)
-            .Select(index => CreateTask(subjectId, index))
+            .Select(index => CreateTask(subjectId: subjectId, index: index))
             .ToList();
 
     public static Task CreateTask(Guid? subjectId = null,
+        DateTime? deadLine = null,
+        List<StudentTask>? studentTasks = null,
         int index = 0)
     {
         Guid generatedSubjectId = subjectId ?? Constants.Subject.SubjectId;
@@ -25,9 +27,9 @@ public static class TaskFactory
             Description = Constants.Task.TaskDescriptionFromGivenIndex(index),
             SubjectId = generatedSubjectId,
             CreatedAt = Constants.Task.CreatedAt,
-            Deadline = Constants.Task.Deadline,
+            Deadline = deadLine ?? Constants.Task.Deadline,
             MaxGrade = Constants.Task.MaxGrade,
-            StudentTasks = CreateStudentTasks(Constants.Task.TaskId),
+            StudentTasks = studentTasks ?? CreateStudentTasks(Constants.Task.TaskId),
             Subject = SubjectFactory.CreateSubjectWithOutTasks()
         };
     }
@@ -45,7 +47,7 @@ public static class TaskFactory
 
     public static StudentTask CreateStudentTaskWithoutTaskObject(Guid? taskId = null,
         StudentTaskStatus status = StudentTaskStatus.Uploaded)
-        => new StudentTask
+        => new ()
         {
             StudentTaskId = Constants.Task.StudentTaskId,
             TaskId = taskId ?? Constants.Task.TaskId,
@@ -57,8 +59,8 @@ public static class TaskFactory
             FileUrl = Constants.Task.FileUrl,
             Comments = CreateStudentTaskComments(studentTaskId: taskId)
         };
-    
-    
+
+
     public static StudentTask CreateStudentTaskWithTaskObject(Guid? taskId = null,
         StudentTaskStatus status = StudentTaskStatus.Uploaded)
         => new StudentTask
