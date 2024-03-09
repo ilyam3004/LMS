@@ -95,7 +95,7 @@ public class GetStudentSubjectsQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidToken);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.InvalidToken);
         await _unitOfWork.Subjects.Received(0)
             .GetStudentSubjectsWithRelations(Arg.Any<Guid>());
     }
@@ -117,7 +117,7 @@ public class GetStudentSubjectsQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.UserNotFound);
         await _unitOfWork.Subjects.Received(0)
             .GetStudentSubjectsWithRelations(Arg.Any<Guid>());
     }

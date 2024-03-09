@@ -9,6 +9,6 @@ public static class AssignTaskCommandUtils
         => new(Constants.Task.Title,
             Constants.Task.Description,
             Constants.Subject.SubjectId,
-            Constants.Task.Deadline,
+            Constants.Task.NotExpiredDeadline,
             Constants.Task.MaxGrade);
 }

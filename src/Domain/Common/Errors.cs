@@ -4,7 +4,7 @@ namespace Domain.Common;
 
 public static class Errors
 {
-    public static class User
+    public static class Authentication
     {
         public static Error InvalidToken => Error.Unauthorized("User.InvalidToken",
             description: "Invalid token");

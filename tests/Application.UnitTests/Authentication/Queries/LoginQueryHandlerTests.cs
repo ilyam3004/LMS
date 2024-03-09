@@ -98,7 +98,7 @@ public class LoginQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.UserNotFound);
         await _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
         _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
@@ -121,7 +121,7 @@ public class LoginQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidCredentials);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.InvalidCredentials);
         await _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
         _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,
@@ -145,7 +145,7 @@ public class LoginQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.UserNotFound);
         await _mockUnitOfWork.Users.Received(1).GetUserByEmail(query.Email);
         _mockJwtTokenGenerator.Received(0).GenerateToken(Constants.Authentication.UserId,
             Constants.Authentication.FullName,

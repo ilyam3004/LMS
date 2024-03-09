@@ -35,12 +35,12 @@ public class CreateSubjectCommandHandler
 
         var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
         if (userId is null)
-            return Errors.User.InvalidToken;
+            return Errors.Authentication.InvalidToken;
 
         var user = await _unitOfWork.Users
             .GetUserByIdWithRelations(Guid.Parse(userId));
         if (user is null)
-            return Errors.User.UserNotFound;
+            return Errors.Authentication.UserNotFound;
 
         var subject = new Subject
         {

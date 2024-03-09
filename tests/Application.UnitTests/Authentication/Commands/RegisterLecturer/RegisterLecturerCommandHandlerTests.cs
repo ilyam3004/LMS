@@ -66,6 +66,6 @@ public class RegisterLecturerCommandHandlerTests
 
         //Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.DuplicateEmail);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.DuplicateEmail);
     }
 }

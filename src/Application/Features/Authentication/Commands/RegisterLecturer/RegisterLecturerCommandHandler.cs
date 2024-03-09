@@ -26,7 +26,7 @@ public class RegisterLecturerCommandHandler
     {
         if (await _unitOfWork.Users.UserExistsByEmail(command.Email))
         {
-            return Errors.User.DuplicateEmail;
+            return Errors.Authentication.DuplicateEmail;
         }
         
         var user = new User

@@ -1,4 +1,4 @@
-﻿using Domain.Enums;
+﻿using System.Text;
 
 namespace Application.UnitTests.TestUtils.TestConstants;
 
@@ -15,14 +15,9 @@ public static partial class Constants
         public const string Comment = "Comment";
 
         public static readonly DateTime CreatedAt = DateTime.Now;
-        public static readonly DateTime? Deadline = DateTime.Now.AddDays(7);
+        public static readonly DateTime? NotExpiredDeadline = DateTime.Now.AddDays(7);
         public static readonly DateTime? ExpiredDeadline = DateTime.Now.AddDays(-7);
         public static readonly DateTime UploadedAt = DateTime.Now;
-
-        public static readonly StudentTaskStatus Status = StudentTaskStatus.Accepted;
-
-        public const string OrdinalFileName = "OrdinalFileName";
-        public const string FileUrl = "FileUrl";
 
         public const int Grade = 5;
         public const int MaxGrade = 10;
@@ -33,8 +28,16 @@ public static partial class Constants
 
         public static string TaskDescriptionFromGivenIndex(int index)
             => $"{Description} {index}";
-        
+
         public static string CommentFromGivenIndex(int index)
             => $"{Comment} {index}";
+
+        public static (MemoryStream, int) GenerateFileContent(string? fileContent = null)
+        {
+            byte[] fileContentBytes = Encoding.UTF8.GetBytes(
+                fileContent ?? Constants.File.FileContent);
+            
+            return (new MemoryStream(fileContentBytes), fileContentBytes.Length);
+        }
     }
 }

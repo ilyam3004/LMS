@@ -25,13 +25,13 @@ public class GetStudentTaskQueryHandler
     {
         var userId = _jwtTokenReader.ReadUserIdFromToken(query.Token);
         if (userId is null)
-            return Errors.User.InvalidToken;
+            return Errors.Authentication.InvalidToken;
 
         var user = await _unitOfWork.Users
             .GetUserByIdWithRelations(Guid.Parse(userId));
         
         if (user is null)
-            return Errors.User.UserNotFound;
+            return Errors.Authentication.UserNotFound;
 
         var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(query.TaskId);
         

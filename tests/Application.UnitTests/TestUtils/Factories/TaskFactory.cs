@@ -27,7 +27,7 @@ public static class TaskFactory
             Description = Constants.Task.TaskDescriptionFromGivenIndex(index),
             SubjectId = generatedSubjectId,
             CreatedAt = Constants.Task.CreatedAt,
-            Deadline = deadLine ?? Constants.Task.Deadline,
+            Deadline = deadLine ?? Constants.Task.NotExpiredDeadline,
             MaxGrade = Constants.Task.MaxGrade,
             StudentTasks = studentTasks ?? CreateStudentTasks(Constants.Task.TaskId),
             Subject = SubjectFactory.CreateSubjectWithOutTasks()
@@ -55,15 +55,16 @@ public static class TaskFactory
             Grade = Constants.Task.Grade,
             Status = status,
             UploadedAt = Constants.Task.UploadedAt,
-            OrdinalFileName = Constants.Task.OrdinalFileName,
-            FileUrl = Constants.Task.FileUrl,
+            OrdinalFileName = Constants.File.OrdinalFileName,
+            FileUrl = Constants.File.FileUrl,
             Comments = CreateStudentTaskComments(studentTaskId: taskId)
         };
 
 
     public static StudentTask CreateStudentTaskWithTaskObject(Guid? taskId = null,
-        StudentTaskStatus status = StudentTaskStatus.Uploaded)
-        => new StudentTask
+        StudentTaskStatus status = StudentTaskStatus.Uploaded, 
+        DateTime? deadline = null)
+        => new ()
         {
             StudentTaskId = Constants.Task.StudentTaskId,
             TaskId = taskId ?? Constants.Task.TaskId,
@@ -71,10 +72,10 @@ public static class TaskFactory
             Grade = Constants.Task.Grade,
             Status = status,
             UploadedAt = Constants.Task.UploadedAt,
-            OrdinalFileName = Constants.Task.OrdinalFileName,
-            FileUrl = Constants.Task.FileUrl,
+            OrdinalFileName = Constants.File.OrdinalFileName,
+            FileUrl = Constants.File.FileUrl,
             Comments = CreateStudentTaskComments(studentTaskId: taskId),
-            Task = CreateTask()
+            Task = CreateTask(deadLine: deadline)
         };
 
 

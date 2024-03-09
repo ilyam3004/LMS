@@ -25,10 +25,10 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authenticati
         var user = await _unitOfWork.Users.GetUserByEmail(query.Email);
 
         if (user is null)
-            return Errors.User.UserNotFound;
+            return Errors.Authentication.UserNotFound;
 
         if (!BCrypt.Net.BCrypt.Verify(query.Password, user.Password))
-            return Errors.User.InvalidCredentials;
+            return Errors.Authentication.InvalidCredentials;
 
         if (user.Student is not null)
         {
@@ -44,7 +44,7 @@ public class LoginQueryHandler : IRequestHandler<LoginQuery, Result<Authenticati
         }
 
         if (user.Lecturer is null) 
-            return Errors.User.UserNotFound;
+            return Errors.Authentication.UserNotFound;
         
         var lecturerToken = _jwtTokenGenerator.GenerateToken(
             user.UserId,

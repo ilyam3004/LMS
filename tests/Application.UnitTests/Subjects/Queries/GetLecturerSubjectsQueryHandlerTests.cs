@@ -86,7 +86,7 @@ public class GetLecturerSubjectsQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidToken);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.InvalidToken);
     }
 
     [Fact]
@@ -106,6 +106,6 @@ public class GetLecturerSubjectsQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.UserNotFound);
     }
 }

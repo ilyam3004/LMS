@@ -29,7 +29,7 @@ public class RegisterStudentCommandHandler
     {
         if (await _unitOfWork.Users.UserExistsByEmail(command.Email))
         {
-            return Errors.User.DuplicateEmail;
+            return Errors.Authentication.DuplicateEmail;
         }
 
         var group = await _unitOfWork.Groups.GetGroupByName(command.GroupName);

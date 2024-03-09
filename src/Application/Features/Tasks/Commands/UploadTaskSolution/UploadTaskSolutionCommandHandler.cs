@@ -1,7 +1,6 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
-using Microsoft.AspNetCore.Http;
 using Application.Models.Tasks;
 using Application.Services;
 using Domain.Common;
@@ -16,14 +15,17 @@ public class UploadTaskSolutionCommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IJwtTokenReader _jwtTokenReader;
+    private readonly IFileUploader _fileUploader;
 
     public UploadTaskSolutionCommandHandler(IUnitOfWork unitOfWork,
         IDateTimeProvider dateTimeProvider,
-        IJwtTokenReader jwtTokenReader)
+        IJwtTokenReader jwtTokenReader,
+        IFileUploader fileUploader)
     {
         _unitOfWork = unitOfWork;
         _dateTimeProvider = dateTimeProvider;
         _jwtTokenReader = jwtTokenReader;
+        _fileUploader = fileUploader;
     }
 
     public async Task<Result<StudentTaskResult>> Handle(UploadTaskSolutionCommand command,
@@ -31,13 +33,13 @@ public class UploadTaskSolutionCommandHandler
     {
         var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
         if (userId is null)
-            return Errors.User.InvalidToken;
+            return Errors.Authentication.InvalidToken;
 
         var user = await _unitOfWork.Users
             .GetUserByIdWithRelations(Guid.Parse(userId));
 
         if (user is null)
-            return Errors.User.UserNotFound;
+            return Errors.Authentication.UserNotFound;
 
         var studentTask = await _unitOfWork.StudentTasks
             .GetByIdAsync(command.StudentTaskId);
@@ -45,13 +47,15 @@ public class UploadTaskSolutionCommandHandler
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
 
-        if (studentTask.Status == StudentTaskStatus.Rejected)
+        if (studentTask.Status is StudentTaskStatus.Rejected 
+            or StudentTaskStatus.Accepted 
+            or StudentTaskStatus.Uploaded)
             return Errors.Task.WrongTaskStatus;
 
         if (command.File.Length == 0)
             return Errors.File.FileNotFound;
 
-        var filePath = await UploadFileAndGetFilePath(command.File);
+        var filePath = await _fileUploader.UploadFileAndGetFilePath(command.File);
 
         studentTask.FileUrl = filePath;
         studentTask.OrdinalFileName = command.File.FileName;
@@ -73,17 +77,5 @@ public class UploadTaskSolutionCommandHandler
             studentTask.StudentId == studentId);
 
         return new StudentTaskResult(task, studentTask!);
-    }
-
-    private static async Task<string> UploadFileAndGetFilePath(IFormFile file)
-    {
-        var fileName = $"{file.FileName}_{Guid.NewGuid()}{Path.GetExtension(file.FileName)}";
-
-        var filePath = Path.Combine("/app/uploads", fileName);
-
-        await using var stream = new FileStream(filePath, FileMode.Create);
-        await file.CopyToAsync(stream);
-
-        return filePath;
     }
 }

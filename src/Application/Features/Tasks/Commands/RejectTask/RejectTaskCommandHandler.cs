@@ -24,7 +24,7 @@ public class RejectTaskCommandHandler
             .GetByIdAsyncWithRelations(command.StudentTaskId);
 
         if (studentTask is null)
-            return Errors.Task.TaskNotFound;
+            return Errors.Task.StudentTaskNotFound;
 
         if (studentTask.Task.Deadline >= DateTime.UtcNow)
             return Errors.Task.TaskDeadlineNotExpired;
@@ -42,12 +42,9 @@ public class RejectTaskCommandHandler
         _unitOfWork.StudentTasks.Update(studentTask);
 
         await _unitOfWork.SaveChangesAsync();
+        
+        var updatedTask = await _unitOfWork.Tasks.GetTaskByIdWithRelations(studentTask.TaskId);
 
-        var task = await _unitOfWork.Tasks.GetTaskByIdWithRelations(studentTask.TaskId);
-
-        if (task is null)
-            return Errors.Task.TaskNotFound;
-
-        return new LecturerTaskResult(task);
+        return new LecturerTaskResult(updatedTask!);
     }
 }

@@ -62,7 +62,7 @@ public class GetStudentProfileQueryHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidToken);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.InvalidToken);
         await _mockUnitOfWork.Users.DidNotReceiveWithAnyArgs()
             .GetUserByIdWithRelations(default);
     }
@@ -85,7 +85,7 @@ public class GetStudentProfileQueryHandlerTests
 
         //Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.UserNotFound);
         await _mockUnitOfWork.Users.Received(1)
             .GetUserByIdWithRelations(Constants.Authentication.UserIdFromToken);
     }

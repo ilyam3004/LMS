@@ -40,7 +40,7 @@ public static class AuthenticationFactory
     public static User CreateUserWithoutLectureOrStudentObjects(Guid? userId = null,
         string? email = null,
         string? password = null)
-        => new User
+        => new ()
         {
             UserId = userId ?? Constants.Authentication.UserId,
             Email = email ?? Constants.Authentication.Email,

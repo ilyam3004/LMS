@@ -29,10 +29,10 @@ public class RemoveTaskCommandHandler
     {
         var userId = _jwtTokenReader.ReadUserIdFromToken(command.Token);
         if (userId is null)
-            return Errors.User.InvalidToken;
+            return Errors.Authentication.InvalidToken;
 
         if (!await _unitOfWork.Users.UserExistsById(Guid.Parse(userId)))
-            return Errors.User.UserNotFound;
+            return Errors.Authentication.UserNotFound;
         
         var task = await _unitOfWork.Tasks.GetByIdAsync(command.TaskId);
         if (task is null)

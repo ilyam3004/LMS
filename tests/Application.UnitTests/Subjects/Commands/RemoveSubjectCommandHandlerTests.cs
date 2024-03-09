@@ -130,7 +130,7 @@ public class RemoveSubjectCommandHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.InvalidToken);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.InvalidToken);
         _unitOfWork.Subjects.Received(0).Remove(Arg.Any<Subject>());
         await _unitOfWork.Received(0).SaveChangesAsync();
     }
@@ -159,7 +159,7 @@ public class RemoveSubjectCommandHandlerTests
 
         // Assert
         result.IsSuccess.Should().BeFalse();
-        result.Errors.Should().ContainEquivalentOf(Errors.User.UserNotFound);
+        result.Errors.Should().ContainEquivalentOf(Errors.Authentication.UserNotFound);
         _unitOfWork.Subjects.Received(0).Remove(Arg.Any<Subject>());
         await _unitOfWork.Received(0).SaveChangesAsync();
     }
