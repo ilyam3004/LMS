@@ -2,7 +2,9 @@
 
 namespace Application.Services;
 
-public interface IFileUploader
+public interface IFileManager
 {
     Task<string> UploadFileAndGetFilePath(IFormFile file);
+    Task RemoveFile(string? filePath);
+    bool FileExists(string? path);
 }

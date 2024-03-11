@@ -15,17 +15,17 @@ public class UploadTaskSolutionCommandHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IDateTimeProvider _dateTimeProvider;
     private readonly IJwtTokenReader _jwtTokenReader;
-    private readonly IFileUploader _fileUploader;
+    private readonly IFileManager _fileManager;
 
     public UploadTaskSolutionCommandHandler(IUnitOfWork unitOfWork,
         IDateTimeProvider dateTimeProvider,
         IJwtTokenReader jwtTokenReader,
-        IFileUploader fileUploader)
+        IFileManager fileManager)
     {
         _unitOfWork = unitOfWork;
         _dateTimeProvider = dateTimeProvider;
         _jwtTokenReader = jwtTokenReader;
-        _fileUploader = fileUploader;
+        _fileManager = fileManager;
     }
 
     public async Task<Result<StudentTaskResult>> Handle(UploadTaskSolutionCommand command,
@@ -55,7 +55,7 @@ public class UploadTaskSolutionCommandHandler
         if (command.File.Length == 0)
             return Errors.File.FileNotFound;
 
-        var filePath = await _fileUploader.UploadFileAndGetFilePath(command.File);
+        var filePath = await _fileManager.UploadFileAndGetFilePath(command.File);
 
         studentTask.FileUrl = filePath;
         studentTask.OrdinalFileName = command.File.FileName;

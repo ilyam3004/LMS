@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Http;
 
 namespace Infrastructure.Services;
 
-public class FileUploader : IFileUploader
+public class FileManager : IFileManager
 {
     public async Task<string> UploadFileAndGetFilePath(IFormFile file)
     {
@@ -16,4 +16,17 @@ public class FileUploader : IFileUploader
 
         return filePath;
     }
+
+    public async Task RemoveFile(string? filePath)
+    {
+        if (filePath is null)
+            return;
+
+        await using var stream = new FileStream(filePath, FileMode.Open);
+
+        File.Delete(filePath);
+    }
+
+    public bool FileExists(string? path)
+        => File.Exists(path);
 }

@@ -2,6 +2,7 @@
 using Application.Common.Interfaces.Persistence;
 using Domain.Abstractions.Results;
 using Application.Models.Tasks;
+using Application.Services;
 using Domain.Common;
 using Domain.Enums;
 using MediatR;
@@ -13,12 +14,15 @@ public class RemoveUploadedSolutionCommandHandler
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
+    private readonly IFileManager _fileManager;
 
-    public RemoveUploadedSolutionCommandHandler(IUnitOfWork unitOfWork, 
-        IJwtTokenReader jwtTokenReader)
+    public RemoveUploadedSolutionCommandHandler(IUnitOfWork unitOfWork,
+        IJwtTokenReader jwtTokenReader,
+        IFileManager fileManager)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenReader;
+        _fileManager = fileManager;
     }
 
     public async Task<Result<StudentTaskResult>> Handle(RemoveUploadedSolutionCommand command,
@@ -42,12 +46,12 @@ public class RemoveUploadedSolutionCommandHandler
 
         if (studentTask.Status is not StudentTaskStatus.Uploaded)
             return Errors.Task.WrongTaskStatus;
-        
-        if(!File.Exists(studentTask.FileUrl))
+
+        if (!_fileManager.FileExists(studentTask.FileUrl))
             return Errors.File.FileNotFound;
 
-        await RemoveUploadedFile(studentTask.FileUrl);
-        
+        await _fileManager.RemoveFile(studentTask.FileUrl);
+
         studentTask.FileUrl = null;
         studentTask.OrdinalFileName = null;
         studentTask.Status = StudentTaskStatus.NotUploaded;
@@ -68,15 +72,5 @@ public class RemoveUploadedSolutionCommandHandler
             studentTask.StudentId == studentId);
 
         return new StudentTaskResult(task, studentTask!);
-    }
-
-    private static async Task RemoveUploadedFile(string? filePath)
-    {
-        if (filePath is null)
-            return;
-
-        await using var stream = new FileStream(filePath, FileMode.Open);
-
-        File.Delete(filePath);
     }
 }

@@ -22,7 +22,7 @@ public static class DependencyInjection
     {
         services.AddAuth(configuration);
         services.AddSingleton<IDateTimeProvider, DateTimeProvider>();
-        services.AddTransient<IFileUploader, FileUploader>();
+        services.AddTransient<IFileManager, FileManager>();
         services.AddDbContext<LmsDbContext>(options =>
             options.UseNpgsql(configuration
                 .GetConnectionString("DefaultConnection")));

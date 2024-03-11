@@ -1,14 +1,14 @@
-﻿using TaskFactory = Application.UnitTests.TestUtils.Factories.TaskFactory;
+﻿using Application.Features.Tasks.Commands.RemoveUploadedSolution;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
-using Application.Features.Tasks.Commands.UploadTaskSolution;
-using Application.Models.Tasks;
+using Application.Services;
+using TaskFactory = Application.UnitTests.TestUtils.Factories.TaskFactory;
 using Application.UnitTests.Tasks.Commands.TestUtils;
+using Application.UnitTests.TestUtils.Extensions;
 using Application.UnitTests.TestUtils.Factories;
 using Application.UnitTests.TestUtils.TestConstants;
-using Task = System.Threading.Tasks.Task;
-using Application.Services;
 using Domain.Common;
+using Task = System.Threading.Tasks.Task;
 using Domain.Entities;
 using Domain.Enums;
 using FluentAssertions;
@@ -17,32 +17,30 @@ using NSubstitute.ReturnsExtensions;
 
 namespace Application.UnitTests.Tasks.Commands;
 
-public class UploadTaskSolutionCommandHandlerTests
+public class RemoveUploadedSolutionCommandHandlerTests
 {
-    private readonly UploadTaskSolutionCommandHandler _sut;
-    private readonly IJwtTokenReader _jwtTokenReader;
-    private readonly IDateTimeProvider _dateTimeProvider;
-    private readonly IFileManager _fileManager;
+    private readonly RemoveUploadedSolutionCommandHandler _sut;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IJwtTokenReader _jwtTokenReader;
+    private readonly IFileManager _fileManager;
 
-    public UploadTaskSolutionCommandHandlerTests()
+    public RemoveUploadedSolutionCommandHandlerTests()
     {
         _jwtTokenReader = Substitute.For<IJwtTokenReader>();
         _unitOfWork = Substitute.For<IUnitOfWork>();
-        _dateTimeProvider = Substitute.For<IDateTimeProvider>();
         _fileManager = Substitute.For<IFileManager>();
-        _sut = new UploadTaskSolutionCommandHandler(_unitOfWork,
-            _dateTimeProvider,
-            _jwtTokenReader,
-            _fileManager);
+        _sut = new RemoveUploadedSolutionCommandHandler(
+            _unitOfWork, _jwtTokenReader, _fileManager);
     }
+
 
     [Fact]
     public async Task
-        Handler_WhenTokenIsValidAndUserExistsAndStudentTaskExistsAndTaskStatusIsNotRejectedOrUploadedOrAcceptedAndFileLengthIsNotZero_ShouldUploadStudentTaskAndUploadTaskFile()
+        Handler_WhenTokenIsValidAndUserExistsAndStudentTaskExistsAndTaskStatusIsUploadedAndFileExists_ShouldChangeStudentTaskAndRemoveUploadedSolution()
     {
         //Arrange
-        var command = UploadTaskSolutionCommandUtils.CreateUploadTaskSolutionCommand();
+        var command = RemoveUploadedSolutionCommandUtils
+            .CreateRemoveUploadedSolutionCommand();
 
         _jwtTokenReader.ReadUserIdFromToken(command.Token)
             .Returns(Constants.Authentication.UserId.ToString());
@@ -52,33 +50,38 @@ public class UploadTaskSolutionCommandHandlerTests
 
         _unitOfWork.StudentTasks.GetByIdAsync(command.StudentTaskId)
             .Returns(TaskFactory.CreateStudentTaskWithTaskObject(
-                status: StudentTaskStatus.NotUploaded));
+                status: StudentTaskStatus.Uploaded));
 
-        _fileManager.UploadFileAndGetFilePath(command.File)
-            .Returns(Constants.File.FileUrl);
+        _fileManager.FileExists(Constants.File.FileUrl)
+            .Returns(true);
 
         _unitOfWork.Tasks.GetTaskByIdWithRelations(Arg.Any<Guid>())
-            .Returns(TaskFactory.CreateTask());
+            .Returns(TaskFactory.CreateTask(
+                studentTasks:
+                [
+                    TaskFactory.CreateStudentTaskWithoutTaskObject(
+                        status: StudentTaskStatus.NotUploaded)
+                ]));
 
         //Act
         var result = await _sut.Handle(command, default);
 
         //Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeOfType<StudentTaskResult>();
+        result.Value.ValidateRetrieveStudentTask();
         _unitOfWork.StudentTasks.Received(1).Update(Arg.Any<StudentTask>());
-        await _fileManager.Received(1).UploadFileAndGetFilePath(command.File);
+        await _fileManager.Received(1).RemoveFile(Constants.File.FileUrl);
         await _unitOfWork.Received(1).SaveChangesAsync();
         await _unitOfWork.Tasks.Received(1).GetTaskByIdWithRelations(Arg.Any<Guid>());
     }
-    
+
     [Fact]
     public async Task
-        Handler_WhenTokenIsValidAndUserExistsAndStudentTaskExistsAndTaskStatusIsNotRejectedOrNotUploadedOrNotAcceptedButFileLengthIsZero_ShouldReturnFileNotFoundError()
+        Handler_WhenTokenIsValidAndUserExistsAndStudentTaskExistsAndTaskStatusIsUploadedButFileDoesNotExists_ShouldReturnFileNotFoundError()
     {
         //Arrange
-        var command = UploadTaskSolutionCommandUtils.CreateUploadTaskSolutionCommand(
-            fileLength: Constants.File.EmptyFileLength);
+        var command = RemoveUploadedSolutionCommandUtils
+            .CreateRemoveUploadedSolutionCommand();
 
         _jwtTokenReader.ReadUserIdFromToken(command.Token)
             .Returns(Constants.Authentication.UserId.ToString());
@@ -88,30 +91,34 @@ public class UploadTaskSolutionCommandHandlerTests
 
         _unitOfWork.StudentTasks.GetByIdAsync(command.StudentTaskId)
             .Returns(TaskFactory.CreateStudentTaskWithTaskObject(
-                status: StudentTaskStatus.NotUploaded));
-        
+                status: StudentTaskStatus.Uploaded));
+
+        _fileManager.FileExists(Constants.File.FileUrl)
+            .Returns(false);
+
         //Act
         var result = await _sut.Handle(command, default);
 
         //Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.File.FileNotFound);
-        await _fileManager.Received(0).UploadFileAndGetFilePath(command.File);
         _unitOfWork.StudentTasks.Received(0).Update(Arg.Any<StudentTask>());
+        await _fileManager.Received(0).RemoveFile(Constants.File.FileUrl);
         await _unitOfWork.Received(0).SaveChangesAsync();
         await _unitOfWork.Tasks.Received(0).GetTaskByIdWithRelations(Arg.Any<Guid>());
     }
-    
+
     [Theory]
     [InlineData(StudentTaskStatus.Rejected)]
-    [InlineData(StudentTaskStatus.Uploaded)]
+    [InlineData(StudentTaskStatus.NotUploaded)]
     [InlineData(StudentTaskStatus.Accepted)]
-    public async Task
-        Handler_WhenTokenIsValidAndUserExistsAndStudentTaskExistsButTaskStatusIsRejectedOrUploadedOrAccepted_ShouldReturnInvalidTaskStatusError(
+    [InlineData(StudentTaskStatus.Returned)]
+    public async Task Handler_WhenTokenIsValidAndUserExistsAndStudentTaskExistsButTaskStatusIsNotUploaded_ShouldReturnWrongTaskStatusError(
             StudentTaskStatus status)
     {
         //Arrange
-        var command = UploadTaskSolutionCommandUtils.CreateUploadTaskSolutionCommand();
+        var command = RemoveUploadedSolutionCommandUtils
+            .CreateRemoveUploadedSolutionCommand();
 
         _jwtTokenReader.ReadUserIdFromToken(command.Token)
             .Returns(Constants.Authentication.UserId.ToString());
@@ -122,25 +129,25 @@ public class UploadTaskSolutionCommandHandlerTests
         _unitOfWork.StudentTasks.GetByIdAsync(command.StudentTaskId)
             .Returns(TaskFactory.CreateStudentTaskWithTaskObject(
                 status: status));
-        
+
         //Act
         var result = await _sut.Handle(command, default);
 
         //Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.Task.WrongTaskStatus);
-        await _fileManager.Received(0).UploadFileAndGetFilePath(command.File);
         _unitOfWork.StudentTasks.Received(0).Update(Arg.Any<StudentTask>());
+        await _fileManager.Received(0).RemoveFile(Constants.File.FileUrl);
         await _unitOfWork.Received(0).SaveChangesAsync();
         await _unitOfWork.Tasks.Received(0).GetTaskByIdWithRelations(Arg.Any<Guid>());
     }
     
     [Fact]
-    public async Task
-        Handler_WhenTokenIsValidAndUserExistsAndStudentTaskDoesNotExists_ShouldReturnStudentTaskNotFoundError()
+    public async Task Handler_WhenTokenIsValidAndUserExistsButStudentTaskDoesNotExists_ShouldReturnStudentTaskNotFoundError()
     {
         //Arrange
-        var command = UploadTaskSolutionCommandUtils.CreateUploadTaskSolutionCommand();
+        var command = RemoveUploadedSolutionCommandUtils
+            .CreateRemoveUploadedSolutionCommand();
 
         _jwtTokenReader.ReadUserIdFromToken(command.Token)
             .Returns(Constants.Authentication.UserId.ToString());
@@ -157,42 +164,44 @@ public class UploadTaskSolutionCommandHandlerTests
         //Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.Task.StudentTaskNotFound);
-        await _fileManager.Received(0).UploadFileAndGetFilePath(command.File);
         _unitOfWork.StudentTasks.Received(0).Update(Arg.Any<StudentTask>());
+        await _fileManager.Received(0).RemoveFile(Constants.File.FileUrl);
         await _unitOfWork.Received(0).SaveChangesAsync();
         await _unitOfWork.Tasks.Received(0).GetTaskByIdWithRelations(Arg.Any<Guid>());
     }
     
+    
     [Fact]
-    public async Task Handler_WhenTokenIsValidAndUserDoesNotExists_ShouldReturnUserNotFoundError()
+    public async Task Handler_WhenTokenIsValidButUserDoesNotExists_ShouldReturnUserNotFoundError()
     {
         //Arrange
-        var command = UploadTaskSolutionCommandUtils.CreateUploadTaskSolutionCommand();
+        var command = RemoveUploadedSolutionCommandUtils
+            .CreateRemoveUploadedSolutionCommand();
 
         _jwtTokenReader.ReadUserIdFromToken(command.Token)
             .Returns(Constants.Authentication.UserId.ToString());
 
         _unitOfWork.Users.GetUserByIdWithRelations(Arg.Any<Guid>())
             .ReturnsNull();
-        
+
         //Act
         var result = await _sut.Handle(command, default);
 
         //Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.Authentication.UserNotFound);
-        await _fileManager.Received(0).UploadFileAndGetFilePath(command.File);
         _unitOfWork.StudentTasks.Received(0).Update(Arg.Any<StudentTask>());
+        await _fileManager.Received(0).RemoveFile(Constants.File.FileUrl);
         await _unitOfWork.Received(0).SaveChangesAsync();
         await _unitOfWork.Tasks.Received(0).GetTaskByIdWithRelations(Arg.Any<Guid>());
     }
-    
     
     [Fact]
     public async Task Handler_WhenTokenIsInvalid_ShouldReturnInvalidTokenError()
     {
         //Arrange
-        var command = UploadTaskSolutionCommandUtils.CreateUploadTaskSolutionCommand();
+        var command = RemoveUploadedSolutionCommandUtils
+            .CreateRemoveUploadedSolutionCommand();
 
         _jwtTokenReader.ReadUserIdFromToken(command.Token)
             .ReturnsNull();
@@ -203,8 +212,8 @@ public class UploadTaskSolutionCommandHandlerTests
         //Assert
         result.IsSuccess.Should().BeFalse();
         result.Errors.Should().ContainEquivalentOf(Errors.Authentication.InvalidToken);
-        await _fileManager.Received(0).UploadFileAndGetFilePath(command.File);
         _unitOfWork.StudentTasks.Received(0).Update(Arg.Any<StudentTask>());
+        await _fileManager.Received(0).RemoveFile(Constants.File.FileUrl);
         await _unitOfWork.Received(0).SaveChangesAsync();
         await _unitOfWork.Tasks.Received(0).GetTaskByIdWithRelations(Arg.Any<Guid>());
     }

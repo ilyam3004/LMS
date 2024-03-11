@@ -46,7 +46,11 @@ public static class TaskFactory
     }
 
     public static StudentTask CreateStudentTaskWithoutTaskObject(Guid? taskId = null,
-        StudentTaskStatus status = StudentTaskStatus.Uploaded)
+        StudentTaskStatus status = StudentTaskStatus.Uploaded,
+        Guid? studentTaskId = null,
+        DateTime? uploadedAt = null,
+        string? ordinalFileName = null,
+        string? fileUrl = null)
         => new ()
         {
             StudentTaskId = Constants.Task.StudentTaskId,
@@ -54,9 +58,9 @@ public static class TaskFactory
             StudentId = Constants.Student.StudentId,
             Grade = Constants.Task.Grade,
             Status = status,
-            UploadedAt = Constants.Task.UploadedAt,
-            OrdinalFileName = Constants.File.OrdinalFileName,
-            FileUrl = Constants.File.FileUrl,
+            UploadedAt = uploadedAt,
+            OrdinalFileName = ordinalFileName,
+            FileUrl = fileUrl,
             Comments = CreateStudentTaskComments(studentTaskId: taskId)
         };
 
