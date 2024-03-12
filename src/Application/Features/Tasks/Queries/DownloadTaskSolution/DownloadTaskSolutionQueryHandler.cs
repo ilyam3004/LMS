@@ -1,6 +1,7 @@
 ﻿using Application.Common.Interfaces.Persistence;
-using Application.Models.Tasks;
 using Domain.Abstractions.Results;
+using Application.Models.Tasks;
+using Application.Services;
 using Domain.Common;
 using MediatR;
 
@@ -10,10 +11,13 @@ public class DownloadTaskSolutionQueryHandler
     : IRequestHandler<DownloadTaskSolutionQuery, Result<DownloadTaskResult>>
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IFileManager _fileManager;
 
-    public DownloadTaskSolutionQueryHandler(IUnitOfWork unitOfWork)
+    public DownloadTaskSolutionQueryHandler(IUnitOfWork unitOfWork,
+        IFileManager fileManager)
     {
         _unitOfWork = unitOfWork;
+        _fileManager = fileManager;
     }
 
     public async Task<Result<DownloadTaskResult>> Handle(DownloadTaskSolutionQuery query,
@@ -23,8 +27,8 @@ public class DownloadTaskSolutionQueryHandler
 
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
-        
-        if(!File.Exists(studentTask.FileUrl))
+
+        if (!File.Exists(studentTask.FileUrl))
             return Errors.File.FileNotFound;
 
         var fileContent = await File.ReadAllBytesAsync(studentTask.FileUrl, cancellationToken);
@@ -32,33 +36,10 @@ public class DownloadTaskSolutionQueryHandler
         if (studentTask.OrdinalFileName is null)
             return Errors.File.OrdinalFileNameNotFound;
 
-        var contentType = GetContentType(studentTask.OrdinalFileName);
+        var contentType = _fileManager.GetContentType(studentTask.OrdinalFileName);
 
-
-        return new DownloadTaskResult(fileContent, studentTask.OrdinalFileName, contentType);
-    }
-
-    private string GetContentType(string fileName)
-    {
-        var lastDotIndex = fileName.LastIndexOf('.');
-
-        if (lastDotIndex == -1)
-            return "application/octet-stream";
-
-        var fileExtension = fileName[(lastDotIndex + 1)..].ToLower();
-
-        return fileExtension switch {
-            "txt" => "text/plain",
-            "pdf" => "application/pdf",
-            "doc" => "application/vnd.ms-word",
-            "docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", 
-            "jpeg" => "image/jpeg",
-            "jpg" => "image/jpeg", 
-            "csv" => "text/csv", 
-            "json" => "application/json",
-            "xls" => "application/vnd.ms-excel", 
-            "xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
-            _ => "application/octet-stream"
-        };
+        return new DownloadTaskResult(fileContent,
+            studentTask.OrdinalFileName,
+            contentType);
     }
 }

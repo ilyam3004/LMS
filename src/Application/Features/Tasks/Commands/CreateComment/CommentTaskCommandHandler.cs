@@ -1,10 +1,10 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Domain.Abstractions.Results;
 using Application.Models.Tasks;
 using Application.Services;
-using Domain.Abstractions.Results;
-using Domain.Common;
 using Domain.Entities;
+using Domain.Common;
 using MediatR;
 
 namespace Application.Features.Tasks.Commands.CreateComment;
@@ -36,7 +36,9 @@ public class CommentTaskCommandHandler
         if (user is null)
             return Errors.Authentication.UserNotFound;
 
-        var studentTask = await _unitOfWork.StudentTasks.GetByIdAsyncWithRelations(taskCommand.StudentTaskId);
+        var studentTask = await _unitOfWork.StudentTasks.GetByIdAsyncWithRelations(
+            taskCommand.StudentTaskId);
+
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
 

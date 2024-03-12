@@ -12,7 +12,7 @@ public static partial class Constants
 
         public const string Title = "Title";
         public const string Description = "Description";
-        public const string Comment = "Comment";
+        public const string Comment = "Comment for the student task";
 
         public static readonly DateTime CreatedAt = DateTime.Now;
         public static readonly DateTime? NotExpiredDeadline = DateTime.Now.AddDays(7);
