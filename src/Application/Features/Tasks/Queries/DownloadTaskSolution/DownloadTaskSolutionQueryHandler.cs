@@ -28,13 +28,13 @@ public class DownloadTaskSolutionQueryHandler
         if (studentTask is null)
             return Errors.Task.StudentTaskNotFound;
 
-        if (!File.Exists(studentTask.FileUrl))
+        if (!_fileManager.FileExists(studentTask.FileUrl))
             return Errors.File.FileNotFound;
-
-        var fileContent = await File.ReadAllBytesAsync(studentTask.FileUrl, cancellationToken);
 
         if (studentTask.OrdinalFileName is null)
             return Errors.File.OrdinalFileNameNotFound;
+
+        var fileContent = await _fileManager.ReadFileAsArrayOfBytes(studentTask.FileUrl!);
 
         var contentType = _fileManager.GetContentType(studentTask.OrdinalFileName);
 

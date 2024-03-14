@@ -39,18 +39,22 @@ public class FileManager : IFileManager
 
         var fileExtension = fileName[(lastDotIndex + 1)..].ToLower();
 
-        return fileExtension switch {
+        return fileExtension switch
+        {
             "txt" => "text/plain",
             "pdf" => "application/pdf",
             "doc" => "application/vnd.ms-word",
-            "docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document", 
+            "docx" => "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
             "jpeg" => "image/jpeg",
-            "jpg" => "image/jpeg", 
-            "csv" => "text/csv", 
+            "jpg" => "image/jpeg",
+            "csv" => "text/csv",
             "json" => "application/json",
-            "xls" => "application/vnd.ms-excel", 
+            "xls" => "application/vnd.ms-excel",
             "xlsx" => "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
             _ => "application/octet-stream"
         };
     }
+
+    public async Task<byte[]> ReadFileAsArrayOfBytes(string filePath)
+        => await File.ReadAllBytesAsync(filePath, CancellationToken.None);
 }

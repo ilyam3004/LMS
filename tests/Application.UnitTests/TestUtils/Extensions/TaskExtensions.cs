@@ -21,4 +21,12 @@ public static class TaskExtensions
         result.UploadedTask.Status.Should().Be(StudentTaskStatus.NotUploaded);
         result.UploadedTask.UploadedAt.Should().BeNull();
     }
+
+    public static void ValidateDownloadStudentTaskSolutionFile(
+        this DownloadTaskResult result)
+    {
+        result.FileContent.Should().NotBeNullOrEmpty();
+        result.ContentType.Should().NotBeNullOrEmpty();
+        result.FileName.Should().NotBeNullOrEmpty();
+    }
 }

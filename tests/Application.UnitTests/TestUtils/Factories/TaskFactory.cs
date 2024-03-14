@@ -29,46 +29,25 @@ public static class TaskFactory
             CreatedAt = Constants.Task.CreatedAt,
             Deadline = deadLine ?? Constants.Task.NotExpiredDeadline,
             MaxGrade = Constants.Task.MaxGrade,
-            StudentTasks = studentTasks ?? CreateStudentTasks(Constants.Task.TaskId),
+            StudentTasks = studentTasks ?? CreateStudentTasksWithoutTaskObject(Constants.Task.TaskId),
             Subject = SubjectFactory.CreateSubjectWithOutTasks()
         };
     }
 
-
-    public static List<StudentTask> CreateStudentTasks(Guid? taskId = null,
+    public static List<StudentTask> CreateStudentTasksWithTaskObject(Guid? taskId = null,
         int studentTasksCount = 1)
     {
         Guid generatedTaskId = taskId ?? Constants.Task.TaskId;
 
         return Enumerable.Range(0, studentTasksCount)
-            .Select(_ => CreateStudentTaskWithoutTaskObject(taskId: generatedTaskId))
+            .Select(_ => CreateStudentTaskWithTaskObject(taskId: generatedTaskId))
             .ToList();
     }
 
-    public static StudentTask CreateStudentTaskWithoutTaskObject(Guid? taskId = null,
-        StudentTaskStatus status = StudentTaskStatus.Uploaded,
-        Guid? studentTaskId = null,
-        DateTime? uploadedAt = null,
-        string? ordinalFileName = null,
-        string? fileUrl = null)
-        => new ()
-        {
-            StudentTaskId = Constants.Task.StudentTaskId,
-            TaskId = taskId ?? Constants.Task.TaskId,
-            StudentId = Constants.Student.StudentId,
-            Grade = Constants.Task.Grade,
-            Status = status,
-            UploadedAt = uploadedAt,
-            OrdinalFileName = ordinalFileName,
-            FileUrl = fileUrl,
-            Comments = CreateStudentTaskComments(studentTaskId: taskId)
-        };
-
-
     public static StudentTask CreateStudentTaskWithTaskObject(Guid? taskId = null,
-        StudentTaskStatus status = StudentTaskStatus.Uploaded, 
+        StudentTaskStatus status = StudentTaskStatus.Uploaded,
         DateTime? deadline = null)
-        => new ()
+        => new()
         {
             StudentTaskId = Constants.Task.StudentTaskId,
             TaskId = taskId ?? Constants.Task.TaskId,
@@ -82,6 +61,33 @@ public static class TaskFactory
             Task = CreateTask(deadLine: deadline)
         };
 
+    public static List<StudentTask> CreateStudentTasksWithoutTaskObject(Guid? taskId = null,
+        int studentTasksCount = 1)
+    {
+        Guid generatedTaskId = taskId ?? Constants.Task.TaskId;
+
+        return Enumerable.Range(0, studentTasksCount)
+            .Select(_ => CreateStudentTaskWithoutTaskObject(taskId: generatedTaskId))
+            .ToList();
+    }
+
+    public static StudentTask CreateStudentTaskWithoutTaskObject(Guid? taskId = null,
+        StudentTaskStatus status = StudentTaskStatus.Uploaded,
+        DateTime? uploadedAt = null,
+        string? ordinalFileName = null,
+        string? fileUrl = null)
+        => new()
+        {
+            StudentTaskId = Constants.Task.StudentTaskId,
+            TaskId = taskId ?? Constants.Task.TaskId,
+            StudentId = Constants.Student.StudentId,
+            Grade = Constants.Task.Grade,
+            Status = status,
+            UploadedAt = uploadedAt,
+            OrdinalFileName = ordinalFileName,
+            FileUrl = fileUrl,
+            Comments = CreateStudentTaskComments(studentTaskId: taskId)
+        };
 
     private static List<TaskComment> CreateStudentTaskComments(Guid? studentTaskId = null,
         int commentsCount = 1)

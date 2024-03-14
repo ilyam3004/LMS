@@ -35,7 +35,7 @@ public class RemoveUploadedSolutionCommandHandlerTests
 
 
     [Fact]
-    public async Task
+    public async Task 
         Handler_WhenTokenIsValidAndUserExistsAndStudentTaskExistsAndTaskStatusIsUploadedAndFileExists_ShouldChangeStudentTaskAndRemoveUploadedSolution()
     {
         //Arrange

@@ -26,16 +26,4 @@ public static class UploadTaskSolutionCommandUtils
         
         return file;
     }
-    
-    
-    private static IFormFile GenerateEmptyIFormFile()
-    {
-        (var memoryStream, int fileLength) = Constants.Task.GenerateFileContent(
-            Constants.File.FileContent);
-        var file = new FormFile(memoryStream, 0, 0,
-            Constants.File.FileNameWithoutExtension,
-            Constants.File.FileNameWithExtension);
-        
-        return file;
-    }
 }

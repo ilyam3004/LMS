@@ -8,4 +8,5 @@ public interface IFileManager
     Task RemoveFile(string? filePath);
     bool FileExists(string? path);
     string GetContentType(string fileName);
+    Task<byte[]> ReadFileAsArrayOfBytes(string filePath);
 }

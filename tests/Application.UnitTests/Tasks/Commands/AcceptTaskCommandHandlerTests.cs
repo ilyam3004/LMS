@@ -75,7 +75,7 @@ public class AcceptTaskCommandHandlerTests
 
         _unitOfWork.StudentTasks.GetByIdAsyncWithRelations(command.StudentTaskId)
             .Returns(TaskFactory
-                .CreateStudentTaskWithTaskObject(
+                .CreateStudentTaskWithoutTaskObject(
                     status: StudentTaskStatus.NotUploaded));
 
         // Act
