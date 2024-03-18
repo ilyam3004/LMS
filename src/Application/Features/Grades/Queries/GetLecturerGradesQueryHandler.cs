@@ -1,10 +1,10 @@
 ﻿using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
+using Domain.Abstractions.Results;
 using Application.Models.Grades;
 using Application.Models.Tasks;
-using Domain.Abstractions.Results;
-using Domain.Common;
 using Domain.Entities;
+using Domain.Common;
 using MediatR;
 
 namespace Application.Features.Grades.Queries;
@@ -15,7 +15,8 @@ public class GetLecturerGradesQueryHandler
     private readonly IUnitOfWork _unitOfWork;
     private readonly IJwtTokenReader _jwtTokenReader;
 
-    public GetLecturerGradesQueryHandler(IUnitOfWork unitOfWork, IJwtTokenReader jwtTokenReader)
+    public GetLecturerGradesQueryHandler(IUnitOfWork unitOfWork,
+    IJwtTokenReader jwtTokenReader)
     {
         _unitOfWork = unitOfWork;
         _jwtTokenReader = jwtTokenReader;
@@ -92,7 +93,10 @@ public class GetLecturerGradesQueryHandler
             var totalGrade = CalculateTotalGrade(studentTasks);
             var averageGrade = CalculateAverageGrade(subject, totalGrade);
 
-            return CreateStudentTasksResult(student, studentTasks, totalGrade, averageGrade);
+            return CreateStudentTasksResult(student,
+                studentTasks,
+                totalGrade,
+                averageGrade);
         }).ToList();
 
     private List<StudentTaskResult> CalculateStudentTasks(Subject subject, Student student)
@@ -104,7 +108,7 @@ public class GetLecturerGradesQueryHandler
         => studentTasks.Sum(task => task.UploadedTask.Grade);
 
     private double CalculateAverageGrade(Subject subject, int totalGrade)
-        => (subject.Tasks.Count != 0) ? (double) totalGrade / subject.Tasks.Count : 0.0;
+        => (subject.Tasks.Count != 0) ? (double)totalGrade / subject.Tasks.Count : 0.0;
 
     private StudentTasksResult CreateStudentTasksResult(Student student,
         List<StudentTaskResult> studentTasks, int totalGrade, double averageGrade)
@@ -117,11 +121,11 @@ public class GetLecturerGradesQueryHandler
     //     return subjects.Select(subject =>
     //     {
     //         List<StudentTasksResult> studentSubjectTasksResults = [];
-    //
+
     //         foreach (var student in subject.Group.Students)
     //         {
     //             var totalGrade = 0;
-    //
+
     //             var studentTasks = student.Tasks.Where(t =>
     //                     t.Task.SubjectId == subject.SubjectId)
     //                 .Select(uploadedTask =>
@@ -129,17 +133,17 @@ public class GetLecturerGradesQueryHandler
     //                     totalGrade += uploadedTask.Grade;
     //                     return new StudentTaskResult(uploadedTask.Task, uploadedTask);
     //                 }).ToList();
-    //
+
     //             var averageGrade = 0.0;
-    //
+
     //             if (subject.Tasks.Count != 0)
     //                 averageGrade = Convert.ToDouble(totalGrade) / subject.Tasks.Count;
-    //
+
     //             studentSubjectTasksResults.Add(new StudentTasksResult(
     //                 student.StudentId, student.FullName, totalGrade, averageGrade,
     //                 studentTasks.ToList()));
     //         }
-    //
+
     //         return new SubjectGradesResult(
     //             subject.SubjectId,
     //             subject.Name,

@@ -1,15 +1,15 @@
 ﻿using TaskFactory = Application.UnitTests.TestUtils.Factories.TaskFactory;
-using Task = System.Threading.Tasks.Task;
 using Application.Common.Interfaces.Authentication;
 using Application.Common.Interfaces.Persistence;
 using Application.Features.Tasks.Queries.GetStudentTask;
 using Application.UnitTests.Tasks.Queries.TestUtils;
 using Application.UnitTests.TestUtils.Factories;
 using Application.UnitTests.TestUtils.TestConstants;
-using Domain.Common;
-using FluentAssertions;
-using NSubstitute;
+using Task = System.Threading.Tasks.Task;
 using NSubstitute.ReturnsExtensions;
+using FluentAssertions;
+using Domain.Common;
+using NSubstitute;
 
 namespace Application.UnitTests.Tasks.Queries;
 

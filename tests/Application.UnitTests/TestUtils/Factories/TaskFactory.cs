@@ -34,6 +34,25 @@ public static class TaskFactory
         };
     }
 
+    public static Task CreateTaskWithoutStudentTasks(Guid? subjectId = null,
+        DateTime? deadLine = null,
+        int index = 0)
+    {
+        Guid generatedSubjectId = subjectId ?? Constants.Subject.SubjectId;
+
+        return new Task
+        {
+            TaskId = Constants.Task.TaskId,
+            Title = Constants.Task.TaskTitleFromGivenIndex(index),
+            Description = Constants.Task.TaskDescriptionFromGivenIndex(index),
+            SubjectId = generatedSubjectId,
+            CreatedAt = Constants.Task.CreatedAt,
+            Deadline = deadLine ?? Constants.Task.NotExpiredDeadline,
+            MaxGrade = Constants.Task.MaxGrade,
+            StudentTasks = []
+        };
+    }
+
     public static List<StudentTask> CreateStudentTasksWithTaskObject(Guid? taskId = null,
         int studentTasksCount = 1)
     {
@@ -58,10 +77,10 @@ public static class TaskFactory
             OrdinalFileName = Constants.File.OrdinalFileName,
             FileUrl = Constants.File.FileUrl,
             Comments = CreateStudentTaskComments(studentTaskId: taskId),
-            Task = CreateTask(deadLine: deadline)
+            Task = CreateTaskWithoutStudentTasks(deadLine: deadline)
         };
 
-    public static List<StudentTask> CreateStudentTasksWithoutTaskObject(Guid? taskId = null,
+    private static List<StudentTask> CreateStudentTasksWithoutTaskObject(Guid? taskId = null,
         int studentTasksCount = 1)
     {
         Guid generatedTaskId = taskId ?? Constants.Task.TaskId;

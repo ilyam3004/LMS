@@ -27,22 +27,22 @@ public static class SubjectFactory
         Guid? lecturerId = null,
         int index = 0)
         => new()
-            {
-                SubjectId = subjectId ?? Constants.Subject.SubjectId,
-                Name = Constants.Subject.SubjectNameFromGivenIndex(index),
-                Description = Constants.Subject.SubjectDescriptionFromGivenIndex(index),
-                GroupId = groupId ?? Constants.Group.GroupId,
-                LecturerId = lecturerId ?? Constants.Lecturer.LecturerId,
-                Tasks = tasks ?? TaskFactory.CreateTasks(subjectId),
-                Group = GroupFactory.CreateGroupWithOutSubjects(),
-                Lecturer = AuthenticationFactory.CreateLecturerUser().Lecturer
-            };
+        {
+            SubjectId = subjectId ?? Constants.Subject.SubjectId,
+            Name = Constants.Subject.SubjectNameFromGivenIndex(index),
+            Description = Constants.Subject.SubjectDescriptionFromGivenIndex(index),
+            GroupId = groupId ?? Constants.Group.GroupId,
+            LecturerId = lecturerId ?? Constants.Lecturer.LecturerId,
+            Tasks = tasks ?? TaskFactory.CreateTasks(subjectId),
+            Group = GroupFactory.CreateGroupWithOutSubjects(),
+            Lecturer = AuthenticationFactory.CreateLecturerUser().Lecturer!
+        };
 
     public static Subject CreateSubjectWithOutTasks(Guid? groupId = null,
         Guid? subjectId = null,
         Guid? lecturerId = null,
         int index = 0)
-        => new Subject
+        => new()
         {
             SubjectId = subjectId ?? Constants.Subject.SubjectId,
             Name = Constants.Subject.SubjectNameFromGivenIndex(index),
@@ -51,6 +51,6 @@ public static class SubjectFactory
             LecturerId = lecturerId ?? Constants.Lecturer.LecturerId,
             Tasks = [],
             Group = GroupFactory.CreateGroupWithOutSubjects(),
-            Lecturer = AuthenticationFactory.CreateLecturerUser().Lecturer
+            Lecturer = AuthenticationFactory.CreateLecturerUser().Lecturer!
         };
 }

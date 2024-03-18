@@ -1,15 +1,17 @@
-﻿using Application.Common.Interfaces.Authentication;
-using Application.Common.Interfaces.Persistence;
-using Application.Features.Grades.Queries;
-using Application.Models.Grades;
+﻿using TaskFactory = Application.UnitTests.TestUtils.Factories.TaskFactory;
 using Application.UnitTests.Grades.Queries.TestUtils;
-using Application.UnitTests.TestUtils.Factories;
+using Application.Common.Interfaces.Authentication;
+using Application.Common.Interfaces.Persistence;
 using Application.UnitTests.TestUtils.TestConstants;
-using Domain.Common;
-using FluentAssertions;
-using NSubstitute;
-using NSubstitute.ReturnsExtensions;
+using Application.UnitTests.TestUtils.Factories;
 using Task = System.Threading.Tasks.Task;
+using Application.Features.Grades.Queries;
+using Application.UnitTests.TestUtils.Extensions;
+using NSubstitute.ReturnsExtensions;
+using FluentAssertions;
+using Domain.Common;
+using Domain.Entities;
+using NSubstitute;
 
 namespace Application.UnitTests.Grades.Queries;
 
@@ -60,8 +62,10 @@ public class GetLecturerGradesQueryHandlerTests
         result.Errors.Should().ContainEquivalentOf(Errors.Authentication.UserNotFound);
     }
     
-    [Fact]
-    public async Task Handle_WhenTokenIsValidAndUserExists_ShouldReturnLecturerGradesResults()
+    [Theory]
+    [MemberData(nameof(ValidRetrieveSubjectsData))]
+    public async Task Handle_WhenTokenIsValidAndUserExists_ShouldReturnLecturerGradesResults(
+        List<Subject> subjects)
     {
         // Arrange
         var query = GetLecturerGradesQueryUtils.CreateGetLecturerGradesQuery();
@@ -72,70 +76,34 @@ public class GetLecturerGradesQueryHandlerTests
             .Returns(AuthenticationFactory.CreateLecturerUser());
     
         _unitOfWork.Subjects.GetLecturerSubjects(Arg.Any<Guid>())
-            .Returns(SubjectFactory.CreateSubjects());
+            .Returns(subjects);
         
         // Act
         var result = await _sut.Handle(query, default);
     
         // Assert
         result.IsSuccess.Should().BeTrue();
-        result.Value.Should().BeOfType<List<SubjectGradesResult>>();
+        result.Value.ValidateRetrievedSubjectsData(subjects);
+        
     }
     
-    //
-    // [Fact]
-    // public async Task Handle_WhenNoSubjectsForUser_ShouldReturnEmptyResult()
-    // {
-    //     // Arrange
-    //     var query = GetLecturerGradesQueryUtils.CreateGetLecturerGradesQuery("valid_token");
-    //     var userId = Constants.Authentication.UserId;
-    //     _jwtTokenReader.ReadUserIdFromToken(query.Token).Returns(userId.ToString());
-    //     _unitOfWork.Users.GetUserByIdWithRelations(userId).Returns(new User());
-    //     _unitOfWork.Subjects.GetLecturerSubjects(Arg.Any<Guid>()).Returns(new List<Subject>());
-    //
-    //     // Act
-    //     var result = await _sut.Handle(query, default);
-    //
-    //     // Assert
-    //     result.IsSuccess.Should().BeTrue();
-    //     result.Value.Should().BeEmpty();
-    // }
-    //
-    // [Fact]
-    // public async Task Handle_WhenSubjectsExistForUser_ShouldReturnSubjectGradesResult()
-    // {
-    //     // Arrange
-    //     var query = GetLecturerGradesQueryUtils.CreateGetLecturerGradesQuery("valid_token");
-    //     var userId = Constants.Authentication.UserId;
-    //     _jwtTokenReader.ReadUserIdFromToken(query.Token).Returns(userId.ToString());
-    //     var user = new User { Lecturer = new Lecturer { LecturerId = Guid.NewGuid() } };
-    //     var subject = new Subject { SubjectId = Guid.NewGuid(), Name = "Subject", Group = new Group { Name = "Group" } };
-    //     var student = new Student { StudentId = Guid.NewGuid(), FullName = "Student" };
-    //     var task = new Domain.Entities.Task { TaskId = Guid.NewGuid(), SubjectId = subject.SubjectId };
-    //     var uploadedTask = new UploadedTask { Task = task, Grade = 80 };
-    //     var studentTaskResult = new StudentTaskResult(task, uploadedTask);
-    //     student.Tasks.Add(uploadedTask);
-    //     subject.Group.Students.Add(student);
-    //     subject.Tasks.Add(task);
-    //     _unitOfWork.Users.GetUserByIdWithRelations(userId).Returns(user);
-    //     _unitOfWork.Subjects.GetLecturerSubjects(user.Lecturer!.LecturerId).Returns(new List<Subject> { subject });
-    //
-    //     // Act
-    //     var result = await _sut.Handle(query, default);
-    //
-    //     // Assert
-    //     result.IsSuccess.Should().BeTrue();
-    //     result.Value.Should().NotBeEmpty();
-    //     result.Value.First().SubjectId.Should().Be(subject.SubjectId);
-    //     result.Value.First().SubjectName.Should().Be(subject.Name);
-    //     result.Value.First().GroupName.Should().Be(subject.Group.Name);
-    //     result.Value.First().StudentGradesResults.Should().NotBeEmpty();
-    //     result.Value.First().StudentGradesResults.First().StudentId.Should().Be(student.StudentId);
-    //     result.Value.First().StudentGradesResults.First().StudentName.Should().Be(student.FullName);
-    //     result.Value.First().StudentGradesResults.First().TotalGrade.Should().Be(uploadedTask.Grade);
-    //     result.Value.First().StudentGradesResults.First().AverageGrade.Should().BeApproximately(80, 0.001);
-    //     result.Value.First().StudentGradesResults.First().StudentTasksResults.Should().NotBeEmpty();
-    //     result.Value.First().StudentGradesResults.First().StudentTasksResults.First().Task.Should().NotBeNull();
-    //     result.Value.First().StudentGradesResults.First().StudentTasksResults.First().UploadedTask.Should().NotBeNull();
-    // }
+    public static IEnumerable<object[]> ValidRetrieveSubjectsData()
+    {
+        yield return
+        [
+            SubjectFactory.CreateSubjects()
+        ];
+
+        yield return
+        [
+            SubjectFactory.CreateSubjects(subjectsCount: 4,
+                tasks: TaskFactory.CreateTasks(tasksCount: 4))
+        ];
+
+        yield return
+        [
+            SubjectFactory.CreateSubjects(subjectsCount: 8,
+                tasks: TaskFactory.CreateTasks(tasksCount: 10))
+        ];
+    }
 }
